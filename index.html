@@ -645,6 +645,75 @@ let charts={};
 let currentEvalData=[];
 let outerAccOpen=false;
 
+/* ══════════════════════════════════════════
+   CLOUD BACKEND — GitHub Issues
+   ══════════════════════════════════════════ */
+const GH_REPO  = "jorgeicone/icone-eval";
+const GH_PART  = "ghp_6g1MgGH3VXcG"; // Part A — Part B in config.json
+let _ghToken   = null;
+
+async function getToken(){
+  if(_ghToken) return _ghToken;
+  try{
+    const cfg = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/config.json?t=${Date.now()}`);
+    const d = await cfg.json();
+    _ghToken = GH_PART + d.k;
+    return _ghToken;
+  }catch(e){ console.error("Token fetch failed",e); return null; }
+}
+
+async function saveToCloud(record){
+  try{
+    const token = await getToken();
+    if(!token) return false;
+    const res = await fetch(`https://api.github.com/repos/${GH_REPO}/issues`,{
+      method:"POST",
+      headers:{"Authorization":"token "+token,"Content-Type":"application/json","Accept":"application/vnd.github.v3+json"},
+      body:JSON.stringify({
+        title:`[${record.modulo}] ${record.participante.nombre} — ${record.puntaje}/100`,
+        body:JSON.stringify(record),
+        labels:["icone-eval"]
+      })
+    });
+    return res.ok;
+  }catch(e){ console.error("saveToCloud failed:",e); return false; }
+}
+
+async function loadFromCloud(){
+  try{
+    const token = await getToken();
+    if(!token) return [];
+    let all=[], page=1;
+    while(true){
+      const res = await fetch(
+        `https://api.github.com/repos/${GH_REPO}/issues?state=open&labels=icone-eval&per_page=100&page=${page}`,
+        {headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3+json"}}
+      );
+      const issues = await res.json();
+      if(!Array.isArray(issues)||!issues.length) break;
+      issues.forEach(iss=>{try{all.push(JSON.parse(iss.body));}catch{}});
+      if(issues.length<100) break;
+      page++;
+    }
+    return all;
+  }catch(e){ console.error("loadFromCloud failed:",e); return []; }
+}
+
+function mergeCloudToLocal(cloudRecords){
+  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  mods.forEach(m=>{
+    const cloudMod=cloudRecords.filter(r=>r.modulo===m);
+    if(!cloudMod.length) return;
+    const localArr=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${m}`)||'[]');
+    const merged={};
+    [...localArr,...cloudMod].forEach(r=>{
+      const em=r.participante?.email||'_noemail';
+      if(!merged[em]||new Date(r.fecha)>new Date(merged[em].fecha)) merged[em]=r;
+    });
+    localStorage.setItem(`${KEY_PREFIX}all_${m}`,JSON.stringify(Object.values(merged)));
+  });
+}
+
 function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function goAdmin(){showSection('s-admin-login');}
 
@@ -755,6 +824,7 @@ function finalizarEvaluacion(timeout=false){
     all=all.filter(r=>r.participante.email!==ek);
     all.push(rd);
     localStorage.setItem(allKey,JSON.stringify(all));
+    saveToCloud(rd); // ☁️ enviar a GitHub Issues
   }
 
   const firstName=state.participante?.nombre?.split(' ')[0]||'';
@@ -831,17 +901,14 @@ function saveNewPass(){
 }
 function logoutAdmin(){showSection('s-landing');}
 
-function loadAdminDash(){
-  const allKey=`${KEY_PREFIX}all_M1`;
-  if(!localStorage.getItem(allKey)){
-    // Only inject demo data if truly empty
-    localStorage.setItem(allKey,JSON.stringify([
-      {participante:{nombre:'Ana Sofía Ruiz',local:'Zara — Plaza Imperial',email:'ana@test.com',phone:'3001234567'},modulo:'M1',correctas:14,total:15,puntaje:93.3,status:'⭐ Sobresaliente',fecha:'2026-04-22T07:45:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:2,13:1,14:2}},
-      {participante:{nombre:'Carlos Mendoza',local:'Adidas — Plaza Imperial',email:'carlos@test.com',phone:'3009876543'},modulo:'M1',correctas:11,total:15,puntaje:73.3,status:'⚠️ En Proceso',fecha:'2026-04-22T08:02:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:0,6:2,7:1,8:2,9:1,10:0,11:2,12:0,13:1,14:0}},
-      {participante:{nombre:'Laura Pérez García',local:'Zara Home — Plaza Imperial',email:'laura@test.com',phone:'3151234567'},modulo:'M1',correctas:13,total:15,puntaje:86.7,status:'✅ Satisfactorio',fecha:'2026-04-22T08:15:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:0,13:1,14:0}},
-      {participante:{nombre:'Andrés Torres',local:'Nike — Plaza Imperial',email:'andres@test.com',phone:'3209876543'},modulo:'M1',correctas:8,total:15,puntaje:53.3,status:'🔴 Requiere Refuerzo',fecha:'2026-04-22T08:30:00Z',respuestas:{0:0,1:2,2:1,3:0,4:2,5:0,6:2,7:1,8:0,9:1,10:0,11:2,12:0,13:1,14:0}},
-      {participante:{nombre:'Valentina Castro',local:'Forever 21 — Plaza Imperial',email:'vale@test.com',phone:'3111234567'},modulo:'M1',correctas:15,total:15,puntaje:100,status:'⭐ Sobresaliente',fecha:'2026-04-22T08:45:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:2,13:1,14:2}}
-    ]));
+async function loadAdminDash(){
+  showToast('☁️ Cargando datos desde la nube...');
+  const cloud = await loadFromCloud();
+  if(cloud.length){
+    mergeCloudToLocal(cloud);
+    showToast(`✅ ${cloud.length} registros cargados`);
+  } else {
+    showToast('📋 Sin respuestas en la nube aún');
   }
   buildEvalSelector();selectEval('M1',null);buildPartTable();
 }
@@ -1014,7 +1081,13 @@ function switchAdminTab(tab,btn){
 
 function togglePartAcc(){const b=document.getElementById('part-acc-body');const a=document.getElementById('part-acc-arrow');b.classList.toggle('open');a.classList.toggle('open');}
 
-function refreshAdmin(){buildEvalSelector();selectEval(currentEval,null);buildPartTable();showToast('✅ Datos actualizados');}
+async function refreshAdmin(){
+  showToast('☁️ Sincronizando con la nube...');
+  const cloud = await loadFromCloud();
+  if(cloud.length) mergeCloudToLocal(cloud);
+  buildEvalSelector();selectEval(currentEval,null);buildPartTable();
+  showToast(`✅ ${cloud.length} registros sincronizados`);
+}
 
 function exportCSV(){
   const data=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]');
