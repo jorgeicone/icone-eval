@@ -282,7 +282,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <div id="ya-respondido" style="display:none;text-align:center;padding:20px 0;">
         <div style="font-size:44px;margin-bottom:10px;">✅</div>
         <h3 style="margin-bottom:7px;">Ya completaste esta evaluación</h3>
-        <p style="color:var(--gray);font-size:13px;">Tu evaluación del Módulo 1 ya fue registrada.</p>
+        <p style="color:var(--gray);font-size:13px;margin-bottom:18px;">Tu evaluación del Módulo 1 ya fue registrada.</p>
+        <button class="btn btn-secondary" style="width:auto;padding:10px 24px;font-size:13px;" onclick="repetirEvaluacion()">🔄 Repetir evaluación</button>
       </div>
     </div>
   </div>
@@ -738,6 +739,20 @@ function iniciarEvaluacion(){
   if(saved){const pr=JSON.parse(saved);state.respuestas=pr.respuestas||{};state.currentQ=pr.currentQ||0;state.timerSeconds=pr.timerSeconds||1200;document.getElementById('resume-banner').style.display='block';}
   else{state.respuestas={};state.currentQ=0;state.timerSeconds=1200;}
   showSection('s-evaluacion');renderQuestion();startTimer();
+}
+
+function repetirEvaluacion(){
+  // Clear the done flag so the participant can retake
+  const e=document.getElementById('r-email').value.trim().toLowerCase();
+  if(!e){document.getElementById('ya-respondido').style.display='none';document.getElementById('registro-form').style.display='block';return;}
+  const doneKey=`${KEY_PREFIX}${state.modulo}_${e}_done`;
+  const progKey=`${KEY_PREFIX}${state.modulo}_${e}_progress`;
+  localStorage.removeItem(doneKey);
+  localStorage.removeItem(progKey);
+  document.getElementById('ya-respondido').style.display='none';
+  document.getElementById('registro-form').style.display='block';
+  // Re-trigger with existing form data
+  iniciarEvaluacion();
 }
 
 function renderQuestion(){
