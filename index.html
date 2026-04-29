@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICONE Eval v3 — Diplomado CX · Poli × Plaza Imperial</title>
+<style>
+:root{--bg:#0b1c30;--bg2:#112240;--cyan:#00b3e1;--purple:#5a2fcf;--orange:#ff8c00;--poli:#133759;--green:#00e676;--red:#ff4444;--yellow:#ffd700;--white:#ffffff;--gray:#8892a4;--card:rgba(255,255,255,0.05);--border:rgba(0,179,225,0.18);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden;}
+
+/* ── POLI TOP BAR ── */
+.poli-bar{background:linear-gradient(90deg,#0d2544 0%,var(--poli) 40%,#1a4a70 100%);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:38px;border-bottom:1px solid rgba(0,179,225,0.3);}
+.poli-bar-left{display:flex;align-items:center;gap:10px;}
+.poli-bar-center{font-size:9.5px;letter-spacing:1.8px;font-weight:700;color:rgba(255,255,255,0.88);text-align:center;}
+.poli-bar-right{display:flex;align-items:center;gap:8px;}
+.poli-bar .sep{color:var(--cyan);opacity:.7;margin:0 4px;}
+
+/* ── PARTICLES ── */
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;animation:float linear infinite;opacity:.12;}
+@keyframes float{0%{transform:translateY(100vh) rotate(0deg);opacity:0}10%{opacity:.12}90%{opacity:.12}100%{transform:translateY(-100px) rotate(720deg);opacity:0}}
+
+/* ── SECTIONS ── */
+.section{display:none;position:relative;z-index:1;}.section.active{display:block;}
+.container{max-width:720px;margin:0 auto;padding:24px 20px;}
+.container-wide{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:28px;backdrop-filter:blur(20px);}
+.logo{font-size:20px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo span{-webkit-text-fill-color:var(--orange);}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .3s;text-decoration:none;width:100%;}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,179,225,.3);}
+.btn-secondary{background:transparent;color:var(--cyan);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--card);}
+.btn-sm{padding:7px 14px;font-size:12px;width:auto;border-radius:8px;}
+.btn-icon{padding:7px 13px;font-size:12px;width:auto;border-radius:8px;font-weight:700;}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+.btn-actualizar{background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.35);color:var(--cyan);}
+.btn-excel{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:var(--green);}
+.btn-share{background:rgba(90,47,207,.15);border:1px solid rgba(90,47,207,.4);color:#a98bff;}
+.btn-limpiar{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.3);color:var(--red);}
+
+/* ── FORM ── */
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11px;color:var(--cyan);font-weight:700;margin-bottom:5px;letter-spacing:1px;}
+.field input{width:100%;padding:11px 14px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid var(--border);color:var(--white);font-size:14px;transition:border-color .3s,box-shadow .3s;}
+.field input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 14px rgba(0,179,225,.18);}
+.field input::placeholder{color:var(--gray);}
+
+/* ── PROGRESS / TIMER ── */
+.progress-wrap{background:rgba(255,255,255,.1);border-radius:100px;height:5px;margin:10px 0;}
+.progress-bar{height:5px;border-radius:100px;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .4s ease;}
+.timer{display:inline-flex;align-items:center;gap:6px;background:rgba(255,140,0,.15);border:1px solid rgba(255,140,0,.4);padding:5px 13px;border-radius:100px;font-size:13px;font-weight:700;color:var(--orange);}
+.timer.urgent{background:rgba(255,68,68,.15);border-color:rgba(255,68,68,.5);color:var(--red);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+
+/* ── QUESTION ── */
+.question-num{font-size:11px;color:var(--cyan);font-weight:700;letter-spacing:2px;margin-bottom:10px;}
+.question-text{font-size:17px;font-weight:600;line-height:1.5;margin-bottom:20px;}
+.option{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-radius:12px;margin-bottom:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .2s;}
+.option:hover{background:rgba(0,179,225,.08);border-color:var(--cyan);}
+.option.selected{background:rgba(0,179,225,.12);border-color:var(--cyan);}
+.option.correct{background:rgba(0,230,118,.12);border-color:var(--green);}
+.option.incorrect{background:rgba(255,68,68,.1);border-color:var(--red);}
+.option-letter{width:30px;height:30px;border-radius:7px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;background:rgba(255,255,255,.1);color:var(--gray);}
+.option.selected .option-letter{background:var(--cyan);color:#000;}
+.option.correct .option-letter{background:var(--green);color:#000;}
+.option.incorrect .option-letter{background:var(--red);color:#fff;}
+.option-text{font-size:13px;line-height:1.5;padding-top:4px;}
+.feedback-box{margin-top:14px;padding:13px 16px;border-radius:10px;font-size:13px;line-height:1.5;}
+.feedback-correct{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:#a5f3c5;}
+.feedback-incorrect{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);color:#ffaaaa;}
+
+/* ── SCORE RING ── */
+.score-ring-wrap{display:flex;justify-content:center;margin:20px 0;}
+.score-ring{width:150px;height:150px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;}
+.score-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.score-ring-inner{text-align:center;z-index:1;}
+.score-number{font-size:36px;font-weight:900;}
+.score-label{font-size:11px;color:var(--gray);margin-top:2px;}
+.status-badge{display:inline-flex;align-items:center;gap:8px;padding:7px 18px;border-radius:100px;font-size:13px;font-weight:700;}
+.status-sobresaliente{background:rgba(255,215,0,.15);border:1px solid var(--yellow);color:var(--yellow);}
+.status-satisfactorio{background:rgba(0,230,118,.12);border:1px solid var(--green);color:var(--green);}
+.status-proceso{background:rgba(255,140,0,.12);border:1px solid var(--orange);color:var(--orange);}
+.status-refuerzo{background:rgba(255,68,68,.1);border:1px solid var(--red);color:var(--red);}
+
+/* ── INNER ACCORDIONS (per-question) ── */
+.acc-item{border-radius:12px;margin-bottom:7px;overflow:hidden;border:1px solid transparent;transition:border-color .2s;}
+.acc-item.ok{border-color:rgba(0,230,118,.2);background:rgba(0,230,118,.04);}
+.acc-item.fail{border-color:rgba(255,68,68,.15);background:rgba(255,68,68,.03);}
+.acc-header{display:flex;align-items:center;gap:10px;padding:13px 16px;cursor:pointer;user-select:none;}
+.acc-header:hover{background:rgba(255,255,255,.03);}
+.acc-q-text{font-size:13px;font-weight:600;flex:1;line-height:1.4;}
+.acc-arrow{font-size:10px;color:var(--gray);transition:transform .3s;flex-shrink:0;}
+.acc-arrow.open{transform:rotate(180deg);}
+.acc-body{display:none;padding:0 16px 14px;}
+.acc-body.open{display:block;}
+.acc-ans{font-size:12px;color:var(--gray);margin-bottom:8px;line-height:1.5;}
+.acc-fb{font-size:12px;line-height:1.6;padding:10px 13px;border-radius:8px;}
+.acc-fb.ok{background:rgba(0,230,118,.08);color:#a5f3c5;}
+.acc-fb.fail{background:rgba(255,68,68,.07);color:#ffaaaa;}
+
+/* ── OUTER ACCORDION (wraps all questions) ── */
+.outer-acc-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(0,179,225,.08);border:1px solid rgba(0,179,225,.28);border-radius:14px;cursor:pointer;margin:18px 0 0;user-select:none;transition:background .2s;}
+.outer-acc-header:hover{background:rgba(0,179,225,.14);}
+.outer-acc-title{font-size:13px;font-weight:700;color:var(--cyan);}
+.outer-acc-body{display:none;margin-top:9px;}
+.outer-acc-body.open{display:block;}
+
+/* ── ADMIN TABS ── */
+.tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.tab-btn{padding:9px 18px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--gray);transition:all .2s;}
+.tab-btn.active{background:rgba(0,179,225,.15);border-color:var(--cyan);color:var(--cyan);}
+.eval-selector{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+.eval-pill{padding:6px 13px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);color:var(--gray);background:transparent;transition:all .2s;}
+.eval-pill.active{background:var(--cyan);border-color:var(--cyan);color:#000;}
+.admin-table{width:100%;border-collapse:collapse;font-size:12px;}
+.admin-table th{padding:9px 12px;text-align:left;color:var(--cyan);font-weight:700;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:1px;}
+.admin-table td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.05);}
+.admin-table tr.clickable:hover td{background:rgba(0,179,225,.07);cursor:pointer;}
+.score-pill{display:inline-block;padding:2px 9px;border-radius:100px;font-size:11px;font-weight:700;}
+.score-s{background:rgba(255,215,0,.15);color:var(--yellow);}
+.score-a{background:rgba(0,230,118,.12);color:var(--green);}
+.score-b{background:rgba(255,140,0,.12);color:var(--orange);}
+.score-c{background:rgba(255,68,68,.1);color:var(--red);}
+.stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:18px;}
+.stat-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;}
+.stat-val{font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-val.gr{background:none;-webkit-background-clip:unset;-webkit-text-fill-color:var(--green);}
+.stat-val.ye{background:none;-webkit-background-clip:unset;-webkit-text-fill-color:var(--yellow);}
+.stat-val.re{background:none;-webkit-background-clip:unset;-webkit-text-fill-color:var(--red);}
+.stat-lbl{font-size:9px;color:var(--gray);margin-top:3px;letter-spacing:.5px;font-weight:600;}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;}
+.chart-title{font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:14px;}
+.part-acc-hdr{display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-top:14px;user-select:none;transition:background .2s;}
+.part-acc-hdr:hover{background:rgba(255,255,255,.07);}
+.part-acc-body{display:none;margin-top:7px;}
+.part-acc-body.open{display:block;}
+
+/* ── NAVIGATION ── */
+.top-bar{position:sticky;top:0;z-index:100;background:rgba(11,28,48,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:11px 22px;display:flex;align-items:center;justify-content:space-between;}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:56px 20px 42px;}
+.hero-poli-badge{display:inline-flex;align-items:center;gap:10px;padding:6px 18px;border-radius:100px;background:rgba(19,55,89,0.6);border:1px solid rgba(0,179,225,0.35);font-size:10px;color:var(--cyan);letter-spacing:2px;font-weight:700;margin-bottom:22px;}
+.hero h1{font-size:clamp(28px,5vw,48px);font-weight:900;line-height:1.15;margin-bottom:14px;}
+.hero h1 .accent{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:15px;color:var(--gray);max-width:460px;margin:0 auto 28px;line-height:1.6;}
+.journey-bar{display:flex;align-items:center;justify-content:center;gap:0;margin:0 auto 32px;max-width:500px;}
+.journey-node{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 12px;}
+.journey-node .jicon{width:34px;height:34px;border-radius:50%;background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.3);display:flex;align-items:center;justify-content:center;font-size:14px;}
+.journey-node .jlabel{font-size:8px;color:var(--gray);letter-spacing:.5px;font-weight:600;}
+.journey-connector{width:24px;height:1px;background:rgba(0,179,225,.3);margin-bottom:14px;}
+
+/* ── TOAST / MODALS ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--cyan);border-radius:100px;padding:9px 22px;font-size:12px;font-weight:700;color:var(--cyan);z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;}
+.toast.show{opacity:1;}
+.modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:1000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px;max-width:400px;width:90%;max-height:90vh;overflow-y:auto;}
+.modal-lg{max-width:540px;width:95%;}
+.fade-in{animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── PARTICIPANT DETAIL MODAL ── */
+.pd-score-ring{width:120px;height:120px;position:relative;flex-shrink:0;}
+.pd-score-ring svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.pd-score-ring-inner{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+.pd-q-bar{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.pd-q-label{font-size:9px;color:var(--gray);width:20px;flex-shrink:0;text-align:right;}
+.pd-q-track{flex:1;height:8px;background:rgba(255,255,255,.07);border-radius:4px;overflow:hidden;}
+.pd-q-fill{height:100%;border-radius:4px;transition:width .8s ease;}
+.pd-q-pct{font-size:9px;color:var(--gray);width:28px;flex-shrink:0;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){.stats-row{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.card{padding:18px}.question-text{font-size:15px}.journey-connector{width:10px}.journey-node{padding:6px 4px}}
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- POLI INSTITUTIONAL BAR -->
+<div class="poli-bar">
+  <div class="poli-bar-left">
+    <span style="font-size:10px;color:#ffffff;letter-spacing:.6px;font-weight:800;line-height:1.3;">POLITÉCNICO<br><span style="font-weight:400;color:rgba(255,255,255,.8);">GRANCOLOMBIANO</span></span>
+  </div>
+  <div class="poli-bar-center">DIPLOMADO EN INNOVACIÓN Y ESTRATEGIAS DE EXPERIENCIA DEL CONSUMIDOR · 2026</div>
+  <div class="poli-bar-right">
+    <span style="font-size:10px;color:#ffffff;letter-spacing:.6px;font-weight:800;text-align:right;line-height:1.3;">PLAZA<br><span style="font-weight:400;color:rgba(255,255,255,.8);">IMPERIAL</span></span>
+  </div>
+</div>
+
+<div id="particles"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ══════════ LANDING ══════════ -->
+<div id="s-landing" class="section active">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="goAdmin()">🔒 Panel Admin</button>
+  </div>
+  <div class="hero fade-in">
+    <div class="hero-poli-badge">
+      ✦ POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN OFICIAL · DIPLOMADO CX
+    </div>
+    <h1>Mide tu dominio de<br><span class="accent">Experiencia del Cliente</span></h1>
+    <p>Evaluaciones interactivas para los asesores de Plaza Imperial. Obtén retroalimentación personalizada en tiempo real.</p>
+    <!-- CX Journey Bar -->
+    <div class="journey-bar">
+      <div class="journey-node"><div class="jicon">🔍</div><div class="jlabel">ANTES</div></div>
+      <div class="journey-connector"></div>
+      <div class="journey-node"><div class="jicon">🚶</div><div class="jlabel">LLEGADA</div></div>
+      <div class="journey-connector"></div>
+      <div class="journey-node"><div class="jicon">💬</div><div class="jlabel">ATENCIÓN</div></div>
+      <div class="journey-connector"></div>
+      <div class="journey-node"><div class="jicon">🛍️</div><div class="jlabel">COMPRA</div></div>
+      <div class="journey-connector"></div>
+      <div class="journey-node"><div class="jicon">💫</div><div class="jlabel">WOW</div></div>
+    </div>
+    <button class="btn btn-primary" style="max-width:300px;margin:0 auto;" onclick="showSection('s-registro')">▶ Iniciar Evaluación</button>
+  </div>
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:4px;">
+      <div class="card" style="text-align:center;border-color:rgba(0,179,225,.4);position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));"></div>
+        <div style="font-size:28px;margin-bottom:8px;">📚</div>
+        <div style="font-weight:700;color:var(--cyan);margin-bottom:3px;">Módulo 1</div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fundamentos CX</div>
+        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(0,230,118,.12);border:1px solid var(--green);font-size:10px;color:var(--green);font-weight:700;">DISPONIBLE</div>
+      </div>
+      <div class="card" style="text-align:center;opacity:.4;">
+        <div style="font-size:28px;margin-bottom:8px;">🤝</div>
+        <div style="font-weight:700;color:var(--gray);margin-bottom:3px;">Módulo 2</div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fidelización</div>
+        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.06);font-size:10px;color:var(--gray);font-weight:700;">PRÓXIMAMENTE</div>
+      </div>
+      <div class="card" style="text-align:center;opacity:.4;">
+        <div style="font-size:28px;margin-bottom:8px;">🧠</div>
+        <div style="font-weight:700;color:var(--gray);margin-bottom:3px;">Módulo 3</div>
+        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">PNL aplicado</div>
+        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.06);font-size:10px;color:var(--gray);font-weight:700;">PRÓXIMAMENTE</div>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding:14px 18px;border-radius:12px;background:rgba(19,55,89,0.4);border:1px solid rgba(0,179,225,.2);display:flex;align-items:center;gap:12px;">
+      <div style="width:38px;height:38px;border-radius:8px;background:var(--poli);border:1px solid rgba(0,179,225,.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--cyan);letter-spacing:-.5px;flex-shrink:0;">PG</div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:2px;">Politécnico Grancolombiano × Plaza Imperial</div>
+        <div style="font-size:10px;color:var(--gray);">Diplomado en Innovación y Estrategias de Experiencia del Consumidor · 2026</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ REGISTRO ══════════ -->
+<div id="s-registro" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">← Volver</button>
+  </div>
+  <div class="container" style="padding-top:36px;">
+    <div class="card fade-in">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
+        <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📚</div>
+        <div>
+          <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;margin-bottom:3px;">MÓDULO 1</div>
+          <h2 style="font-size:18px;font-weight:900;">Fundamentos de la Experiencia del Cliente</h2>
+          <p style="color:var(--gray);font-size:11px;margin-top:2px;">15 preguntas · 20 minutos · Una sola oportunidad</p>
+        </div>
+      </div>
+      <div id="registro-form">
+        <div class="field"><label>NOMBRE COMPLETO *</label><input type="text" id="r-nombre" placeholder="Ej: Laura Martínez González"/></div>
+        <div class="field"><label>LOCAL / TIENDA *</label><input type="text" id="r-local" placeholder="Ej: Zara — Plaza Imperial"/></div>
+        <div class="field"><label>CORREO ELECTRÓNICO *</label><input type="email" id="r-email" placeholder="correo@ejemplo.com"/></div>
+        <div class="field"><label>WHATSAPP *</label><input type="tel" id="r-phone" placeholder="Ej: 300 123 4567"/></div>
+        <div id="registro-error" style="display:none;padding:11px;border-radius:9px;background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.3);color:#ffaaaa;font-size:12px;margin-bottom:14px;"></div>
+        <button class="btn btn-primary" onclick="iniciarEvaluacion()">▶ Comenzar Evaluación</button>
+        <p style="text-align:center;font-size:10px;color:var(--gray);margin-top:10px;">Solo puedes responder una vez por módulo.</p>
+      </div>
+      <div id="ya-respondido" style="display:none;text-align:center;padding:20px 0;">
+        <div style="font-size:44px;margin-bottom:10px;">✅</div>
+        <h3 style="margin-bottom:7px;">Ya completaste esta evaluación</h3>
+        <p style="color:var(--gray);font-size:13px;">Tu evaluación del Módulo 1 ya fue registrada.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EVALUACIÓN ══════════ -->
+<div id="s-evaluacion" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div id="timer-display" class="timer">⏱ 20:00</div>
+      <span style="font-size:12px;color:var(--gray);" id="q-counter">1/15</span>
+    </div>
+  </div>
+  <div class="container" style="padding-top:22px;">
+    <div class="progress-wrap"><div class="progress-bar" id="q-progress" style="width:6.67%"></div></div>
+    <div class="card fade-in" id="question-card" style="margin-top:18px;">
+      <div class="question-num" id="q-num">PREGUNTA 1 DE 15</div>
+      <div class="question-text" id="q-text"></div>
+      <div id="q-options"></div>
+      <div id="q-feedback" style="display:none;"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:14px;">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()" style="max-width:130px;" disabled>← Anterior</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQuestion()">Siguiente →</button>
+    </div>
+    <div id="resume-banner" style="display:none;margin-top:14px;padding:12px 16px;border-radius:10px;background:rgba(90,47,207,.12);border:1px solid rgba(90,47,207,.4);font-size:12px;color:#c4a8ff;">
+      🔄 Continuando desde donde lo dejaste.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ RESULTADOS ══════════ -->
+<div id="s-resultados" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">🏠 Inicio</button>
+  </div>
+  <div class="container" style="padding-top:28px;">
+    <div class="card fade-in" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;">
+        <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;">POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · MÓDULO 1</div>
+      </div>
+      <h2 style="font-size:20px;margin-bottom:4px;" id="result-name">¡Bien hecho!</h2>
+      <p style="color:var(--gray);font-size:12px;margin-bottom:18px;">Fundamentos de la Experiencia del Cliente</p>
+      <div class="score-ring-wrap">
+        <div class="score-ring">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="64" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="11"/>
+            <circle cx="75" cy="75" r="64" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="402" id="ring-circle" stroke-dashoffset="402"/>
+            <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00b3e1"/><stop offset="100%" stop-color="#5a2fcf"/></linearGradient></defs>
+          </svg>
+          <div class="score-ring-inner">
+            <div class="score-number" id="result-score">0</div>
+            <div class="score-label">puntos</div>
+          </div>
+        </div>
+      </div>
+      <div id="result-badge" class="status-badge" style="margin:0 auto 14px;"></div>
+      <p style="font-size:13px;color:var(--gray);margin-bottom:7px;" id="result-correct-count"></p>
+      <div id="result-general-feedback" style="padding:13px 16px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid var(--border);font-size:12px;line-height:1.6;color:#ccc;margin:14px 0;text-align:left;"></div>
+    </div>
+
+    <!-- OUTER ACCORDION wrapping all question details -->
+    <div class="outer-acc-header" onclick="toggleOuterAcc()">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:16px;">📋</span>
+        <span class="outer-acc-title" id="outer-acc-label">Ver detalle por pregunta (15)</span>
+      </div>
+      <span class="acc-arrow" id="outer-acc-arrow">▼</span>
+    </div>
+    <div class="outer-acc-body" id="outer-acc-body">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px;padding-top:4px;">
+        <button onclick="toggleAllAcc()" id="btn-expand" style="font-size:10px;color:var(--cyan);background:none;border:none;cursor:pointer;font-weight:700;letter-spacing:.5px;">EXPANDIR TODO</button>
+      </div>
+      <div id="result-breakdown"></div>
+    </div>
+
+    <div style="margin-top:18px;padding:14px 16px;border-radius:10px;background:rgba(0,179,225,.06);border:1px solid var(--border);text-align:center;">
+      <p style="font-size:12px;color:var(--cyan);font-weight:700;margin-bottom:3px;">✅ Evaluación registrada exitosamente</p>
+      <p style="font-size:11px;color:var(--gray);">Tu resultado ha sido guardado en el sistema del Diplomado CX · Politécnico Grancolombiano.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN LOGIN ══════════ -->
+<div id="s-admin-login" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">← Volver</button>
+  </div>
+  <div class="container" style="max-width:380px;padding-top:80px;">
+    <div class="card fade-in" style="border-color:rgba(0,179,225,.3);">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="width:56px;height:56px;border-radius:14px;background:var(--poli);border:1px solid rgba(0,179,225,.4);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:var(--cyan);margin:0 auto 12px;">PG</div>
+        <h2 style="font-size:19px;font-weight:900;">Panel de Administrador</h2>
+        <p style="color:var(--gray);font-size:11px;margin-top:5px;">Acceso restringido · ICONE Eval · Diplomado CX</p>
+      </div>
+      <div class="field"><label>CONTRASEÑA</label><input type="password" id="admin-pass" placeholder="Ingresa la contraseña" onkeydown="if(event.key==='Enter')loginAdmin()"/></div>
+      <div id="admin-error" style="display:none;padding:9px;border-radius:7px;background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.3);color:#ffaaaa;font-size:11px;margin-bottom:11px;"></div>
+      <button class="btn btn-primary" onclick="loginAdmin()">Entrar al Panel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ADMIN DASHBOARD ══════════ -->
+<div id="s-admin" class="section">
+  <div class="top-bar">
+    <div>
+      <div class="logo" style="font-size:17px;">ICONE<span>.</span>Eval</div>
+      <div style="font-size:9px;color:var(--gray);margin-top:1px;letter-spacing:.5px;">Panel de Evaluaciones · Diplomado CX 2026</div>
+    </div>
+    <div style="display:flex;gap:7px;align-items:center;">
+      <span style="font-size:10px;color:var(--gray);">Admin</span>
+      <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()">Salir</button>
+    </div>
+  </div>
+  <div class="container-wide" style="padding-top:22px;">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:10px;background:var(--poli);border:1px solid rgba(0,179,225,.35);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--cyan);flex-shrink:0;">PG</div>
+        <div>
+          <h2 style="font-size:20px;font-weight:900;margin-bottom:1px;">🏆 Panel de Evaluaciones</h2>
+          <p style="color:var(--gray);font-size:11px;">Diplomado CX · Politécnico Grancolombiano × Plaza Imperial</p>
+        </div>
+      </div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <button class="btn btn-icon btn-actualizar" onclick="refreshAdmin()">🔄 Actualizar</button>
+        <button class="btn btn-icon btn-excel" onclick="exportCSV()">📊 Exportar CSV</button>
+        <button class="btn btn-icon btn-share" onclick="shareLink()">🔗 Compartir</button>
+        <button class="btn btn-icon btn-limpiar" onclick="limpiarDatos()">🗑 Limpiar</button>
+      </div>
+    </div>
+    <div style="padding:11px 16px;border-radius:10px;background:rgba(0,179,225,.07);border:1px solid rgba(0,179,225,.2);font-size:11px;color:var(--cyan);margin-bottom:18px;display:flex;align-items:center;gap:9px;">
+      <span style="font-size:14px;">☁</span>
+      <span><strong>Auto-guardado activo.</strong> Cada respuesta enviada llega aquí. Pulsa <strong>Actualizar</strong> para ver las más recientes. <span style="color:var(--green);">💡 Clic en un participante para ver su detalle.</span></span>
+    </div>
+
+    <div class="eval-selector" id="eval-selector"></div>
+    <div class="stats-row" id="eval-stats-row"></div>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchAdminTab('distribucion',this)">📊 Distribución</button>
+      <button class="tab-btn" onclick="switchAdminTab('por-evaluacion',this)">📋 Por Evaluación</button>
+      <button class="tab-btn" onclick="switchAdminTab('por-participante',this)">👤 Por Participante</button>
+    </div>
+
+    <!-- TAB DISTRIBUCIÓN -->
+    <div id="tab-distribucion">
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-title">DISTRIBUCIÓN DE PUNTAJES</div>
+          <div style="position:relative;height:210px;"><canvas id="chart-dist"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">NIVELES DEL GRUPO</div>
+          <div style="position:relative;height:210px;"><canvas id="chart-levels"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">POR LOCAL / TIENDA</div>
+        <div style="position:relative;height:210px;"><canvas id="chart-local"></canvas></div>
+      </div>
+      <div id="dist-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin datos disponibles para esta evaluación.</div>
+    </div>
+
+    <!-- TAB POR EVALUACIÓN -->
+    <div id="tab-por-evaluacion" style="display:none;">
+      <div class="card" style="overflow-x:auto;padding:0;margin-bottom:14px;">
+        <table class="admin-table">
+          <thead><tr><th style="padding-left:18px;">PARTICIPANTE</th><th>LOCAL</th><th>PUNTAJE</th><th>CORRECTAS</th><th>ESTADO</th><th>FECHA</th></tr></thead>
+          <tbody id="eval-table-body"></tbody>
+        </table>
+        <div id="eval-empty" style="text-align:center;padding:36px;color:var(--gray);display:none;">Sin respuestas para esta evaluación.</div>
+      </div>
+      <!-- Per-question success rate chart -->
+      <div class="chart-card">
+        <div class="chart-title">TASA DE ÉXITO POR PREGUNTA</div>
+        <div id="perq-no-data" style="text-align:center;padding:18px;color:var(--gray);font-size:11px;display:none;">Los datos por pregunta estarán disponibles con nuevas evaluaciones registradas en v3.</div>
+        <div style="position:relative;height:320px;" id="perq-chart-wrap"><canvas id="chart-per-q"></canvas></div>
+      </div>
+    </div>
+
+    <!-- TAB POR PARTICIPANTE -->
+    <div id="tab-por-participante" style="display:none;">
+      <div class="card" style="overflow-x:auto;padding:0;">
+        <table class="admin-table">
+          <thead><tr><th style="padding-left:18px;">PARTICIPANTE</th><th>LOCAL</th><th>M1</th><th>M2</th><th>M3</th><th>M4</th><th>M5</th><th>M6</th><th>M7</th><th>M8</th><th>PROM.</th></tr></thead>
+          <tbody id="part-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PARTICIPANTES COLAPSABLE -->
+    <div class="part-acc-hdr" onclick="togglePartAcc()">
+      <span id="part-acc-count" style="font-size:13px;font-weight:700;">👥 Ver participantes</span>
+      <div style="flex:1;"></div>
+      <span id="part-acc-arrow" class="acc-arrow">▼</span>
+    </div>
+    <div class="part-acc-body" id="part-acc-body">
+      <div class="card" style="overflow-x:auto;padding:0;">
+        <table class="admin-table">
+          <thead><tr><th style="padding-left:18px;">#</th><th>NOMBRE</th><th>LOCAL</th><th>CORREO</th><th>WHATSAPP</th><th>PUNTAJE</th><th>FECHA</th></tr></thead>
+          <tbody id="all-part-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONTRASEÑA -->
+<div class="modal-overlay" id="modal-pass">
+  <div class="modal">
+    <h3 style="font-size:17px;font-weight:900;margin-bottom:5px;">🔐 Crea tu contraseña</h3>
+    <p style="color:var(--gray);font-size:12px;margin-bottom:18px;">Primera vez ingresando. Define una contraseña segura.</p>
+    <div class="field"><label>NUEVA CONTRASEÑA</label><input type="password" id="new-pass1" placeholder="Mínimo 8 caracteres"/></div>
+    <div class="field"><label>CONFIRMAR</label><input type="password" id="new-pass2" placeholder="Repite la contraseña"/></div>
+    <div id="modal-pass-error" style="display:none;color:#ffaaaa;font-size:11px;margin-bottom:10px;"></div>
+    <button class="btn btn-primary" onclick="saveNewPass()">Guardar y entrar</button>
+  </div>
+</div>
+
+<!-- MODAL DETALLE PARTICIPANTE -->
+<div class="modal-overlay" id="modal-part-detail" onclick="closePartModal(event)">
+  <div class="modal modal-lg" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <div id="pd-name" style="font-size:18px;font-weight:900;"></div>
+        <div id="pd-local" style="font-size:11px;color:var(--gray);margin-top:3px;"></div>
+      </div>
+      <button onclick="document.getElementById('modal-part-detail').classList.remove('open')" style="background:none;border:none;color:var(--gray);cursor:pointer;font-size:20px;line-height:1;">✕</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:22px;margin-bottom:22px;flex-wrap:wrap;">
+      <div class="pd-score-ring" style="width:110px;height:110px;">
+        <svg width="110" height="110" viewBox="0 0 110 110" style="position:absolute;top:0;left:0;transform:rotate(-90deg);">
+          <circle cx="55" cy="55" r="46" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="9"/>
+          <circle cx="55" cy="55" r="46" fill="none" stroke="url(#rg2)" stroke-width="9" stroke-linecap="round" stroke-dasharray="289" id="pd-ring" stroke-dashoffset="289"/>
+          <defs><linearGradient id="rg2" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00b3e1"/><stop offset="100%" stop-color="#5a2fcf"/></linearGradient></defs>
+        </svg>
+        <div class="pd-score-ring-inner">
+          <div class="score-number" id="pd-score" style="font-size:26px;"></div>
+          <div class="score-label" style="font-size:10px;">puntos</div>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div id="pd-badge" class="status-badge" style="margin-bottom:10px;font-size:12px;"></div>
+        <div style="font-size:12px;color:var(--gray);" id="pd-correctas"></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:5px;" id="pd-fecha"></div>
+        <div style="font-size:11px;color:var(--gray);margin-top:3px;" id="pd-email-info"></div>
+      </div>
+    </div>
+    <!-- Per-question mini bars (if respuestas available) -->
+    <div id="pd-chart-section">
+      <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">RESPUESTAS POR PREGUNTA</div>
+      <div id="pd-answers" style="max-height:280px;overflow-y:auto;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* ══════════════════════════════════════════
+   STORAGE KEYS — always use iconeEval_ prefix
+   ══════════════════════════════════════════ */
+const KEY_PREFIX = 'iconeEval_';
+const KEY_PASS   = 'iconeEvalPass';
+const KEY_PASS_CH= 'iconeEvalPassChanged';
+
+/* ── MIGRATION: merge iEval_ + iconeEval_ data ── */
+(function migrateOldData(){
+  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  mods.forEach(m=>{
+    const oldAllKey = `iEval_all_${m}`;
+    const newAllKey = `iconeEval_all_${m}`;
+    const oldRaw    = localStorage.getItem(oldAllKey);
+    if(!oldRaw) return;
+    try{
+      const oldArr = JSON.parse(oldRaw);
+      const newArr = JSON.parse(localStorage.getItem(newAllKey)||'[]');
+      // MERGE: keep newest entry per email across both sources
+      const merged = {};
+      [...oldArr,...newArr].forEach(r=>{
+        const em = r.participante?.email||'';
+        // keep the one with the later fecha (or just overwrite; newArr entries win)
+        if(!merged[em] || new Date(r.fecha)>new Date(merged[em].fecha)) merged[em]=r;
+      });
+      const mergedArr=Object.values(merged);
+      if(mergedArr.length!==newArr.length){
+        localStorage.setItem(newAllKey, JSON.stringify(mergedArr));
+        console.log(`[ICONE Eval v3] Merged ${oldAllKey}(${oldArr.length}) + ${newAllKey}(${newArr.length}) → ${mergedArr.length} registros`);
+      }
+    }catch(e){console.warn('[ICONE Eval v3] Migration error:',e);}
+  });
+  // migrate password
+  const oldPass  = localStorage.getItem('iEvalPass');
+  const oldPassCh= localStorage.getItem('iEvalPassChanged');
+  if(oldPass && !localStorage.getItem(KEY_PASS)){ localStorage.setItem(KEY_PASS, oldPass); }
+  if(oldPassCh && !localStorage.getItem(KEY_PASS_CH)){ localStorage.setItem(KEY_PASS_CH, oldPassCh); }
+})();
+
+/* ══════════════════════════════════════════
+   WEB AUDIO SOUND EFFECTS
+   ══════════════════════════════════════════ */
+let audioCtx=null;
+function getAC(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function playTone(freq,type,dur,vol){
+  try{
+    const ctx=getAC();const osc=ctx.createOscillator();const gain=ctx.createGain();
+    osc.type=type;osc.frequency.setValueAtTime(freq,ctx.currentTime);
+    gain.gain.setValueAtTime(vol,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+dur);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start(ctx.currentTime);osc.stop(ctx.currentTime+dur);
+  }catch(e){}
+}
+function playSound(type){
+  if(type==='correct'){
+    playTone(523.25,'sine',0.14,0.2);
+    setTimeout(()=>playTone(783.99,'sine',0.22,0.15),90);
+  }else if(type==='wrong'){
+    playTone(220,'sawtooth',0.13,0.15);
+    setTimeout(()=>playTone(196,'sawtooth',0.22,0.1),90);
+  }else if(type==='complete'){
+    [523.25,659.25,783.99,1046.5].forEach((f,i)=>setTimeout(()=>playTone(f,'sine',0.28,0.18),i*110));
+  }else if(type==='timer-warn'){
+    playTone(440,'sine',0.09,0.1);
+  }
+}
+
+/* ══════════════════════════════════════════
+   EVALUACIÓN DATA
+   ══════════════════════════════════════════ */
+const EVALUACIONES={M1:{titulo:'Módulo 1 — Fundamentos CX',tiempo:1200,preguntas:[
+{q:'¿Cuál de las siguientes afirmaciones describe mejor la "Brecha de Bain"?',opts:['La diferencia entre el precio de un producto y su valor percibido por el cliente.','La diferencia entre el % de empresas que creen entregar excelente CX y el % de clientes que lo confirman.','La brecha entre los ingresos de una empresa y sus gastos en servicio al cliente.','La diferencia entre la atención presencial y la virtual en un centro comercial.'],correct:1,feedbackOk:'¡Exacto! La Brecha de Bain (80% vs 8%) es el primer golpe de realidad que debes reconocer antes de mejorar cualquier experiencia.',feedbackFail:'La Brecha de Bain no es sobre precio o costos — es sobre la desconexión entre lo que las empresas creen que ofrecen y lo que sus clientes realmente perciben.'},
+{q:'Según la Peak-End Rule de Daniel Kahneman, ¿qué determina principalmente cómo un cliente recuerda una experiencia?',opts:['El promedio de todos los momentos vividos durante la visita.','El primer momento de contacto con el local.','El momento de mayor intensidad emocional (pico) y el momento final de la experiencia.','La duración total de la visita.'],correct:2,feedbackOk:'¡Perfecto! La mente recuerda el pico más intenso y el final. Por eso diseñar esos dos momentos es la clave de una experiencia memorable.',feedbackFail:'La Peak-End Rule no promedia toda la experiencia. La mente recuerda el momento más intenso (pico) y cómo terminó.'},
+{q:'¿Cuál es el propósito declarado de Plaza Imperial según la sesión inaugural del Diplomado?',opts:['Ser el centro comercial más grande de Colombia en número de locales.','Conectar personas y experiencias que generan valor, aprendizaje e innovación, construyendo comunidad y transformando la vida de quienes nos eligen.','Ofrecer los mejores precios del mercado a través de sus marcas aliadas.','Desarrollar el talento humano del comercio minorista colombiano.'],correct:1,feedbackOk:"¡Correcto! Este propósito es el fundamento de todo. Es el 'por qué' detrás de cada acción de servicio en Plaza Imperial.",feedbackFail:'Plaza Imperial va más allá del tamaño o el precio. Su propósito es conectar personas y experiencias que generan valor, aprendizaje e innovación.'},
+{q:'En el contexto de ImperialLovers, los tres pilares son Amistad, Familia y Amor. ¿Cuál acción corresponde mejor al pilar "Amor"?',opts:['Saludar al cliente por su nombre cuando entra al local.','Ofrecer agua a un cliente que lleva tiempo esperando sin que te lo pida.','Hacer seguimiento a un cliente después de una compra para ver si está satisfecho.','Responder preguntas sobre el producto con información precisa.'],correct:2,feedbackOk:'¡Excelente! El seguimiento post-compra es Amor en acción — demuestra que el cliente importa más allá de la transacción.',feedbackFail:'El pilar Amor implica ir más allá de lo esperado después de la venta. El seguimiento post-compra es el gesto más poderoso.'},
+{q:'¿Cuántas personas escucharán en promedio la historia de un cliente que tuvo una mala experiencia?',opts:['5 personas','9 personas','15 personas','25 personas'],correct:2,feedbackOk:'¡Muy bien! 15 personas escuchan la historia de horror. Multiplica eso por los clientes mal atendidos de tu local en un mes.',feedbackFail:'El número correcto es 15 personas. Y en la era de redes sociales, ese número puede ser mucho mayor.'},
+{q:'Un asesor tiene vitrina limpia, producto disponible y buen precio, pero cuando el cliente entra no levanta la vista. ¿Cuál de los 5 Factores falla principalmente?',opts:['Factor 1 — Ambiente Físico','Factor 2 — Tiempo de Espera','Factor 3 — Actitud del Asesor','Factor 4 — Presentación Personal'],correct:2,feedbackOk:'¡Exacto! No levantar la vista es ignorar al cliente. El Factor 3 (Actitud del Asesor) es el de mayor impacto en la percepción.',feedbackFail:'La vitrina limpia y el producto cubren el Factor 1. El problema es el Factor 3 — no reconocer visualmente al cliente es uno de los errores más costosos del servicio.'},
+{q:'Jan Carlsson acuñó los "Momentos de Verdad" siendo CEO de SAS Airlines. ¿Cuántos calculó que tenía su empresa al año?',opts:['5 millones','15 millones','50 millones','100 millones'],correct:2,feedbackOk:'¡Correcto! 50 millones de momentos de verdad al año — cada uno de 15 segundos. Ese cálculo cambió la gestión del servicio en todo el mundo.',feedbackFail:'Carlsson calculó exactamente 50 millones de momentos de verdad al año.'},
+{q:'Una cliente espera 4 minutos sin que nadie la mire ni le diga nada. Llega otra y es atendida de inmediato. ¿Cuál es la consecuencia más probable?',opts:['Reclamará en el momento pero probablemente volverá.','Se irá sin comprar y le contará a otras personas su experiencia negativa.','Esperará pacientemente porque entiende que hay turnos.','Buscará hablar con el administrador del local.'],correct:1,feedbackOk:'¡Perfecto! El 86% de los clientes insatisfechos no reclama — simplemente no vuelve y comparte su experiencia negativamente.',feedbackFail:'La mayoría de clientes insatisfechos NO reclama. Se van en silencio y cuentan a otros.'},
+{q:'De los 5 Momentos de Verdad, ¿cuál ocurre ANTES de que el cliente entre físicamente al local?',opts:['El momento del saludo','La entrada al local (vitrina, olor, orden)','El contacto digital previo (redes sociales, WhatsApp, reseñas)','El proceso de pago'],correct:2,feedbackOk:'¡Excelente! El Momento 0 ocurre antes de la visita física — redes sociales, reseñas, WhatsApp.',feedbackFail:'El momento ANTES de entrar es el contacto digital previo — redes sociales, reseñas en Google, WhatsApp. Es el Momento 0.'},
+{q:'En el caso de Valentina (tienda de calzado en Plaza Imperial), ¿cuál fue el error principal del Momento de Verdad de la Atención?',opts:['El local estaba sucio y desordenado.','La asesora no levantó la vista del celular ni reconoció la presencia de Valentina.','El precio del producto era demasiado alto.','No había opciones de talla disponibles.'],correct:1,feedbackOk:'¡Correcto! La asesora no reconoció a Valentina. Ese momento de indiferencia fue el detonante de toda la mala experiencia.',feedbackFail:'El error fue la actitud: no levantar la vista ni reconocer la presencia de Valentina.'},
+{q:'¿Cuál de los siguientes es un ejemplo del Filtro de Percepción llamado "Emoción"?',opts:['Un cliente que llega esperando encontrar un producto que vio en Instagram.','Un cliente que llega después de una discusión y percibe la música como agresiva.','Un cliente que recuerda una mala experiencia anterior en el local.','Un cliente que compara los precios con los de la competencia.'],correct:1,feedbackOk:'¡Exacto! El Filtro de Emoción amplifica todos los estímulos x3. Un cliente alterado percibirá como negativo lo que otro en buen ánimo ignoraría.',feedbackFail:'Llegar esperando un producto de Instagram es el Filtro de Expectativa. Lo que colorea la percepción según el estado de ánimo es el Filtro de Emoción.'},
+{q:'El mapa de empatía tiene 6 dimensiones. ¿Cuál de estas NO es una de ellas?',opts:['Piensa y siente','Ve','Compra','Dice y hace'],correct:2,feedbackOk:"¡Correcto! Las 6 dimensiones son: PIENSA, SIENTE, VE, ESCUCHA, DICE y HACE. 'Compra' es un resultado, no una dimensión del mapa.",feedbackFail:"Las 6 dimensiones del mapa de empatía son: PIENSA, SIENTE, VE, ESCUCHA, DICE y HACE. 'Compra' es lo que resulta de la experiencia."},
+{q:'Un local decide que su Momento Pico será ayudar al cliente a armar un outfit completo. ¿Qué paso del diseño del Pico va PRIMERO?',opts:['Diseñar el gesto exacto (qué decir, cómo hacerlo).','Definir la emoción que quiere generar (confianza, sorpresa, pertenencia).','Elegir el momento del journey donde ocurrirá el pico.','Medir si el cliente reacciona diferente después del gesto.'],correct:2,feedbackOk:'¡Perfecto! Primero ELIGE dónde ocurre el pico. Sin saber cuándo y dónde, no puedes diseñar el qué ni el cómo.',feedbackFail:'Los 3 pasos son en orden: 1) ELEGIR el momento, 2) DEFINIR la emoción, 3) DISEÑAR el gesto.'},
+{q:'¿Cuál es la diferencia principal entre una experiencia "Esperada" y una experiencia "WOW"?',opts:['La experiencia WOW requiere siempre mayor presupuesto.','Lo Esperado cubre lo que el cliente da por sentado; el WOW supera esas expectativas con algo que no anticipaba.','La experiencia WOW solo es posible en locales de lujo.','Lo Esperado implica un trato frío; el WOW implica un trato amable.'],correct:1,feedbackOk:'¡Excelente! El WOW no requiere dinero — requiere intención. Es superar expectativas con algo que el cliente no anticipaba.',feedbackFail:'El WOW no es solo amabilidad ni requiere presupuesto. Es superar las expectativas con algo que el cliente no anticipaba.'},
+{q:'Según el método de los 5 pasos para crear un Momento WOW, ¿cuál es el paso más frecuentemente omitido en la práctica?',opts:['Observar las frustraciones del cliente.','Elegir el Momento de Verdad a mejorar.','Practicar el gesto con el equipo antes de aplicarlo con clientes.','Diseñar el gesto exacto.'],correct:2,feedbackOk:'¡Exacto! PRACTICAR es el paso más omitido. Las empresas diseñan el gesto pero no entrenan a su equipo. Un WOW no practicado se ve forzado.',feedbackFail:'El paso más omitido es PRACTICAR con el equipo. Las empresas diseñan el WOW en papel pero rara vez lo ensayan.'}
+]}};
+
+const FB_GENERAL={sobresaliente:'🌟 Sobresaliente. Dominas los conceptos del Módulo 1 con profundidad. Estás listo para aplicar la Peak-End Rule, los 5 Factores y los Momentos de Verdad en tu local desde hoy.',satisfactorio:'✅ Satisfactorio. Tienes una base sólida del Módulo 1. Revisa los temas donde fallaste — son las áreas donde tienes mayor potencial de mejora.',proceso:'⚠️ En Proceso. Estás construyendo tu comprensión de la experiencia del cliente. Te recomendamos repasar los materiales del módulo antes del siguiente.',refuerzo:'🔴 Requiere Refuerzo. Los conceptos del Módulo 1 son la base de todo el diplomado. Te invitamos a revisar la presentación y los recursos antes de continuar.'};
+
+let state={modulo:'M1',participante:null,respuestas:{},currentQ:0,timerInterval:null,timerSeconds:1200};
+const ADMIN_DEF='DiploAdmin2026';
+let adminPass=localStorage.getItem(KEY_PASS)||ADMIN_DEF;
+let passChanged=localStorage.getItem(KEY_PASS_CH)==='true';
+let currentEval='M1';
+let charts={};
+let currentEvalData=[];
+let outerAccOpen=false;
+
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function goAdmin(){showSection('s-admin-login');}
+
+/* ══════════════════════════════════════════
+   REGISTRO & EVALUACIÓN
+   ══════════════════════════════════════════ */
+function iniciarEvaluacion(){
+  const n=document.getElementById('r-nombre').value.trim();
+  const l=document.getElementById('r-local').value.trim();
+  const e=document.getElementById('r-email').value.trim();
+  const p=document.getElementById('r-phone').value.trim();
+  const err=document.getElementById('registro-error');
+  if(!n||!l||!e||!p){err.textContent='Por favor completa todos los campos.';err.style.display='block';return;}
+  if(!/\S+@\S+\.\S+/.test(e)){err.textContent='Ingresa un correo electrónico válido.';err.style.display='block';return;}
+  const ek=e.toLowerCase();
+  const doneKey=`${KEY_PREFIX}${state.modulo}_${ek}_done`;
+  const progKey=`${KEY_PREFIX}${state.modulo}_${ek}_progress`;
+  if(localStorage.getItem(doneKey)==='true'){document.getElementById('registro-form').style.display='none';document.getElementById('ya-respondido').style.display='block';return;}
+  err.style.display='none';
+  state.participante={nombre:n,local:l,email:ek,phone:p};
+  const saved=localStorage.getItem(progKey);
+  if(saved){const pr=JSON.parse(saved);state.respuestas=pr.respuestas||{};state.currentQ=pr.currentQ||0;state.timerSeconds=pr.timerSeconds||1200;document.getElementById('resume-banner').style.display='block';}
+  else{state.respuestas={};state.currentQ=0;state.timerSeconds=1200;}
+  showSection('s-evaluacion');renderQuestion();startTimer();
+}
+
+function renderQuestion(){
+  const qs=EVALUACIONES[state.modulo].preguntas;const q=qs[state.currentQ];const tot=qs.length;const i=state.currentQ;
+  document.getElementById('q-num').textContent=`PREGUNTA ${i+1} DE ${tot}`;
+  document.getElementById('q-counter').textContent=`${i+1}/${tot}`;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('q-progress').style.width=`${((i+1)/tot)*100}%`;
+  const ans=state.respuestas[i]!==undefined;const sel=state.respuestas[i];
+  const L=['A','B','C','D'];
+  let h='';
+  q.opts.forEach((o,j)=>{
+    let c='option';
+    if(ans){if(j===q.correct)c+=' correct';else if(j===sel)c+=' incorrect';}else if(j===sel)c+=' selected';
+    h+=`<div class="${c}" ${ans?'style="cursor:default"':''} onclick="${ans?'':` selectOption(${j})`}"><div class="option-letter">${L[j]}</div><div class="option-text">${o}</div></div>`;
+  });
+  document.getElementById('q-options').innerHTML=h;
+  const fb=document.getElementById('q-feedback');
+  if(ans){const ok=sel===q.correct;fb.innerHTML=`<div class="feedback-box ${ok?'feedback-correct':'feedback-incorrect'}">${ok?'✅':'❌'} ${ok?q.feedbackOk:q.feedbackFail}</div>`;fb.style.display='block';}
+  else fb.style.display='none';
+  document.getElementById('btn-prev').disabled=i===0;
+  const nb=document.getElementById('btn-next');
+  if(i===tot-1){nb.textContent=Object.keys(state.respuestas).length===tot?'🏆 Ver Resultados':'Finalizar →';nb.onclick=finalizarEvaluacion;}
+  else{nb.textContent='Siguiente →';nb.onclick=nextQuestion;}
+}
+
+function selectOption(j){
+  if(state.respuestas[state.currentQ]!==undefined)return;
+  state.respuestas[state.currentQ]=j;
+  const q=EVALUACIONES[state.modulo].preguntas[state.currentQ];
+  const ok=(j===q.correct);
+  playSound(ok?'correct':'wrong');
+  saveProgress();renderQuestion();
+}
+function nextQuestion(){const t=EVALUACIONES[state.modulo].preguntas.length;if(state.currentQ<t-1){state.currentQ++;renderQuestion();}}
+function prevQuestion(){if(state.currentQ>0){state.currentQ--;renderQuestion();}}
+
+function saveProgress(){
+  if(!state.participante)return;
+  const k=`${KEY_PREFIX}${state.modulo}_${state.participante.email}_progress`;
+  localStorage.setItem(k,JSON.stringify({respuestas:state.respuestas,currentQ:state.currentQ,timerSeconds:state.timerSeconds}));
+}
+
+function startTimer(){
+  if(state.timerInterval)clearInterval(state.timerInterval);
+  updTimer();
+  state.timerInterval=setInterval(()=>{
+    state.timerSeconds--;updTimer();
+    if(state.timerSeconds%30===0)saveProgress();
+    if(state.timerSeconds===120)showToast('⚠️ 2 minutos restantes');
+    if(state.timerSeconds<=60&&state.timerSeconds%10===0)playSound('timer-warn');
+    if(state.timerSeconds<=0){clearInterval(state.timerInterval);finalizarEvaluacion(true);}
+  },1000);
+}
+function updTimer(){
+  const m=Math.floor(state.timerSeconds/60),s=state.timerSeconds%60;
+  const el=document.getElementById('timer-display');
+  el.textContent=`⏱ ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  if(state.timerSeconds<=120)el.classList.add('urgent');else el.classList.remove('urgent');
+}
+
+function finalizarEvaluacion(timeout=false){
+  if(state.timerInterval)clearInterval(state.timerInterval);
+  const qs=EVALUACIONES[state.modulo].preguntas;const tot=qs.length;
+  let correctas=0;qs.forEach((q,i)=>{if(state.respuestas[i]===q.correct)correctas++;});
+  const puntaje=Math.round(correctas*(100/tot)*10)/10;
+  let status,sClass,fb;
+  if(puntaje>=90){status='⭐ Sobresaliente';sClass='status-sobresaliente';fb=FB_GENERAL.sobresaliente;}
+  else if(puntaje>=75){status='✅ Satisfactorio';sClass='status-satisfactorio';fb=FB_GENERAL.satisfactorio;}
+  else if(puntaje>=60){status='⚠️ En Proceso';sClass='status-proceso';fb=FB_GENERAL.proceso;}
+  else{status='🔴 Requiere Refuerzo';sClass='status-refuerzo';fb=FB_GENERAL.refuerzo;}
+
+  // Store with respuestas for per-question analytics (V3+)
+  const rd={participante:state.participante,modulo:state.modulo,correctas,total:tot,puntaje,status,fecha:new Date().toISOString(),timeout,respuestas:{...state.respuestas}};
+
+  if(state.participante){
+    const ek=state.participante.email;
+    const doneKey=`${KEY_PREFIX}${state.modulo}_${ek}_done`;
+    const progKey=`${KEY_PREFIX}${state.modulo}_${ek}_progress`;
+    const allKey=`${KEY_PREFIX}all_${state.modulo}`;
+    localStorage.setItem(doneKey,'true');
+    localStorage.removeItem(progKey);
+    let all=JSON.parse(localStorage.getItem(allKey)||'[]');
+    all=all.filter(r=>r.participante.email!==ek);
+    all.push(rd);
+    localStorage.setItem(allKey,JSON.stringify(all));
+  }
+
+  const firstName=state.participante?.nombre?.split(' ')[0]||'';
+  const greet=puntaje>=90?`¡Felicitaciones, ${firstName}! 🏆`:puntaje>=75?`¡Bien hecho, ${firstName}!`:puntaje>=60?`Gracias por participar, ${firstName}.`:`Sigue adelante, ${firstName}.`;
+  document.getElementById('result-name').textContent=greet;
+  document.getElementById('result-score').textContent=puntaje;
+  document.getElementById('result-correct-count').textContent=`${correctas} de ${tot} preguntas correctas`;
+  document.getElementById('result-general-feedback').textContent=fb;
+  const badge=document.getElementById('result-badge');badge.className=`status-badge ${sClass}`;badge.textContent=status;
+
+  const circ=2*Math.PI*64;
+  setTimeout(()=>{const c=document.getElementById('ring-circle');c.style.transition='stroke-dashoffset 1.5s ease';c.setAttribute('stroke-dashoffset',circ*(1-puntaje/100));},300);
+
+  // Build question breakdown (inside outer accordion — collapsed by default)
+  const L=['A','B','C','D'];let bh='';
+  qs.forEach((q,i)=>{
+    const ua=state.respuestas[i];const ok=ua===q.correct;
+    const short=q.q.length>78?q.q.substring(0,78)+'…':q.q;
+    bh+=`<div class="acc-item ${ok?'ok':'fail'}">
+      <div class="acc-header" onclick="toggleAcc(${i})">
+        <span style="font-size:14px;flex-shrink:0;">${ok?'✅':'❌'}</span>
+        <span class="acc-q-text"><strong>${i+1}.</strong> ${short}</span>
+        <span class="acc-arrow" id="acc-arrow-${i}">▼</span>
+      </div>
+      <div class="acc-body" id="acc-body-${i}">
+        <div class="acc-ans">Tu respuesta: <strong style="color:${ok?'var(--green)':'var(--red)'}">${ua!==undefined?L[ua]+') '+q.opts[ua]:'Sin responder'}</strong>${!ok?`<br>Correcta: <strong style="color:var(--green)">${L[q.correct]}) ${q.opts[q.correct]}</strong>`:''}</div>
+        <div class="acc-fb ${ok?'ok':'fail'}">${ok?q.feedbackOk:q.feedbackFail}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('result-breakdown').innerHTML=bh;
+
+  // Reset outer accordion state
+  outerAccOpen=false;
+  const ob=document.getElementById('outer-acc-body');
+  const oa=document.getElementById('outer-acc-arrow');
+  ob.classList.remove('open');
+  oa.classList.remove('open');
+  document.getElementById('outer-acc-label').textContent=`Ver detalle por pregunta (${tot})`;
+
+  showSection('s-resultados');
+  setTimeout(()=>playSound('complete'),600);
+}
+
+/* ── OUTER ACCORDION toggle ── */
+function toggleOuterAcc(){
+  outerAccOpen=!outerAccOpen;
+  document.getElementById('outer-acc-body').classList.toggle('open',outerAccOpen);
+  document.getElementById('outer-acc-arrow').classList.toggle('open',outerAccOpen);
+}
+
+let allAccOpen=false;
+function toggleAcc(i){const b=document.getElementById(`acc-body-${i}`);const a=document.getElementById(`acc-arrow-${i}`);b.classList.toggle('open');a.classList.toggle('open');}
+function toggleAllAcc(){allAccOpen=!allAccOpen;EVALUACIONES[state.modulo].preguntas.forEach((_,i)=>{document.getElementById(`acc-body-${i}`)?.classList.toggle('open',allAccOpen);document.getElementById(`acc-arrow-${i}`)?.classList.toggle('open',allAccOpen);});document.getElementById('btn-expand').textContent=allAccOpen?'COLAPSAR TODO':'EXPANDIR TODO';}
+
+/* ══════════════════════════════════════════
+   ADMIN
+   ══════════════════════════════════════════ */
+function loginAdmin(){
+  const e=document.getElementById('admin-pass').value;
+  const err=document.getElementById('admin-error');
+  if(e===adminPass){
+    err.style.display='none';
+    if(!passChanged&&e===ADMIN_DEF)document.getElementById('modal-pass').classList.add('open');
+    else{showSection('s-admin');loadAdminDash();}
+  }else{err.textContent='Contraseña incorrecta.';err.style.display='block';}
+}
+function saveNewPass(){
+  const p1=document.getElementById('new-pass1').value;const p2=document.getElementById('new-pass2').value;const err=document.getElementById('modal-pass-error');
+  if(p1.length<8){err.textContent='Mínimo 8 caracteres.';err.style.display='block';return;}
+  if(p1!==p2){err.textContent='Las contraseñas no coinciden.';err.style.display='block';return;}
+  adminPass=p1;localStorage.setItem(KEY_PASS,p1);localStorage.setItem(KEY_PASS_CH,'true');passChanged=true;
+  document.getElementById('modal-pass').classList.remove('open');showSection('s-admin');loadAdminDash();
+}
+function logoutAdmin(){showSection('s-landing');}
+
+function loadAdminDash(){
+  const allKey=`${KEY_PREFIX}all_M1`;
+  if(!localStorage.getItem(allKey)){
+    // Only inject demo data if truly empty
+    localStorage.setItem(allKey,JSON.stringify([
+      {participante:{nombre:'Ana Sofía Ruiz',local:'Zara — Plaza Imperial',email:'ana@test.com',phone:'3001234567'},modulo:'M1',correctas:14,total:15,puntaje:93.3,status:'⭐ Sobresaliente',fecha:'2026-04-22T07:45:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:2,13:1,14:2}},
+      {participante:{nombre:'Carlos Mendoza',local:'Adidas — Plaza Imperial',email:'carlos@test.com',phone:'3009876543'},modulo:'M1',correctas:11,total:15,puntaje:73.3,status:'⚠️ En Proceso',fecha:'2026-04-22T08:02:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:0,6:2,7:1,8:2,9:1,10:0,11:2,12:0,13:1,14:0}},
+      {participante:{nombre:'Laura Pérez García',local:'Zara Home — Plaza Imperial',email:'laura@test.com',phone:'3151234567'},modulo:'M1',correctas:13,total:15,puntaje:86.7,status:'✅ Satisfactorio',fecha:'2026-04-22T08:15:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:0,13:1,14:0}},
+      {participante:{nombre:'Andrés Torres',local:'Nike — Plaza Imperial',email:'andres@test.com',phone:'3209876543'},modulo:'M1',correctas:8,total:15,puntaje:53.3,status:'🔴 Requiere Refuerzo',fecha:'2026-04-22T08:30:00Z',respuestas:{0:0,1:2,2:1,3:0,4:2,5:0,6:2,7:1,8:0,9:1,10:0,11:2,12:0,13:1,14:0}},
+      {participante:{nombre:'Valentina Castro',local:'Forever 21 — Plaza Imperial',email:'vale@test.com',phone:'3111234567'},modulo:'M1',correctas:15,total:15,puntaje:100,status:'⭐ Sobresaliente',fecha:'2026-04-22T08:45:00Z',respuestas:{0:1,1:2,2:1,3:2,4:2,5:2,6:2,7:1,8:2,9:1,10:1,11:2,12:2,13:1,14:2}}
+    ]));
+  }
+  buildEvalSelector();selectEval('M1',null);buildPartTable();
+}
+
+function buildEvalSelector(){
+  const names={M1:'Módulo 1',M2:'Módulo 2',M3:'Módulo 3',M4:'Módulo 4',M5:'Módulo 5',M6:'Módulo 6',M7:'Módulo 7',M8:'Módulo 8'};
+  document.getElementById('eval-selector').innerHTML=['M1','M2','M3','M4','M5','M6','M7','M8'].map(e=>{
+    const n=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').length;
+    return`<button class="eval-pill${e==='M1'?' active':''}" onclick="selectEval('${e}',this)">${names[e]} (${n})</button>`;
+  }).join('');
+}
+
+function selectEval(mod,btn){
+  currentEval=mod;
+  document.querySelectorAll('.eval-pill').forEach(p=>p.classList.remove('active'));
+  if(btn)btn.classList.add('active');else document.querySelector('.eval-pill')?.classList.add('active');
+  currentEvalData=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
+  updStats(currentEvalData);updCharts(currentEvalData);updEvalTable(currentEvalData);updPartList(currentEvalData);
+}
+
+function updStats(data){
+  if(!data.length){
+    document.getElementById('eval-stats-row').innerHTML='<div class="stat-card"><div class="stat-val">0</div><div class="stat-lbl">PARTICIPANTES</div></div><div class="stat-card"><div class="stat-val">—</div><div class="stat-lbl">PROMEDIO</div></div><div class="stat-card"><div class="stat-val re">—</div><div class="stat-lbl">REQ. REFUERZO</div></div><div class="stat-card"><div class="stat-val gr">—</div><div class="stat-lbl">APROBARON</div></div><div class="stat-card"><div class="stat-val ye">—</div><div class="stat-lbl">SOBRESALIENTES</div></div>';
+    return;
+  }
+  const avg=Math.round(data.reduce((s,r)=>s+r.puntaje,0)/data.length*10)/10;
+  const ref=data.filter(r=>r.puntaje<60).length;
+  const apr=Math.round(data.filter(r=>r.puntaje>=75).length/data.length*100);
+  const sob=data.filter(r=>r.puntaje>=90).length;
+  document.getElementById('eval-stats-row').innerHTML=`<div class="stat-card"><div class="stat-val">${data.length}</div><div class="stat-lbl">PARTICIPANTES</div></div><div class="stat-card"><div class="stat-val">${avg}</div><div class="stat-lbl">PROMEDIO</div></div><div class="stat-card"><div class="stat-val re">${ref}</div><div class="stat-lbl">REQ. REFUERZO</div></div><div class="stat-card"><div class="stat-val gr">${apr}%</div><div class="stat-lbl">APROBARON</div></div><div class="stat-card"><div class="stat-val ye">${sob}</div><div class="stat-lbl">SOBRESALIENTES</div></div>`;
+}
+
+function updCharts(data){
+  Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}});charts={};
+  const de=document.getElementById('dist-empty');
+  if(!data.length){if(de)de.style.display='block';return;}
+  if(de)de.style.display='none';
+  Chart.defaults.color='#8892a4';Chart.defaults.borderColor='rgba(255,255,255,0.07)';
+  const rng=[0,0,0,0,0];data.forEach(r=>{const p=r.puntaje;if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
+  const n=data.length;
+  charts.dist=new Chart(document.getElementById('chart-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rng.map(v=>Math.round(v/n*100)),backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}%`}}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{callback:v=>v+'%'},max:100},x:{grid:{display:false}}}}});
+  const lvl=[data.filter(r=>r.puntaje>=90).length,data.filter(r=>r.puntaje>=75&&r.puntaje<90).length,data.filter(r=>r.puntaje>=60&&r.puntaje<75).length,data.filter(r=>r.puntaje<60).length];
+  charts.levels=new Chart(document.getElementById('chart-levels'),{type:'doughnut',data:{labels:['Sobresaliente','Satisfactorio','En Proceso','Req. Refuerzo'],datasets:[{data:lvl,backgroundColor:['#ffd700','#00e676','#ff8c00','#ff4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{legend:{position:'bottom',labels:{padding:12,boxWidth:11,font:{size:10}}}}}});
+  const lc={};data.forEach(r=>{const l=r.participante.local||'Sin especificar';lc[l]=(lc[l]||0)+1;});
+  const sl=Object.entries(lc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  charts.local=new Chart(document.getElementById('chart-local'),{type:'bar',data:{labels:sl.map(([k])=>k.length>28?k.substring(0,28)+'…':k),datasets:[{data:sl.map(([,v])=>Math.round(v/n*100)),backgroundColor:'rgba(0,179,225,0.65)',borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}%`}}},scales:{x:{grid:{color:'rgba(255,255,255,.06)'},ticks:{callback:v=>v+'%'},max:100},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+}
+
+function updEvalTable(data){
+  const tb=document.getElementById('eval-table-body');const em=document.getElementById('eval-empty');
+  if(!data.length){tb.innerHTML='';em.style.display='block';updPerQChart([]);return;}em.style.display='none';
+  const sc=p=>p>=90?'score-s':p>=75?'score-a':p>=60?'score-b':'score-c';
+  tb.innerHTML=data.map(r=>`<tr class="clickable" onclick="openPartModal('${r.participante.email}')">
+    <td style="padding-left:18px;"><strong>${r.participante.nombre}</strong><br><span style="color:var(--gray);font-size:10px;">${r.participante.email}</span></td>
+    <td style="color:var(--gray);font-size:11px;">${r.participante.local}</td>
+    <td><span class="score-pill ${sc(r.puntaje)}">${r.puntaje}/100</span></td>
+    <td style="color:var(--gray);">${r.correctas}/${r.total}</td>
+    <td>${r.status}</td>
+    <td style="color:var(--gray);font-size:10px;">${new Date(r.fecha).toLocaleDateString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</td>
+  </tr>`).join('');
+  updPerQChart(data);
+}
+
+/* ── Per-question success chart ── */
+function updPerQChart(data){
+  if(charts.perq){try{charts.perq.destroy();}catch(e){}delete charts.perq;}
+  const noData=document.getElementById('perq-no-data');
+  const wrap=document.getElementById('perq-chart-wrap');
+  const withResp=data.filter(r=>r.respuestas&&Object.keys(r.respuestas).length>0);
+  if(!withResp.length){noData.style.display='block';wrap.style.display='none';return;}
+  noData.style.display='none';wrap.style.display='block';
+  const qs=EVALUACIONES[currentEval]?.preguntas||[];
+  const stats=Array(qs.length).fill(0);
+  withResp.forEach(r=>{
+    qs.forEach((q,i)=>{
+      if(r.respuestas[i]===q.correct)stats[i]++;
+    });
+  });
+  const pcts=stats.map(v=>Math.round(v/withResp.length*100));
+  const colors=pcts.map(p=>p>=75?'rgba(0,230,118,0.7)':p>=50?'rgba(0,179,225,0.7)':'rgba(255,68,68,0.65)');
+  charts.perq=new Chart(document.getElementById('chart-per-q'),{
+    type:'bar',
+    data:{
+      labels:qs.map((_,i)=>`P${i+1}`),
+      datasets:[{data:pcts,backgroundColor:colors,borderRadius:4,borderSkipped:false}]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw}% acertaron`}}},
+      scales:{
+        y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{callback:v=>v+'%'},max:100,min:0},
+        x:{grid:{display:false},ticks:{font:{size:10}}}
+      }
+    }
+  });
+}
+
+function buildPartTable(){
+  const evals=['M1','M2','M3','M4','M5','M6','M7','M8'];const ap={};
+  evals.forEach(e=>{JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').forEach(r=>{const em=r.participante.email;if(!ap[em])ap[em]={info:r.participante,scores:{}};ap[em].scores[e]=r.puntaje;});});
+  const sc=p=>p===null?'':p>=90?'score-s':p>=75?'score-a':p>=60?'score-b':'score-c';
+  document.getElementById('part-table-body').innerHTML=Object.values(ap).map(p=>{
+    const scores=evals.map(e=>p.scores[e]??null);const f=scores.filter(s=>s!==null);const avg=f.length?Math.round(f.reduce((a,b)=>a+b,0)/f.length*10)/10:null;
+    return`<tr><td style="padding-left:18px;"><strong>${p.info.nombre}</strong></td><td style="color:var(--gray);font-size:11px;">${p.info.local}</td>${scores.map(s=>`<td>${s!==null?`<span class="score-pill ${sc(s)}">${s}</span>`:'<span style="color:var(--gray)">—</span>'}</td>`).join('')}<td>${avg!==null?`<span class="score-pill ${sc(avg)}">${avg}</span>`:'—'}</td></tr>`;
+  }).join('')||'<tr><td colspan="11" style="text-align:center;color:var(--gray);padding:28px;">Sin datos aún</td></tr>';
+}
+
+function updPartList(data){
+  document.getElementById('part-acc-count').textContent=`👥 Ver participantes (${data.length})`;
+  const sc=p=>p>=90?'score-s':p>=75?'score-a':p>=60?'score-b':'score-c';
+  document.getElementById('all-part-body').innerHTML=!data.length
+    ?'<tr><td colspan="7" style="text-align:center;color:var(--gray);padding:22px;padding-left:18px;">Sin participantes</td></tr>'
+    :data.map((r,i)=>`<tr><td style="padding-left:18px;color:var(--gray);">${i+1}</td><td><strong>${r.participante.nombre}</strong></td><td style="color:var(--gray);font-size:11px;">${r.participante.local}</td><td style="color:var(--gray);font-size:10px;">${r.participante.email}</td><td style="color:var(--gray);font-size:11px;">${r.participante.phone||'—'}</td><td><span class="score-pill ${sc(r.puntaje)}">${r.puntaje}/100</span></td><td style="color:var(--gray);font-size:10px;">${new Date(r.fecha).toLocaleDateString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}</td></tr>`).join('');
+}
+
+/* ── PARTICIPANT DETAIL MODAL ── */
+function openPartModal(email){
+  const r=currentEvalData.find(x=>x.participante.email===email);
+  if(!r)return;
+  document.getElementById('pd-name').textContent=r.participante.nombre;
+  document.getElementById('pd-local').textContent=r.participante.local;
+  document.getElementById('pd-email-info').textContent=`📧 ${r.participante.email}  📱 ${r.participante.phone||'—'}`;
+  document.getElementById('pd-score').textContent=r.puntaje;
+  document.getElementById('pd-correctas').textContent=`${r.correctas} de ${r.total} respuestas correctas`;
+  document.getElementById('pd-fecha').textContent=`📅 ${new Date(r.fecha).toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'})}`;
+  const sClass=r.puntaje>=90?'status-sobresaliente':r.puntaje>=75?'status-satisfactorio':r.puntaje>=60?'status-proceso':'status-refuerzo';
+  const badge=document.getElementById('pd-badge');badge.className=`status-badge ${sClass}`;badge.textContent=r.status;
+
+  // Animate score ring (r=46, circumference=289)
+  const circ=2*Math.PI*46;
+  const ring=document.getElementById('pd-ring');
+  ring.setAttribute('stroke-dashoffset',circ);
+  ring.style.transition='none';
+  setTimeout(()=>{ring.style.transition='stroke-dashoffset 1.2s ease';ring.setAttribute('stroke-dashoffset',circ*(1-r.puntaje/100));},100);
+
+  // Per-question answers (if available)
+  const pdAnswers=document.getElementById('pd-answers');
+  const qs=EVALUACIONES[currentEval]?.preguntas||[];
+  if(r.respuestas&&Object.keys(r.respuestas).length>0){
+    const L=['A','B','C','D'];
+    pdAnswers.innerHTML=qs.map((q,i)=>{
+      const ua=r.respuestas[i];
+      const ok=(ua===q.correct);
+      const shortQ=q.q.length>60?q.q.substring(0,60)+'…':q.q;
+      return`<div class="pd-q-bar" style="margin-bottom:8px;align-items:flex-start;">
+        <div style="font-size:12px;width:22px;flex-shrink:0;margin-top:1px;">${ok?'✅':'❌'}</div>
+        <div style="flex:1;">
+          <div style="font-size:10px;color:var(--gray);margin-bottom:3px;">${i+1}. ${shortQ}</div>
+          <div class="pd-q-track"><div class="pd-q-fill" style="width:${ok?100:0}%;background:${ok?'var(--green)':'var(--red)'};"></div></div>
+        </div>
+        <div style="font-size:9px;color:${ok?'var(--green)':'var(--red)'};width:50px;flex-shrink:0;text-align:right;margin-top:1px;">${ua!==undefined?L[ua]+') ✓':ua===q.correct?'OK':'—'}</div>
+      </div>`;
+    }).join('');
+  }else{
+    pdAnswers.innerHTML='<p style="font-size:11px;color:var(--gray);text-align:center;padding:12px 0;">Detalle por pregunta disponible en evaluaciones V3.</p>';
+  }
+
+  document.getElementById('modal-part-detail').classList.add('open');
+}
+
+function closePartModal(e){if(e.target===document.getElementById('modal-part-detail'))document.getElementById('modal-part-detail').classList.remove('open');}
+
+function switchAdminTab(tab,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.getElementById('tab-distribucion').style.display=tab==='distribucion'?'block':'none';
+  document.getElementById('tab-por-evaluacion').style.display=tab==='por-evaluacion'?'block':'none';
+  document.getElementById('tab-por-participante').style.display=tab==='por-participante'?'block':'none';
+  if(tab==='por-participante')buildPartTable();
+}
+
+function togglePartAcc(){const b=document.getElementById('part-acc-body');const a=document.getElementById('part-acc-arrow');b.classList.toggle('open');a.classList.toggle('open');}
+
+function refreshAdmin(){buildEvalSelector();selectEval(currentEval,null);buildPartTable();showToast('✅ Datos actualizados');}
+
+function exportCSV(){
+  const data=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]');
+  if(!data.length){showToast('Sin datos para exportar');return;}
+  try{
+    // Hoja principal — resultados
+    const rows=[
+      ['ICONE Eval — Diplomado CX 2026','','','','','','',''],
+      ['Politécnico Grancolombiano × Plaza Imperial','','','','','','',''],
+      ['','','','','','','',''],
+      ['NOMBRE','LOCAL','EMAIL','WHATSAPP','PUNTAJE','CORRECTAS','NIVEL','FECHA'],
+      ...data.map(r=>[
+        r.participante.nombre,
+        r.participante.local,
+        r.participante.email,
+        r.participante.phone||'',
+        r.puntaje,
+        `${r.correctas}/${r.total}`,
+        r.status.replace(/[^\w\s]/g,'').trim(),
+        new Date(r.fecha).toLocaleDateString('es-CO',{day:'2-digit',month:'2-digit',year:'numeric'})
+      ])
+    ];
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    // Columna widths
+    ws['!cols']=[{wch:28},{wch:30},{wch:28},{wch:14},{wch:10},{wch:12},{wch:18},{wch:14}];
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb,ws,`${currentEval} - Resultados`);
+
+    // Hoja estadísticas
+    const avg=data.length?Math.round(data.reduce((s,r)=>s+r.puntaje,0)/data.length*10)/10:0;
+    const sob=data.filter(r=>r.puntaje>=90).length;
+    const sat=data.filter(r=>r.puntaje>=75&&r.puntaje<90).length;
+    const proc=data.filter(r=>r.puntaje>=60&&r.puntaje<75).length;
+    const ref=data.filter(r=>r.puntaje<60).length;
+    const wsStats=XLSX.utils.aoa_to_sheet([
+      ['ESTADÍSTICAS — '+currentEval,''],
+      ['',''],
+      ['Total participantes',data.length],
+      ['Promedio del grupo',avg],
+      ['',''],
+      ['NIVEL','CANTIDAD'],
+      ['Sobresaliente (≥90)',sob],
+      ['Satisfactorio (75-89)',sat],
+      ['En Proceso (60-74)',proc],
+      ['Requiere Refuerzo (<60)',ref]
+    ]);
+    wsStats['!cols']=[{wch:26},{wch:14}];
+    XLSX.utils.book_append_sheet(wb,wsStats,'Estadísticas');
+
+    XLSX.writeFile(wb,`ICONE_Eval_${currentEval}_${new Date().toISOString().split('T')[0]}.xlsx`);
+    showToast('📊 Excel descargado correctamente');
+  }catch(err){
+    console.error(err);showToast('Error al generar Excel. Verifica conexión.');
+  }
+}
+
+function shareLink(){
+  const data=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]');
+  if(!data.length){showToast('Sin datos para compartir');return;}
+
+  const n=data.length;
+  const avg=Math.round(data.reduce((s,r)=>s+r.puntaje,0)/n*10)/10;
+  const sob=data.filter(r=>r.puntaje>=90).length;
+  const sat=data.filter(r=>r.puntaje>=75&&r.puntaje<90).length;
+  const proc=data.filter(r=>r.puntaje>=60&&r.puntaje<75).length;
+  const ref=data.filter(r=>r.puntaje<60).length;
+  const apr=sob+sat;
+  const sc=p=>p>=90?'#ffd700':p>=75?'#00e676':p>=60?'#ff8c00':'#ff4444';
+
+  // Ranking table rows
+  const rows=data.slice().sort((a,b)=>b.puntaje-a.puntaje).map((r,i)=>`
+    <tr>
+      <td style="padding:9px 12px;color:#8892a4;">${i+1}</td>
+      <td style="padding:9px 12px;font-weight:600;">${r.participante.nombre}</td>
+      <td style="padding:9px 12px;color:#8892a4;font-size:11px;">${r.participante.local}</td>
+      <td style="padding:9px 12px;"><span style="border:1px solid ${sc(r.puntaje)};color:${sc(r.puntaje)};padding:3px 10px;border-radius:100px;font-size:12px;font-weight:700;">${r.puntaje}</span></td>
+      <td style="padding:9px 12px;">${r.status}</td>
+    </tr>`).join('');
+
+  // Per-participant bar chart data (for Chart.js)
+  const barData=data.slice().sort((a,b)=>b.puntaje-a.puntaje);
+  const barLabels=JSON.stringify(barData.map(r=>r.participante.nombre.split(' ')[0]+' '+r.participante.nombre.split(' ')[1]?.charAt(0)||''));
+  const barScores=JSON.stringify(barData.map(r=>r.puntaje));
+  const barColors=JSON.stringify(barData.map(r=>sc(r.puntaje)));
+
+  const fecha=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
+
+  const html=`<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ICONE Eval — Resultados ${currentEval} · Diplomado CX 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0b1c30;color:#fff;min-height:100vh;padding:0;}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px;}
+/* Header */
+.header{background:linear-gradient(135deg,#0d2544 0%,#133759 60%,#1a4a70 100%);border:1px solid rgba(0,179,225,.35);border-radius:18px;padding:26px 28px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.logo{font-size:26px;font-weight:900;background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.logo span{-webkit-text-fill-color:#ff8c00;}
+.header-right{text-align:right;}
+.inst{font-size:11px;color:rgba(255,255,255,.8);font-weight:700;letter-spacing:.5px;}
+.modulo-badge{display:inline-block;margin-top:5px;padding:3px 12px;border-radius:100px;background:rgba(0,179,225,.15);border:1px solid rgba(0,179,225,.4);font-size:10px;color:#00b3e1;font-weight:700;letter-spacing:1px;}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;}
+.stat{background:rgba(255,255,255,.05);border:1px solid rgba(0,179,225,.18);border-radius:13px;padding:14px;text-align:center;}
+.stat-v{font-size:26px;font-weight:900;}
+.stat-v.cx{background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat-v.gr{color:#00e676;}.stat-v.ye{color:#ffd700;}.stat-v.re{color:#ff4444;}
+.stat-l{font-size:8px;color:#8892a4;margin-top:3px;letter-spacing:.8px;font-weight:700;}
+/* Charts grid */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+.chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;padding:18px;}
+.chart-title{font-size:9px;color:#00b3e1;font-weight:700;letter-spacing:1.5px;margin-bottom:14px;}
+.chart-card.full{grid-column:1/-1;}
+/* Ranking */
+.table-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;overflow:hidden;margin-bottom:20px;}
+.table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(0,179,225,.12);}
+.table-title{font-size:10px;font-weight:700;color:#00b3e1;letter-spacing:1.5px;}
+table{width:100%;border-collapse:collapse;}
+th{padding:9px 12px;text-align:left;color:#00b3e1;font-size:9px;font-weight:700;letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,.06);}
+tr:hover td{background:rgba(255,255,255,.03);}
+/* Level bars */
+.lvl-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.lvl-label{font-size:11px;color:#8892a4;width:130px;flex-shrink:0;}
+.lvl-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;}
+.lvl-fill{height:100%;border-radius:5px;}
+.lvl-count{font-size:11px;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
+/* Footer */
+.footer{text-align:center;font-size:10px;color:#8892a4;padding:20px 0 10px;border-top:1px solid rgba(255,255,255,.06);}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.chart-card.full{grid-column:1}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="logo">ICONE<span>.</span>Eval</div>
+      <div style="font-size:11px;color:#8892a4;margin-top:4px;">Resultados generados el ${fecha}</div>
+    </div>
+    <div class="header-right">
+      <div class="inst">POLITÉCNICO GRANCOLOMBIANO × PLAZA IMPERIAL</div>
+      <div class="inst" style="color:#8892a4;font-weight:400;">Diplomado en Innovación y Estrategias de CX · 2026</div>
+      <div class="modulo-badge">${currentEval} — FUNDAMENTOS CX</div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-v cx">${n}</div><div class="stat-l">PARTICIPANTES</div></div>
+    <div class="stat"><div class="stat-v cx">${avg}</div><div class="stat-l">PROMEDIO</div></div>
+    <div class="stat"><div class="stat-v ye">${sob}</div><div class="stat-l">SOBRESALIENTES</div></div>
+    <div class="stat"><div class="stat-v gr">${Math.round(apr/n*100)}%</div><div class="stat-l">APROBARON</div></div>
+    <div class="stat"><div class="stat-v re">${ref}</div><div class="stat-l">REQ. REFUERZO</div></div>
+  </div>
+
+  <!-- CHARTS -->
+  <div class="charts">
+    <div class="chart-card">
+      <div class="chart-title">NIVELES DEL GRUPO</div>
+      <div style="position:relative;height:200px;"><canvas id="c-levels"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">DISTRIBUCIÓN DE PUNTAJES</div>
+      <div style="position:relative;height:200px;"><canvas id="c-dist"></canvas></div>
+    </div>
+    <div class="chart-card full">
+      <div class="chart-title">PUNTAJE POR PARTICIPANTE</div>
+      <div style="position:relative;height:${Math.max(160, n*32)}px;"><canvas id="c-part"></canvas></div>
+    </div>
+  </div>
+
+  <!-- NIVEL BARS -->
+  <div class="chart-card" style="margin-bottom:22px;">
+    <div class="chart-title">DISTRIBUCIÓN POR NIVEL</div>
+    <div style="padding:4px 0;">
+      <div class="lvl-bar-row">
+        <div class="lvl-label">⭐ Sobresaliente ≥90</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(sob/n*100):0}%;background:#ffd700;"></div></div>
+        <div class="lvl-count" style="color:#ffd700;">${sob}</div>
+      </div>
+      <div class="lvl-bar-row">
+        <div class="lvl-label">✅ Satisfactorio 75–89</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(sat/n*100):0}%;background:#00e676;"></div></div>
+        <div class="lvl-count" style="color:#00e676;">${sat}</div>
+      </div>
+      <div class="lvl-bar-row">
+        <div class="lvl-label">⚠️ En Proceso 60–74</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(proc/n*100):0}%;background:#ff8c00;"></div></div>
+        <div class="lvl-count" style="color:#ff8c00;">${proc}</div>
+      </div>
+      <div class="lvl-bar-row">
+        <div class="lvl-label">🔴 Req. Refuerzo &lt;60</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(ref/n*100):0}%;background:#ff4444;"></div></div>
+        <div class="lvl-count" style="color:#ff4444;">${ref}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RANKING TABLE -->
+  <div class="table-wrap">
+    <div class="table-head">
+      <span class="table-title">🏆 RANKING DE RESULTADOS</span>
+      <span style="font-size:10px;color:#8892a4;">Ordenado por puntaje</span>
+    </div>
+    <table>
+      <thead><tr><th>#</th><th>NOMBRE</th><th>LOCAL / TIENDA</th><th>PUNTAJE</th><th>NIVEL</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>
+
+  <div class="footer">ICONE Eval v3 · Politécnico Grancolombiano × Plaza Imperial · Diplomado CX 2026 · iconeialabs.com</div>
+</div>
+
+<script>
+Chart.defaults.color='#8892a4';Chart.defaults.borderColor='rgba(255,255,255,0.07)';
+// Donut — niveles
+new Chart(document.getElementById('c-levels'),{type:'doughnut',data:{labels:['Sobresaliente','Satisfactorio','En Proceso','Req. Refuerzo'],datasets:[{data:[${sob},${sat},${proc},${ref}],backgroundColor:['#ffd700','#00e676','#ff8c00','#ff4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}}}}});
+// Bar — distribución
+const rng=[0,0,0,0,0];
+[${data.map(r=>r.puntaje).join(',')}].forEach(p=>{if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
+new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rng.map(v=>Math.round(v/${n}*100)),backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{y:{ticks:{callback:v=>v+'%'},max:100,grid:{color:'rgba(255,255,255,.05)'}},x:{grid:{display:false}}}}});
+// Horizontal bar — por participante
+new Chart(document.getElementById('c-part'),{type:'bar',data:{labels:${barLabels},datasets:[{data:${barScores},backgroundColor:${barColors},borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' pts'}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+''},grid:{color:'rgba(255,255,255,.05)'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
+<\/script>
+</body></html>`;
+
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`ICONE_Dashboard_${currentEval}_${new Date().toISOString().split('T')[0]}.html`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),4000);
+  showToast('🔗 Dashboard con gráficas descargado');
+}
+
+function limpiarDatos(){if(!confirm(`¿Borrar TODOS los datos de ${currentEval}? No se puede deshacer.`))return;localStorage.removeItem(`${KEY_PREFIX}all_${currentEval}`);refreshAdmin();showToast(`🗑 Datos de ${currentEval} eliminados`);}
+
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+
+/* ── PARTICLES ── */
+(function(){const c=document.getElementById('particles');const cols=['#00b3e1','#5a2fcf','#ff8c00'];for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*5+3;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*3)]};animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*15}s;`;c.appendChild(p);}})();
+</script>
+</body>
+</html>
