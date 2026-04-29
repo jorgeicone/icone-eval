@@ -282,7 +282,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <div id="ya-respondido" style="display:none;text-align:center;padding:20px 0;">
         <div style="font-size:44px;margin-bottom:10px;">✅</div>
         <h3 style="margin-bottom:7px;">Ya completaste esta evaluación</h3>
-        <p style="color:var(--gray);font-size:13px;margin-bottom:18px;">Tu evaluación del Módulo 1 ya fue registrada.</p>
+        <p style="color:var(--gray);font-size:13px;margin-bottom:18px;">Tu evaluación del Módulo 1 ya fue registrada en este dispositivo.</p>
+        <div id="ya-respondido-score" style="display:none;background:rgba(0,179,225,.08);border:1px solid rgba(0,179,225,.2);border-radius:12px;padding:14px 20px;margin-bottom:18px;">
+          <div style="font-size:28px;font-weight:900;color:var(--cyan);" id="ya-score-val">—</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:2px;" id="ya-score-sub">puntos · — de 15 correctas</div>
+        </div>
+        <button id="btn-enviar-guardado" class="btn btn-primary" style="width:auto;padding:12px 28px;font-size:14px;margin-bottom:10px;" onclick="enviarDatosGuardados()">☁️ Enviar mis resultados al panel</button>
+        <div id="envio-status" style="font-size:12px;color:var(--gray);margin-bottom:14px;min-height:18px;"></div>
         <button class="btn btn-secondary" style="width:auto;padding:10px 24px;font-size:13px;" onclick="repetirEvaluacion()">🔄 Repetir evaluación</button>
       </div>
     </div>
@@ -732,13 +738,50 @@ function iniciarEvaluacion(){
   const ek=e.toLowerCase();
   const doneKey=`${KEY_PREFIX}${state.modulo}_${ek}_done`;
   const progKey=`${KEY_PREFIX}${state.modulo}_${ek}_progress`;
-  if(localStorage.getItem(doneKey)==='true'){document.getElementById('registro-form').style.display='none';document.getElementById('ya-respondido').style.display='block';return;}
+  if(localStorage.getItem(doneKey)==='true'){
+    document.getElementById('registro-form').style.display='none';
+    document.getElementById('ya-respondido').style.display='block';
+    // Show saved score if available
+    const allKey=`${KEY_PREFIX}all_${state.modulo}`;
+    const all=JSON.parse(localStorage.getItem(allKey)||'[]');
+    const rec=all.find(r=>r.participante?.email===ek);
+    if(rec){
+      document.getElementById('ya-respondido-score').style.display='block';
+      document.getElementById('ya-score-val').textContent=rec.puntaje+'/100';
+      document.getElementById('ya-score-sub').textContent=`${rec.correctas} de ${rec.total} correctas · ${rec.status}`;
+      document.getElementById('btn-enviar-guardado').dataset.email=ek;
+    } else {
+      document.getElementById('ya-respondido-score').style.display='none';
+      document.getElementById('btn-enviar-guardado').style.display='none';
+    }
+    return;
+  }
   err.style.display='none';
   state.participante={nombre:n,local:l,email:ek,phone:p};
   const saved=localStorage.getItem(progKey);
   if(saved){const pr=JSON.parse(saved);state.respuestas=pr.respuestas||{};state.currentQ=pr.currentQ||0;state.timerSeconds=pr.timerSeconds||1200;document.getElementById('resume-banner').style.display='block';}
   else{state.respuestas={};state.currentQ=0;state.timerSeconds=1200;}
   showSection('s-evaluacion');renderQuestion();startTimer();
+}
+
+async function enviarDatosGuardados(){
+  const ek=document.getElementById('r-email').value.trim().toLowerCase();
+  const allKey=`${KEY_PREFIX}all_${state.modulo}`;
+  const all=JSON.parse(localStorage.getItem(allKey)||'[]');
+  const rec=all.find(r=>r.participante?.email===ek);
+  if(!rec){document.getElementById('envio-status').textContent='No se encontraron datos guardados.';return;}
+  const btn=document.getElementById('btn-enviar-guardado');
+  btn.disabled=true;btn.textContent='☁️ Enviando...';
+  document.getElementById('envio-status').textContent='';
+  const ok=await saveToCloud(rec);
+  if(ok){
+    btn.textContent='✅ Enviado';
+    btn.style.background='linear-gradient(135deg,#00e676,#00b3e1)';
+    document.getElementById('envio-status').textContent='¡Listo! Tus resultados llegaron al panel del facilitador.';
+  }else{
+    btn.disabled=false;btn.textContent='☁️ Enviar mis resultados al panel';
+    document.getElementById('envio-status').textContent='Error de conexión. Intenta de nuevo.';
+  }
 }
 
 function repetirEvaluacion(){
