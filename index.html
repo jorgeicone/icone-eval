@@ -1093,7 +1093,8 @@ function updCharts2(data){
   // Chart 1: Distribution bar
   const rng=[0,0,0,0,0];
   data.forEach(r=>{const p=r.puntaje;if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
-  charts.dist=new Chart(document.getElementById('chart-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rng,backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},ticks:{stepSize:1}},x:{grid:{display:false}}}}});
+  const rngPct=rng.map(v=>n?Math.round(v/n*100):0);
+  charts.dist=new Chart(document.getElementById('chart-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rngPct,backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%  ('+rng[c.dataIndex]+' personas)'}}},scales:{y:{grid:{color:'rgba(255,255,255,.06)'},max:100,ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}});
   // Chart 2: Niveles donut (3 levels)
   const exp=data.filter(r=>r.puntaje>=80).length;
   const form=data.filter(r=>r.puntaje>=60&&r.puntaje<80).length;
@@ -1102,7 +1103,9 @@ function updCharts2(data){
   // Chart 3: Por local
   const lc={};data.forEach(r=>{const l=r.participante?.local||'Sin especificar';lc[l]=(lc[l]||0)+1;});
   const sl=Object.entries(lc).sort((a,b)=>b[1]-a[1]).slice(0,10);
-  charts.local=new Chart(document.getElementById('chart-local'),{type:'bar',data:{labels:sl.map(([k])=>k.length>24?k.substring(0,24)+'…':k),datasets:[{data:sl.map(([,v])=>v),backgroundColor:'rgba(0,179,225,0.65)',borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(255,255,255,.06)'},ticks:{stepSize:1}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  const slPct=sl.map(([,v])=>n?Math.round(v/n*100):0);
+  const slCounts=sl.map(([,v])=>v);
+  charts.local=new Chart(document.getElementById('chart-local'),{type:'bar',data:{labels:sl.map(([k])=>k.length>24?k.substring(0,24)+'…':k),datasets:[{data:slPct,backgroundColor:'rgba(0,179,225,0.65)',borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>c.raw+'%  ('+slCounts[c.dataIndex]+' personas)'}}},scales:{x:{grid:{color:'rgba(255,255,255,.06)'},max:100,ticks:{callback:v=>v+'%'}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
   // Chart 4: Por rol
   const rc={};data.forEach(r=>{const rol=r.participante?.rol||'No especificado';rc[rol]=(rc[rol]||0)+1;});
   const rolEntries=Object.entries(rc).sort((a,b)=>b[1]-a[1]);
@@ -1353,6 +1356,97 @@ function exportCSV(){
   }
 }
 
+function generarResumenEjecutivo(data, qs){
+  const n=data.length;
+  if(!n) return '';
+  const avg=Math.round(data.reduce((s,r)=>s+r.puntaje,0)/n*10)/10;
+  const exp=data.filter(r=>r.puntaje>=80).length;
+  const form=data.filter(r=>r.puntaje>=60&&r.puntaje<80).length;
+  const princ=data.filter(r=>r.puntaje<60).length;
+  const expPct=Math.round(exp/n*100);
+  const princPct=Math.round(princ/n*100);
+  const formPct=Math.round(form/n*100);
+  // Weakest questions (lowest % correct)
+  const withResp=data.filter(r=>r.respuestas&&Object.keys(r.respuestas).length>0);
+  let weakQs=[];
+  if(withResp.length&&qs&&qs.length){
+    const qStats=qs.map((q,i)=>{
+      const correct=withResp.filter(r=>r.respuestas[i]===q.respuesta).length;
+      const pct=withResp.length?Math.round(correct/withResp.length*100):0;
+      return {i:i+1,text:q.pregunta.substring(0,80)+'…',pct};
+    }).sort((a,b)=>a.pct-b.pct);
+    weakQs=qStats.slice(0,3);
+  }
+  // Top local
+  const lc={};data.forEach(r=>{const l=r.participante?.local||'Sin especificar';lc[l]=(lc[l]||0)+1;});
+  const topLocal=Object.entries(lc).sort((a,b)=>b[1]-a[1])[0];
+  // Level tone
+  const generalLevel=avg>=80?'alto':avg>=60?'intermedio':'bajo con necesidades de refuerzo críticas';
+  const urgency=princPct>=40?'Se requiere acción inmediata.':princPct>=20?'Se recomienda atención prioritaria.':'El grupo muestra solidez general.';
+  // Build weakest list HTML
+  const weakHtml=weakQs.length?`<ul style="margin-left:18px;margin-top:8px;">${weakQs.map(q=>`<li style="margin-bottom:4px;"><strong>P${q.i}</strong> — ${q.pct}% de acierto: "${q.text}"</li>`).join('')}</ul>`:'';
+
+  return `
+  <!-- ══ RESUMEN EJECUTIVO ICONE ══ -->
+  <div style="margin-bottom:22px;">
+    <div style="font-size:9px;color:#00b3e1;font-weight:700;letter-spacing:1.5px;margin-bottom:12px;">📊 RESUMEN EJECUTIVO — METODOLOGÍA ICONE</div>
+
+    <!-- IDENTIFICAR -->
+    <div style="background:rgba(0,179,225,.07);border:1px solid rgba(0,179,225,.3);border-left:4px solid #00b3e1;border-radius:12px;padding:18px 20px;margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:900;color:#00b3e1;letter-spacing:2px;margin-bottom:8px;">🔍 IDENTIFICAR</div>
+      <p style="font-size:13px;line-height:1.6;color:#e0e8f0;">
+        El grupo evaluado de <strong>${n} participantes</strong> del Diplomado en Innovación y Estrategias de Experiencia del Consumidor obtuvo un promedio general de <strong>${avg}/100</strong>, ubicándose en un nivel <strong>${generalLevel}</strong>.
+        La distribución por nivel revela que el <strong>${expPct}%</strong> alcanzó la categoría de Experto (≥80 pts), el <strong>${formPct}%</strong> se encuentra En Formación (60–79 pts) y el <strong>${princPct}%</strong> requiere refuerzo como Principiante (&lt;60 pts). ${urgency}
+        ${topLocal?`La tienda/local con mayor participación fue <strong>${topLocal[0]}</strong> con ${topLocal[1]} colaborador${topLocal[1]>1?'es':''}.`:''}
+        ${weakQs.length?`Las preguntas con menor porcentaje de acierto fueron:${weakHtml}`:''}
+      </p>
+    </div>
+
+    <!-- CONECTAR -->
+    <div style="background:rgba(90,47,207,.07);border:1px solid rgba(90,47,207,.3);border-left:4px solid #7b52f0;border-radius:12px;padding:18px 20px;margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:900;color:#a98bff;letter-spacing:2px;margin-bottom:8px;">🔗 CONECTAR</div>
+      <p style="font-size:13px;line-height:1.6;color:#e0e8f0;">
+        ${princPct>=30?`Con un <strong>${princPct}% del grupo en nivel Principiante</strong>, se conecta la necesidad de refuerzo inmediato mediante talleres prácticos focalizados, coaching individualizado y material de apoyo para los temas con menor acierto.`:''}
+        ${expPct>=30?`El <strong>${expPct}% de Expertos</strong> representa un activo estratégico: se recomienda integrarlos como embajadores internos, líderes de equipos de mejora CX y mentores de sus compañeros.`:''}
+        ${formPct>=25?`El <strong>${formPct}% En Formación</strong> necesita acompañamiento estructurado: seguimiento quincenal, acceso a recursos digitales del diplomado y actividades de retroalimentación continua entre pares.`:''}
+        Los conceptos con menor acierto deben conectarse con situaciones reales del centro comercial mediante casos de estudio, role plays y jornadas de práctica supervisada en piso de venta.
+      </p>
+    </div>
+
+    <!-- EJECUTAR -->
+    <div style="background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.25);border-left:4px solid #00e676;border-radius:12px;padding:18px 20px;">
+      <div style="font-size:11px;font-weight:900;color:#00e676;letter-spacing:2px;margin-bottom:8px;">⚡ EJECUTAR</div>
+      <p style="font-size:13px;line-height:1.6;color:#e0e8f0;margin-bottom:10px;">Plan de acción en 3 fases:</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        <div style="background:rgba(0,230,118,.08);border-radius:10px;padding:14px;">
+          <div style="font-size:10px;font-weight:700;color:#00e676;margin-bottom:6px;">FASE 1 — INMEDIATA (1-2 sem)</div>
+          <ul style="font-size:12px;color:#c8d8e8;line-height:1.7;padding-left:14px;">
+            <li>Compartir resultados individuales</li>
+            <li>Taller de refuerzo temas débiles</li>
+            <li>Reunión con líderes de tienda</li>
+          </ul>
+        </div>
+        <div style="background:rgba(0,179,225,.08);border-radius:10px;padding:14px;">
+          <div style="font-size:10px;font-weight:700;color:#00b3e1;margin-bottom:6px;">FASE 2 — CORTO PLAZO (1 mes)</div>
+          <ul style="font-size:12px;color:#c8d8e8;line-height:1.7;padding-left:14px;">
+            <li>Acompañamiento en sitio</li>
+            <li>Medir impacto en indicadores</li>
+            <li>Segunda evaluación diagnóstica</li>
+          </ul>
+        </div>
+        <div style="background:rgba(255,140,0,.08);border-radius:10px;padding:14px;">
+          <div style="font-size:10px;font-weight:700;color:#ff8c00;margin-bottom:6px;">FASE 3 — MEDIANO PLAZO (3 meses)</div>
+          <ul style="font-size:12px;color:#c8d8e8;line-height:1.7;padding-left:14px;">
+            <li>Programa de certificación interna</li>
+            <li>Reconocimiento Expertos CX</li>
+            <li>Evaluación final del diplomado</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
 function shareLink(){
   const data=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]');
   if(!data.length){showToast('Sin datos para compartir');return;}
@@ -1363,8 +1457,14 @@ function shareLink(){
   const sat=data.filter(r=>r.puntaje>=75&&r.puntaje<90).length;
   const proc=data.filter(r=>r.puntaje>=60&&r.puntaje<75).length;
   const ref=data.filter(r=>r.puntaje<60).length;
+  const exp3=data.filter(r=>r.puntaje>=80).length;
+  const form3=data.filter(r=>r.puntaje>=60&&r.puntaje<80).length;
+  const princ3=data.filter(r=>r.puntaje<60).length;
   const apr=sob+sat;
   const sc=p=>p>=90?'#ffd700':p>=75?'#00e676':p>=60?'#ff8c00':'#ff4444';
+
+  const qs=EVALUACIONES[currentEval]?.preguntas||[];
+  const resumenHtml=generarResumenEjecutivo(data, qs);
 
   // Ranking table rows
   const rows=data.slice().sort((a,b)=>b.puntaje-a.puntaje).map((r,i)=>`
@@ -1378,7 +1478,7 @@ function shareLink(){
 
   // Per-participant bar chart data (for Chart.js)
   const barData=data.slice().sort((a,b)=>b.puntaje-a.puntaje);
-  const barLabels=JSON.stringify(barData.map(r=>r.participante.nombre.split(' ')[0]+' '+r.participante.nombre.split(' ')[1]?.charAt(0)||''));
+  const barLabels=JSON.stringify(barData.map(r=>r.participante.nombre.split(' ')[0]+' '+(r.participante.nombre.split(' ')[1]?.charAt(0)||'')));
   const barScores=JSON.stringify(barData.map(r=>r.puntaje));
   const barColors=JSON.stringify(barData.map(r=>sc(r.puntaje)));
 
@@ -1393,40 +1493,34 @@ function shareLink(){
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#0b1c30;color:#fff;min-height:100vh;padding:0;}
-.wrap{max-width:900px;margin:0 auto;padding:28px 20px;}
-/* Header */
+.wrap{max-width:960px;margin:0 auto;padding:28px 20px;}
 .header{background:linear-gradient(135deg,#0d2544 0%,#133759 60%,#1a4a70 100%);border:1px solid rgba(0,179,225,.35);border-radius:18px;padding:26px 28px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .logo{font-size:26px;font-weight:900;background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .logo span{-webkit-text-fill-color:#ff8c00;}
 .header-right{text-align:right;}
 .inst{font-size:11px;color:rgba(255,255,255,.8);font-weight:700;letter-spacing:.5px;}
 .modulo-badge{display:inline-block;margin-top:5px;padding:3px 12px;border-radius:100px;background:rgba(0,179,225,.15);border:1px solid rgba(0,179,225,.4);font-size:10px;color:#00b3e1;font-weight:700;letter-spacing:1px;}
-/* Stats */
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;}
 .stat{background:rgba(255,255,255,.05);border:1px solid rgba(0,179,225,.18);border-radius:13px;padding:14px;text-align:center;}
 .stat-v{font-size:26px;font-weight:900;}
 .stat-v.cx{background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .stat-v.gr{color:#00e676;}.stat-v.ye{color:#ffd700;}.stat-v.re{color:#ff4444;}
 .stat-l{font-size:8px;color:#8892a4;margin-top:3px;letter-spacing:.8px;font-weight:700;}
-/* Charts grid */
 .charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
 .chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;padding:18px;}
 .chart-title{font-size:9px;color:#00b3e1;font-weight:700;letter-spacing:1.5px;margin-bottom:14px;}
 .chart-card.full{grid-column:1/-1;}
-/* Ranking */
 .table-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;overflow:hidden;margin-bottom:20px;}
 .table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(0,179,225,.12);}
 .table-title{font-size:10px;font-weight:700;color:#00b3e1;letter-spacing:1.5px;}
 table{width:100%;border-collapse:collapse;}
 th{padding:9px 12px;text-align:left;color:#00b3e1;font-size:9px;font-weight:700;letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,.06);}
 tr:hover td{background:rgba(255,255,255,.03);}
-/* Level bars */
 .lvl-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .lvl-label{font-size:11px;color:#8892a4;width:130px;flex-shrink:0;}
 .lvl-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;}
 .lvl-fill{height:100%;border-radius:5px;}
 .lvl-count{font-size:11px;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
-/* Footer */
 .footer{text-align:center;font-size:10px;color:#8892a4;padding:20px 0 10px;border-top:1px solid rgba(255,255,255,.06);}
 @media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.chart-card.full{grid-column:1}}
 </style>
@@ -1434,7 +1528,6 @@ tr:hover td{background:rgba(255,255,255,.03);}
 <body>
 <div class="wrap">
 
-  <!-- HEADER -->
   <div class="header">
     <div>
       <div class="logo">ICONE<span>.</span>Eval</div>
@@ -1447,7 +1540,6 @@ tr:hover td{background:rgba(255,255,255,.03);}
     </div>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat"><div class="stat-v cx">${n}</div><div class="stat-l">PARTICIPANTES</div></div>
     <div class="stat"><div class="stat-v cx">${avg}</div><div class="stat-l">PROMEDIO</div></div>
@@ -1456,7 +1548,6 @@ tr:hover td{background:rgba(255,255,255,.03);}
     <div class="stat"><div class="stat-v re">${ref}</div><div class="stat-l">REQ. REFUERZO</div></div>
   </div>
 
-  <!-- CHARTS -->
   <div class="charts">
     <div class="chart-card">
       <div class="chart-title">NIVELES DEL GRUPO</div>
@@ -1468,38 +1559,33 @@ tr:hover td{background:rgba(255,255,255,.03);}
     </div>
     <div class="chart-card full">
       <div class="chart-title">PUNTAJE POR PARTICIPANTE</div>
-      <div style="position:relative;height:${Math.max(160, n*32)}px;"><canvas id="c-part"></canvas></div>
+      <div style="position:relative;height:${Math.max(160,n*32)}px;"><canvas id="c-part"></canvas></div>
     </div>
   </div>
 
-  <!-- NIVEL BARS -->
   <div class="chart-card" style="margin-bottom:22px;">
     <div class="chart-title">DISTRIBUCIÓN POR NIVEL</div>
     <div style="padding:4px 0;">
       <div class="lvl-bar-row">
-        <div class="lvl-label">⭐ Sobresaliente ≥90</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(sob/n*100):0}%;background:#ffd700;"></div></div>
-        <div class="lvl-count" style="color:#ffd700;">${sob}</div>
+        <div class="lvl-label">🥇 Experto ≥80</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(exp3/n*100):0}%;background:#00e676;"></div></div>
+        <div class="lvl-count" style="color:#00e676;">${exp3}</div>
       </div>
       <div class="lvl-bar-row">
-        <div class="lvl-label">✅ Satisfactorio 75–89</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(sat/n*100):0}%;background:#00e676;"></div></div>
-        <div class="lvl-count" style="color:#00e676;">${sat}</div>
+        <div class="lvl-label">📈 En Formación 60–79</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(form3/n*100):0}%;background:#ff8c00;"></div></div>
+        <div class="lvl-count" style="color:#ff8c00;">${form3}</div>
       </div>
       <div class="lvl-bar-row">
-        <div class="lvl-label">⚠️ En Proceso 60–74</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(proc/n*100):0}%;background:#ff8c00;"></div></div>
-        <div class="lvl-count" style="color:#ff8c00;">${proc}</div>
-      </div>
-      <div class="lvl-bar-row">
-        <div class="lvl-label">🔴 Req. Refuerzo &lt;60</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(ref/n*100):0}%;background:#ff4444;"></div></div>
-        <div class="lvl-count" style="color:#ff4444;">${ref}</div>
+        <div class="lvl-label">🔴 Principiante &lt;60</div>
+        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(princ3/n*100):0}%;background:#ff4444;"></div></div>
+        <div class="lvl-count" style="color:#ff4444;">${princ3}</div>
       </div>
     </div>
   </div>
 
-  <!-- RANKING TABLE -->
+  ${resumenHtml}
+
   <div class="table-wrap">
     <div class="table-head">
       <span class="table-title">🏆 RANKING DE RESULTADOS</span>
@@ -1513,25 +1599,30 @@ tr:hover td{background:rgba(255,255,255,.03);}
 
   <div class="footer">ICONE Eval v3 · Politécnico Grancolombiano × Plaza Imperial · Diplomado CX 2026 · iconeialabs.com</div>
 </div>
-
 <script>
 Chart.defaults.color='#8892a4';Chart.defaults.borderColor='rgba(255,255,255,0.07)';
-// Donut — niveles
-new Chart(document.getElementById('c-levels'),{type:'doughnut',data:{labels:['Sobresaliente','Satisfactorio','En Proceso','Req. Refuerzo'],datasets:[{data:[${sob},${sat},${proc},${ref}],backgroundColor:['#ffd700','#00e676','#ff8c00','#ff4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}}}}});
-// Bar — distribución
-const rng=[0,0,0,0,0];
-[${data.map(r=>r.puntaje).join(',')}].forEach(p=>{if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
-new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rng.map(v=>Math.round(v/${n}*100)),backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{y:{ticks:{callback:v=>v+'%'},max:100,grid:{color:'rgba(255,255,255,.05)'}},x:{grid:{display:false}}}}});
-// Horizontal bar — por participante
+new Chart(document.getElementById('c-levels'),{type:'doughnut',data:{labels:['Experto','En Formación','Principiante'],datasets:[{data:[${exp3},${form3},${princ3}],backgroundColor:['#00e676','#ff8c00','#ff4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}}}}});
+const rngS=[0,0,0,0,0];
+[${data.map(r=>r.puntaje).join(',')}].forEach(p=>{if(p<=20)rngS[0]++;else if(p<=40)rngS[1]++;else if(p<=60)rngS[2]++;else if(p<=80)rngS[3]++;else rngS[4]++;});
+new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rngS.map(v=>Math.round(v/${n}*100)),backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{y:{ticks:{callback:v=>v+'%'},max:100,grid:{color:'rgba(255,255,255,.05)'}},x:{grid:{display:false}}}}});
 new Chart(document.getElementById('c-part'),{type:'bar',data:{labels:${barLabels},datasets:[{data:${barScores},backgroundColor:${barColors},borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' pts'}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+''},grid:{color:'rgba(255,255,255,.05)'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
 <\/script>
 </body></html>`;
 
+  // Open dashboard in new tab
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=`ICONE_Dashboard_${currentEval}_${new Date().toISOString().split('T')[0]}.html`;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),4000);
-  showToast('🔗 Dashboard con gráficas descargado');
+  window.open(url,'_blank');
+  setTimeout(()=>URL.revokeObjectURL(url),10000);
+
+  // Copy link text to clipboard
+  const clipText=`📊 ICONE Eval — ${currentEval} | Diplomado CX 2026\n✅ ${n} participantes · Promedio: ${avg}/100\n🥇 Expertos: ${Math.round(exp3/n*100)}% | 📈 En Formación: ${Math.round(form3/n*100)}% | 🔴 Principiantes: ${Math.round(princ3/n*100)}%\n\n🔍 Dashboard completo con análisis ICONE (Identificar·Conectar·Ejecutar) — abierto en nueva pestaña\niconeialabs.com`;
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(clipText).then(()=>{showToast('📋 Copiado — pega donde quieras');}).catch(()=>{showToast('📊 Dashboard abierto en nueva pestaña');});
+  } else {
+    // fallback
+    const ta=document.createElement('textarea');ta.value=clipText;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast('📋 Copiado — pega donde quieras');}catch(e){showToast('📊 Dashboard abierto en nueva pestaña');}document.body.removeChild(ta);
+  }
 }
 
 function limpiarDatos(){if(!confirm(`¿Borrar TODOS los datos de ${currentEval}? No se puede deshacer.`))return;localStorage.removeItem(`${KEY_PREFIX}all_${currentEval}`);refreshAdmin();showToast(`🗑 Datos de ${currentEval} eliminados`);}
