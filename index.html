@@ -176,7 +176,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .pd-q-pct{font-size:9px;color:var(--gray);width:28px;flex-shrink:0;}
 
 /* ── ADMIN REDESIGN ── */
-.adm-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+.adm-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px;}
 .adm-stat{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:16px 14px;text-align:center;}
 .adm-stat-val{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .adm-stat-val.gr{background:none;-webkit-text-fill-color:var(--green);}
@@ -521,6 +521,25 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       </div>
       <div id="adm-accordion" style="display:none;" class="adm-acc-list"></div>
     </div>
+
+    <!-- Grupo de Resultados Accordion -->
+    <div class="adm-acc-section" id="grupo-resultados-section" style="display:none;">
+      <div class="adm-acc-hdr2" onclick="toggleGrupoSection()">
+        <span id="grupo-section-title">🏅 Grupo de Resultados</span>
+        <span id="grupo-section-arrow" class="acc-arrow">▼</span>
+      </div>
+      <div id="grupo-resultados-body" style="display:none;margin-top:10px;"></div>
+    </div>
+
+    <!-- Informe ICONE Methodology -->
+    <div id="icone-report-admin-section" style="display:none;margin-top:6px;">
+      <div class="adm-acc-hdr2" onclick="toggleIconeReportAdmin()">
+        <span>📊 Informe Metodología ICONE</span>
+        <span id="icone-report-admin-arrow" class="acc-arrow">▼</span>
+      </div>
+      <div id="icone-report-admin-body" style="display:none;margin-top:10px;"></div>
+    </div>
+
   </div>
 </div>
 
@@ -744,6 +763,8 @@ async function loadFromCloud(){
 }
 
 function mergeCloudToLocal(cloudRecords){
+  // Filter out test/prueba records
+  cloudRecords=cloudRecords.filter(r=>{const nom=(r.participante?.nombre||'').toLowerCase();return !nom.startsWith('prueba');});
   const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
   mods.forEach(m=>{
     const cloudMod=cloudRecords.filter(r=>r.modulo===m);
@@ -1055,6 +1076,8 @@ function selectEval(mod,btn){
   updCharts2(currentEvalData);
   buildQsTab(currentEvalData);
   buildAccordion(currentEvalData);
+  buildGrupoResultados(currentEvalData);
+  renderIconeReportAdmin(currentEvalData);
   // Rebuild mods tab if currently visible
   const modTab=document.getElementById('tab2-por-modulo');
   if(modTab&&modTab.style.display!=='none') buildModsTab(currentEvalData);
@@ -1240,6 +1263,54 @@ function toggleAccSection(){
   document.getElementById('adm-accordion').style.display=accSectionOpen?'flex':'none';
   document.getElementById('acc-section-arrow').classList.toggle('open',accSectionOpen);
 }
+let grupoSectionOpen=false;
+function toggleGrupoSection(){
+  grupoSectionOpen=!grupoSectionOpen;
+  document.getElementById('grupo-resultados-body').style.display=grupoSectionOpen?'block':'none';
+  document.getElementById('grupo-section-arrow').classList.toggle('open',grupoSectionOpen);
+}
+let iconeReportAdminOpen=false;
+function toggleIconeReportAdmin(){
+  iconeReportAdminOpen=!iconeReportAdminOpen;
+  document.getElementById('icone-report-admin-body').style.display=iconeReportAdminOpen?'block':'none';
+  document.getElementById('icone-report-admin-arrow').classList.toggle('open',iconeReportAdminOpen);
+}
+function buildGrupoResultados(data){
+  const section=document.getElementById('grupo-resultados-section');
+  const body=document.getElementById('grupo-resultados-body');
+  if(!data.length){section.style.display='none';return;}
+  section.style.display='block';
+  const experts=data.filter(r=>r.puntaje>=80).sort((a,b)=>b.puntaje-a.puntaje);
+  const enForm=data.filter(r=>r.puntaje>=60&&r.puntaje<80).sort((a,b)=>b.puntaje-a.puntaje);
+  const princs=data.filter(r=>r.puntaje<60).sort((a,b)=>b.puntaje-a.puntaje);
+  const mkRows=(arr,color)=>arr.map(r=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.04);">
+    <div style="flex:1;font-size:12px;font-weight:600;">${r.participante.nombre}</div>
+    <div style="font-size:11px;color:var(--gray);">${r.participante.local||''}</div>
+    <div style="font-size:13px;font-weight:900;color:${color};">${r.puntaje}</div>
+  </div>`).join('');
+  const mkGroup=(label,arr,color,icon)=>{
+    if(!arr.length) return '';
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;">
+      <div style="padding:12px 16px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;">
+        <span>${icon}</span>
+        <span style="font-size:12px;font-weight:700;color:${color};">${label}</span>
+        <span style="font-size:10px;color:var(--gray);margin-left:auto;">${arr.length} personas · ${Math.round(arr.reduce((s,r)=>s+r.puntaje,0)/arr.length)} prom.</span>
+      </div>
+      ${mkRows(arr,color)}
+    </div>`;
+  };
+  body.innerHTML=mkGroup('Expertos ≥80 pts',experts,'var(--green)','🥇')+mkGroup('En Formación 60–79 pts',enForm,'var(--orange)','📈')+mkGroup('Principiantes <60 pts',princs,'var(--red)','🔴');
+}
+function renderIconeReportAdmin(data){
+  const section=document.getElementById('icone-report-admin-section');
+  const body=document.getElementById('icone-report-admin-body');
+  if(!section||!body) return;
+  if(!data.length){section.style.display='none';return;}
+  section.style.display='block';
+  const qs=EVALUACIONES[currentEval]?.preguntas||[];
+  const html=generarResumenEjecutivo(data,qs);
+  body.innerHTML=html||'<p style="color:var(--gray);font-size:12px;padding:12px 0;">Sin datos suficientes para el informe.</p>';
+}
 
 function openPerfil(email,mod){
   const allKey=`${KEY_PREFIX}all_${mod}`;
@@ -1299,7 +1370,9 @@ async function refreshAdmin(){
   const cloud=await loadFromCloud();
   if(cloud.length) mergeCloudToLocal(cloud);
   buildEvalSelector();selectEval(currentEval,null);
-  showToast(`✅ ${cloud.length} registros sincronizados`);
+  const uniq=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]').length;
+  const rawCount=cloud.filter(r=>{const nom=(r.participante?.nombre||'').toLowerCase();return !nom.startsWith('prueba');}).length;
+  showToast(`✅ ${rawCount} respuestas → ${uniq} participantes únicos`);
 }
 
 function exportCSV(){
@@ -1377,9 +1450,9 @@ function generarResumenEjecutivo(data, qs){
   var strongQs=[];var weakQs=[];
   if(withResp.length&&qs&&qs.length){
     var qStats=qs.map(function(q,i){
-      var correct=withResp.filter(function(r){return r.respuestas[i]===q.respuesta;}).length;
+      var correct=withResp.filter(function(r){return r.respuestas[i]===q.correct;}).length;
       var pct=withResp.length?Math.round(correct/withResp.length*100):0;
-      var txt=q.pregunta.length>70?q.pregunta.substring(0,70)+'…':q.pregunta;
+      var txt=(q.q||q.pregunta||'').length>70?(q.q||q.pregunta||'').substring(0,70)+'…':(q.q||q.pregunta||'');
       return {i:i+1,text:txt,pct:pct};
     }).sort(function(a,b){return b.pct-a.pct;});
     strongQs=qStats.slice(0,2);
@@ -1454,180 +1527,165 @@ function shareLink(){try{
   const data=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${currentEval}`)||'[]');
   if(!data.length){showToast('Sin datos para compartir');return;}
 
+  const qs=EVALUACIONES[currentEval]?.preguntas||[];
+  const resumenHtml=generarResumenEjecutivo(data,qs);
+
   const n=data.length;
   const avg=Math.round(data.reduce((s,r)=>s+r.puntaje,0)/n*10)/10;
-  const sob=data.filter(r=>r.puntaje>=90).length;
-  const sat=data.filter(r=>r.puntaje>=75&&r.puntaje<90).length;
-  const proc=data.filter(r=>r.puntaje>=60&&r.puntaje<75).length;
-  const ref=data.filter(r=>r.puntaje<60).length;
   const exp3=data.filter(r=>r.puntaje>=80).length;
   const form3=data.filter(r=>r.puntaje>=60&&r.puntaje<80).length;
   const princ3=data.filter(r=>r.puntaje<60).length;
-  const apr=sob+sat;
-  const sc=p=>p>=90?'#ffd700':p>=75?'#00e676':p>=60?'#ff8c00':'#ff4444';
-
-  const qs=EVALUACIONES[currentEval]?.preguntas||[];
-  const resumenHtml=generarResumenEjecutivo(data, qs);
-
-  // Ranking table rows
-  const rows=data.slice().sort((a,b)=>b.puntaje-a.puntaje).map((r,i)=>`
-    <tr>
-      <td style="padding:9px 12px;color:#8892a4;">${i+1}</td>
-      <td style="padding:9px 12px;font-weight:600;">${r.participante.nombre}</td>
-      <td style="padding:9px 12px;color:#8892a4;font-size:11px;">${r.participante.local}</td>
-      <td style="padding:9px 12px;"><span style="border:1px solid ${sc(r.puntaje)};color:${sc(r.puntaje)};padding:3px 10px;border-radius:100px;font-size:12px;font-weight:700;">${r.puntaje}</span></td>
-      <td style="padding:9px 12px;">${r.status}</td>
-    </tr>`).join('');
-
-  // Per-participant bar chart data (for Chart.js)
-  const barData=data.slice().sort((a,b)=>b.puntaje-a.puntaje);
-  const barLabels=JSON.stringify(barData.map(r=>r.participante.nombre.split(' ')[0]+' '+(r.participante.nombre.split(' ')[1]?.charAt(0)||'')));
-  const barScores=JSON.stringify(barData.map(r=>r.puntaje));
-  const barColors=JSON.stringify(barData.map(r=>sc(r.puntaje)));
-
+  const expPct=Math.round(exp3/n*100);
+  const formPct=Math.round(form3/n*100);
+  const princPct=Math.round(princ3/n*100);
   const fecha=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
 
-  const html=`<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ICONE Eval — Resultados ${currentEval} · Diplomado CX 2026</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#0b1c30;color:#fff;min-height:100vh;padding:0;}
-.wrap{max-width:960px;margin:0 auto;padding:28px 20px;}
-.header{background:linear-gradient(135deg,#0d2544 0%,#133759 60%,#1a4a70 100%);border:1px solid rgba(0,179,225,.35);border-radius:18px;padding:26px 28px;margin-bottom:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.logo{font-size:26px;font-weight:900;background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.logo span{-webkit-text-fill-color:#ff8c00;}
-.header-right{text-align:right;}
-.inst{font-size:11px;color:rgba(255,255,255,.8);font-weight:700;letter-spacing:.5px;}
-.modulo-badge{display:inline-block;margin-top:5px;padding:3px 12px;border-radius:100px;background:rgba(0,179,225,.15);border:1px solid rgba(0,179,225,.4);font-size:10px;color:#00b3e1;font-weight:700;letter-spacing:1px;}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;}
-.stat{background:rgba(255,255,255,.05);border:1px solid rgba(0,179,225,.18);border-radius:13px;padding:14px;text-align:center;}
-.stat-v{font-size:26px;font-weight:900;}
-.stat-v.cx{background:linear-gradient(135deg,#00b3e1,#5a2fcf);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.stat-v.gr{color:#00e676;}.stat-v.ye{color:#ffd700;}.stat-v.re{color:#ff4444;}
-.stat-l{font-size:8px;color:#8892a4;margin-top:3px;letter-spacing:.8px;font-weight:700;}
-.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
-.chart-card{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;padding:18px;}
-.chart-title{font-size:9px;color:#00b3e1;font-weight:700;letter-spacing:1.5px;margin-bottom:14px;}
-.chart-card.full{grid-column:1/-1;}
-.table-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(0,179,225,.18);border-radius:14px;overflow:hidden;margin-bottom:20px;}
-.table-head{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(0,179,225,.12);}
-.table-title{font-size:10px;font-weight:700;color:#00b3e1;letter-spacing:1.5px;}
-table{width:100%;border-collapse:collapse;}
-th{padding:9px 12px;text-align:left;color:#00b3e1;font-size:9px;font-weight:700;letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,.06);}
-tr:hover td{background:rgba(255,255,255,.03);}
-.lvl-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.lvl-label{font-size:11px;color:#8892a4;width:130px;flex-shrink:0;}
-.lvl-track{flex:1;height:10px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;}
-.lvl-fill{height:100%;border-radius:5px;}
-.lvl-count{font-size:11px;font-weight:700;width:28px;text-align:right;flex-shrink:0;}
-.footer{text-align:center;font-size:10px;color:#8892a4;padding:20px 0 10px;border-top:1px solid rgba(255,255,255,.06);}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}.chart-card.full{grid-column:1}}
-</style>
-</head>
-<body>
-<div class="wrap">
+  const embeddedData=JSON.stringify(data);
+  const embeddedQs=JSON.stringify(qs.map(q=>({q:q.q,opts:q.opts,correct:q.correct})));
 
-  <div class="header">
-    <div>
-      <div class="logo">ICONE<span>.</span>Eval</div>
-      <div style="font-size:11px;color:#8892a4;margin-top:4px;">Resultados generados el ${fecha}</div>
-    </div>
-    <div class="header-right">
-      <div class="inst">POLITÉCNICO GRANCOLOMBIANO × PLAZA IMPERIAL</div>
-      <div class="inst" style="color:#8892a4;font-weight:400;">Diplomado en Innovación y Estrategias de CX · 2026</div>
-      <div class="modulo-badge">${currentEval} — FUNDAMENTOS CX</div>
-    </div>
-  </div>
+  const rng=[0,0,0,0,0];
+  data.forEach(r=>{const p=r.puntaje;if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
+  const rngPctStr=JSON.stringify(rng.map(v=>n?Math.round(v/n*100):0));
+  const rngCountsStr=JSON.stringify(rng);
 
-  <div class="stats">
-    <div class="stat"><div class="stat-v cx">${n}</div><div class="stat-l">PARTICIPANTES</div></div>
-    <div class="stat"><div class="stat-v cx">${avg}</div><div class="stat-l">PROMEDIO</div></div>
-    <div class="stat"><div class="stat-v ye">${sob}</div><div class="stat-l">SOBRESALIENTES</div></div>
-    <div class="stat"><div class="stat-v gr">${Math.round(apr/n*100)}%</div><div class="stat-l">APROBARON</div></div>
-    <div class="stat"><div class="stat-v re">${ref}</div><div class="stat-l">REQ. REFUERZO</div></div>
-  </div>
+  const lc={};data.forEach(r=>{const l=r.participante?.local||'Sin especificar';lc[l]=(lc[l]||0)+1;});
+  const sl=Object.entries(lc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const slLabelsStr=JSON.stringify(sl.map(([k])=>k.length>20?k.substring(0,20)+'…':k));
+  const slPctStr=JSON.stringify(sl.map(([,v])=>n?Math.round(v/n*100):0));
+  const slCountsStr=JSON.stringify(sl.map(([,v])=>v));
 
-  <div class="charts">
-    <div class="chart-card">
-      <div class="chart-title">NIVELES DEL GRUPO</div>
-      <div style="position:relative;height:200px;"><canvas id="c-levels"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">DISTRIBUCIÓN DE PUNTAJES</div>
-      <div style="position:relative;height:200px;"><canvas id="c-dist"></canvas></div>
-    </div>
-    <div class="chart-card full">
-      <div class="chart-title">PUNTAJE POR PARTICIPANTE</div>
-      <div style="position:relative;height:${Math.max(160,n*32)}px;"><canvas id="c-part"></canvas></div>
-    </div>
-  </div>
+  const rc={};data.forEach(r=>{const rol=r.participante?.rol||'No especificado';rc[rol]=(rc[rol]||0)+1;});
+  const rolEnt=Object.entries(rc).sort((a,b)=>b[1]-a[1]);
+  const rolLabelsStr=JSON.stringify(rolEnt.map(([k])=>k));
+  const rolCountsStr=JSON.stringify(rolEnt.map(([,v])=>v));
 
-  <div class="chart-card" style="margin-bottom:22px;">
-    <div class="chart-title">DISTRIBUCIÓN POR NIVEL</div>
-    <div style="padding:4px 0;">
-      <div class="lvl-bar-row">
-        <div class="lvl-label">🥇 Experto ≥80</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(exp3/n*100):0}%;background:#00e676;"></div></div>
-        <div class="lvl-count" style="color:#00e676;">${exp3}</div>
-      </div>
-      <div class="lvl-bar-row">
-        <div class="lvl-label">📈 En Formación 60–79</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(form3/n*100):0}%;background:#ff8c00;"></div></div>
-        <div class="lvl-count" style="color:#ff8c00;">${form3}</div>
-      </div>
-      <div class="lvl-bar-row">
-        <div class="lvl-label">🔴 Principiante &lt;60</div>
-        <div class="lvl-track"><div class="lvl-fill" style="width:${n?Math.round(princ3/n*100):0}%;background:#ff4444;"></div></div>
-        <div class="lvl-count" style="color:#ff4444;">${princ3}</div>
-      </div>
-    </div>
-  </div>
+  // Build the shared dashboard HTML
+  const parts=[];
+  parts.push('<!DOCTYPE html><html lang="es"><head>');
+  parts.push('<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">');
+  parts.push('<title>ICONE Eval — '+currentEval+' · Diplomado CX 2026</title>');
+  parts.push('<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>');
+  parts.push('<style>');
+  parts.push(':root{--bg:#0b1c30;--bg2:#112240;--cyan:#00b3e1;--purple:#5a2fcf;--orange:#ff8c00;--green:#00e676;--red:#ff4444;--yellow:#ffd700;--white:#ffffff;--gray:#8892a4;--card:rgba(255,255,255,0.05);--border:rgba(0,179,225,0.18);}');
+  parts.push('*{margin:0;padding:0;box-sizing:border-box}body{font-family:"Segoe UI",system-ui,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;}');
+  parts.push('.pbar{background:linear-gradient(90deg,#0d2544,#133759 40%,#1a4a70);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:42px;border-bottom:1px solid rgba(0,179,225,.3);}');
+  parts.push('.logo{font-size:19px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}.logo span{-webkit-text-fill-color:var(--orange);}');
+  parts.push('.wrap{max-width:1100px;margin:0 auto;padding:22px 18px;}');
+  parts.push('.adm-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}');
+  parts.push('.adm-stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:14px;text-align:center;}');
+  parts.push('.adm-stat-val{font-size:24px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}');
+  parts.push('.adm-stat-val.gr{background:none;-webkit-text-fill-color:var(--green);}.adm-stat-val.ye{background:none;-webkit-text-fill-color:var(--yellow);}.adm-stat-val.re{background:none;-webkit-text-fill-color:var(--red);}');
+  parts.push('.adm-stat-lbl{font-size:8px;color:var(--gray);margin-top:3px;letter-spacing:.8px;font-weight:700;}');
+  parts.push('.adm-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);}');
+  parts.push('.adm-tab{padding:9px 20px;border-radius:10px 10px 0 0;font-size:12px;font-weight:700;cursor:pointer;border:1px solid transparent;background:transparent;color:var(--gray);margin-bottom:-1px;transition:all .2s;}');
+  parts.push('.adm-tab.active{background:rgba(0,179,225,.1);border:1px solid var(--border);border-bottom-color:var(--bg);color:var(--cyan);}');
+  parts.push('.adm-panel{padding-top:18px;}');
+  parts.push('.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px;}');
+  parts.push('.chart-card{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:16px;}');
+  parts.push('.chart-title{font-size:9px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:13px;}');
+  parts.push('.lvl-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}');
+  parts.push('.lvl-lbl{font-size:11px;color:var(--gray);width:160px;flex-shrink:0;}');
+  parts.push('.lvl-track{flex:1;height:10px;background:rgba(255,255,255,.07);border-radius:5px;overflow:hidden;}');
+  parts.push('.lvl-fill{height:100%;border-radius:5px;}');
+  parts.push('.lvl-pct{font-size:12px;font-weight:700;width:38px;text-align:right;flex-shrink:0;}');
+  parts.push('.lvl-n{font-size:10px;color:var(--gray);width:26px;text-align:right;flex-shrink:0;}');
+  parts.push('.acc-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 2px;border-top:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:700;color:var(--cyan);margin-top:22px;}');
+  parts.push('.acc-hdr:hover{color:#00d4ff;}');
+  parts.push('.part-row{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);}');
+  parts.push('.part-name{flex:1;font-size:12px;font-weight:600;}');
+  parts.push('.part-local{font-size:10px;color:var(--gray);width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}');
+  parts.push('.part-bar-wrap{width:70px;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}');
+  parts.push('.part-bar-fill{height:100%;border-radius:3px;}');
+  parts.push('.part-pill{padding:2px 9px;border-radius:100px;font-size:10px;font-weight:700;}');
+  parts.push('.pill-e{background:rgba(0,230,118,.15);border:1px solid var(--green);color:var(--green);}.pill-f{background:rgba(255,140,0,.15);border:1px solid var(--orange);color:var(--orange);}.pill-p{background:rgba(255,68,68,.1);border:1px solid var(--red);color:var(--red);}');
+  parts.push('.grp-block{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px;}');
+  parts.push('.grp-hdr{padding:11px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}');
+  parts.push('.adm-q-card{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:14px 16px;margin-bottom:10px;}');
+  parts.push('.adm-q-num{font-size:9px;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:5px;}');
+  parts.push('.adm-q-text{font-size:12px;font-weight:600;margin-bottom:11px;line-height:1.4;}');
+  parts.push('.adm-q-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}');
+  parts.push('.adm-q-letter{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}');
+  parts.push('.adm-q-track{flex:1;height:7px;background:rgba(255,255,255,.07);border-radius:3px;overflow:hidden;}');
+  parts.push('.adm-q-fill-c{height:100%;border-radius:3px;background:var(--green);}.adm-q-fill-w{height:100%;border-radius:3px;background:rgba(255,255,255,.2);}');
+  parts.push('.adm-q-pct{font-size:10px;width:32px;text-align:right;flex-shrink:0;}');
+  parts.push('footer{text-align:center;font-size:9px;color:var(--gray);padding:20px 0 10px;border-top:1px solid rgba(255,255,255,.06);margin-top:24px;}');
+  parts.push('@media(max-width:700px){.adm-stats{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}}');
+  parts.push('::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}');
+  parts.push('</style></head><body>');
+  parts.push('<div class="pbar"><div class="logo">ICONE<span>.</span>Eval</div><div style="font-size:10px;color:rgba(255,255,255,.8);">POLITÉCNICO GRANCOLOMBIANO × PLAZA IMPERIAL</div><div style="font-size:10px;color:var(--gray);">'+fecha+'</div></div>');
+  parts.push('<div class="wrap">');
+  parts.push('<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;justify-content:space-between;">');
+  parts.push('<div><h2 style="font-size:20px;font-weight:900;margin-bottom:2px;">🏆 Dashboard de Evaluaciones</h2><p style="font-size:11px;color:var(--gray);">Diplomado CX · Politécnico Grancolombiano × Plaza Imperial · 2026</p></div>');
+  parts.push('<div style="display:inline-flex;padding:4px 14px;border-radius:100px;background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.3);font-size:11px;color:var(--cyan);font-weight:700;">'+currentEval+' — FUNDAMENTOS CX</div>');
+  parts.push('</div>');
+  parts.push('<div class="adm-stats">');
+  parts.push('<div class="adm-stat"><div class="adm-stat-val">'+n+'</div><div class="adm-stat-lbl">PARTICIPANTES</div></div>');
+  parts.push('<div class="adm-stat"><div class="adm-stat-val">'+avg+'</div><div class="adm-stat-lbl">PROMEDIO GRUPO</div></div>');
+  parts.push('<div class="adm-stat"><div class="adm-stat-val gr">'+exp3+' <span style="font-size:13px;">('+expPct+'%)</span></div><div class="adm-stat-lbl">EXPERTOS ≥80</div></div>');
+  parts.push('<div class="adm-stat"><div class="adm-stat-val ye">'+form3+' <span style="font-size:13px;">('+formPct+'%)</span></div><div class="adm-stat-lbl">EN FORMACIÓN</div></div>');
+  parts.push('<div class="adm-stat"><div class="adm-stat-val re">'+princ3+' <span style="font-size:13px;">('+princPct+'%)</span></div><div class="adm-stat-lbl">PRINCIPIANTES &lt;60</div></div>');
+  parts.push('</div>');
+  parts.push('<div class="adm-tabs"><button class="adm-tab active" onclick="swT(\'dist\',this)">📊 Distribución</button><button class="adm-tab" onclick="swT(\'pregunta\',this)">❓ Por Pregunta</button></div>');
+  parts.push('<div id="tab-dist" class="adm-panel">');
+  parts.push('<div class="chart-grid"><div class="chart-card"><div class="chart-title">DISTRIBUCIÓN DE PUNTAJES</div><div style="position:relative;height:195px"><canvas id="cDist"></canvas></div></div>');
+  parts.push('<div class="chart-card"><div class="chart-title">NIVELES DEL GRUPO</div><div style="position:relative;height:195px"><canvas id="cLevels"></canvas></div></div>');
+  parts.push('<div class="chart-card"><div class="chart-title">POR LOCAL / TIENDA</div><div style="position:relative;height:195px"><canvas id="cLocal"></canvas></div></div>');
+  parts.push('<div class="chart-card"><div class="chart-title">POR ROL</div><div style="position:relative;height:195px"><canvas id="cRol"></canvas></div></div></div>');
+  parts.push('<div class="chart-card" style="margin-bottom:16px;"><div class="chart-title">DISTRIBUCIÓN POR NIVEL</div><div style="padding:4px 0;">');
+  parts.push('<div class="lvl-row"><div class="lvl-lbl">🥇 Experto ≥80</div><div class="lvl-track"><div class="lvl-fill" style="width:'+expPct+'%;background:var(--green);"></div></div><div class="lvl-pct" style="color:var(--green);">'+expPct+'%</div><div class="lvl-n" style="color:var(--green);">('+exp3+')</div></div>');
+  parts.push('<div class="lvl-row"><div class="lvl-lbl">📈 En Formación 60–79</div><div class="lvl-track"><div class="lvl-fill" style="width:'+formPct+'%;background:var(--orange);"></div></div><div class="lvl-pct" style="color:var(--orange);">'+formPct+'%</div><div class="lvl-n" style="color:var(--orange);">('+form3+')</div></div>');
+  parts.push('<div class="lvl-row"><div class="lvl-lbl">🔴 Principiante &lt;60</div><div class="lvl-track"><div class="lvl-fill" style="width:'+princPct+'%;background:var(--red);"></div></div><div class="lvl-pct" style="color:var(--red);">'+princPct+'%</div><div class="lvl-n" style="color:var(--red);">('+princ3+')</div></div>');
+  parts.push('</div></div></div>');
+  parts.push('<div id="tab-pregunta" class="adm-panel" style="display:none;"><div id="qs-container"></div></div>');
+  parts.push('<div class="acc-hdr" onclick="swA(\'part\')"><span>👥 Participantes ('+n+')</span><span id="arr-part" style="font-size:10px;color:var(--gray);transition:transform .3s;">▼</span></div>');
+  parts.push('<div id="acc-part" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:8px;"></div>');
+  parts.push('<div class="acc-hdr" onclick="swA(\'grupo\')"><span>🏅 Grupo de Resultados</span><span id="arr-grupo" style="font-size:10px;color:var(--gray);transition:transform .3s;">▼</span></div>');
+  parts.push('<div id="acc-grupo" style="display:none;margin-top:8px;"></div>');
+  parts.push('<div class="acc-hdr" onclick="swA(\'icone\')"><span>📊 Informe Metodología ICONE</span><span id="arr-icone" style="font-size:10px;color:var(--gray);transition:transform .3s;">▼</span></div>');
+  parts.push('<div id="acc-icone" style="display:none;margin-top:8px;">'+resumenHtml+'</div>');
+  parts.push('<footer>ICONE Eval v3 · Politécnico Grancolombiano × Plaza Imperial · Diplomado CX 2026 · iconeialabs.com</footer>');
+  parts.push('</div>');
+  parts.push('<script>');
+  parts.push('const D='+embeddedData+';');
+  parts.push('const QS='+embeddedQs+';');
+  parts.push('const rngPctD='+rngPctStr+';');
+  parts.push('const rngCnts='+rngCountsStr+';');
+  parts.push('const slLbls='+slLabelsStr+';');
+  parts.push('const slPctD='+slPctStr+';');
+  parts.push('const slCnts='+slCountsStr+';');
+  parts.push('const rolLbls='+rolLabelsStr+';');
+  parts.push('const rolCnts='+rolCountsStr+';');
+  parts.push('Chart.defaults.color="#8892a4";Chart.defaults.borderColor="rgba(255,255,255,0.07)";');
+  parts.push('const pctTip=c=>{const t=c.dataset.data.reduce((s,v)=>s+v,0);const p=t?Math.round(c.raw/t*100):0;return c.label+": "+p+"% ("+c.raw+" personas)";};');
+  parts.push('new Chart(document.getElementById("cDist"),{type:"bar",data:{labels:["0–20","21–40","41–60","61–80","81–100"],datasets:[{data:rngPctD,backgroundColor:["#ff4444","#ff8c00","#ffd700","#00b3e1","#00e676"],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+"% ("+rngCnts[c.dataIndex]+" personas)"}}},scales:{y:{max:100,ticks:{callback:v=>v+"%"},grid:{color:"rgba(255,255,255,.06)"}},x:{grid:{display:false}}}}});');
+  parts.push('const n2=D.length,e2=D.filter(r=>r.puntaje>=80).length,f2=D.filter(r=>r.puntaje>=60&&r.puntaje<80).length,p2=D.filter(r=>r.puntaje<60).length;');
+  parts.push('new Chart(document.getElementById("cLevels"),{type:"doughnut",data:{labels:["Experto ≥80","En Formación 60-79","Principiante <60"],datasets:[{data:[e2,f2,p2],backgroundColor:["#00e676","#ff8c00","#ff4444"],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"64%",plugins:{legend:{position:"bottom",labels:{padding:10,boxWidth:10,font:{size:10}}},tooltip:{callbacks:{label:pctTip}}}}});');
+  parts.push('new Chart(document.getElementById("cLocal"),{type:"bar",data:{labels:slLbls,datasets:[{data:slPctD,backgroundColor:"rgba(0,179,225,0.65)",borderRadius:5,borderSkipped:false}]},options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+"% ("+slCnts[c.dataIndex]+" personas)"}}},scales:{x:{max:100,ticks:{callback:v=>v+"%"},grid:{color:"rgba(255,255,255,.06)"}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});');
+  parts.push('new Chart(document.getElementById("cRol"),{type:"doughnut",data:{labels:rolLbls,datasets:[{data:rolCnts,backgroundColor:["#00b3e1","#5a2fcf","#ff8c00","#00e676","#ff4444","#ffd700"].slice(0,rolLbls.length),borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{padding:8,boxWidth:10,font:{size:10}}},tooltip:{callbacks:{label:pctTip}}}}});');
+  parts.push('const accSt={};');
+  parts.push('function swA(id){accSt[id]=!accSt[id];const el=document.getElementById("acc-"+id);el.style.display=accSt[id]?"block":"none";const a=document.getElementById("arr-"+id);if(a)a.style.transform=accSt[id]?"rotate(180deg)":"";if(id==="part"&&accSt[id]&&!el.innerHTML.trim())bPart();if(id==="grupo"&&accSt[id]&&!el.innerHTML.trim())bGrupo();}');
+  parts.push('function swT(t,btn){document.querySelectorAll(".adm-tab").forEach(b=>b.classList.remove("active"));btn.classList.add("active");["dist","pregunta"].forEach(id=>document.getElementById("tab-"+id).style.display="none");document.getElementById("tab-"+t).style.display="block";if(t==="pregunta"&&!document.getElementById("qs-container").innerHTML)bQs();}');
+  parts.push('const sc=p=>p>=80?"#00e676":p>=60?"#ff8c00":"#ff4444";');
+  parts.push('const lvl=p=>p>=80?"Experto":p>=60?"En Formación":"Principiante";');
+  parts.push('const pCls=p=>p>=80?"pill-e":p>=60?"pill-f":"pill-p";');
+  parts.push('function bPart(){const s=D.slice().sort((a,b)=>b.puntaje-a.puntaje);document.getElementById("acc-part").innerHTML=s.map(r=>`<div class="part-row"><div class="part-name">${r.participante.nombre}</div><div class="part-local">${r.participante.local||""}</div><div class="part-bar-wrap"><div class="part-bar-fill" style="width:${r.puntaje}%;background:${sc(r.puntaje)};"></div></div><span class="part-pill ${pCls(r.puntaje)}">${lvl(r.puntaje)}</span><span style="font-size:12px;font-weight:900;color:${sc(r.puntaje)};margin-left:6px;">${r.puntaje}</span></div>`).join("");}');
+  parts.push('function bGrupo(){const ex=D.filter(r=>r.puntaje>=80).sort((a,b)=>b.puntaje-a.puntaje),en=D.filter(r=>r.puntaje>=60&&r.puntaje<80).sort((a,b)=>b.puntaje-a.puntaje),pr=D.filter(r=>r.puntaje<60).sort((a,b)=>b.puntaje-a.puntaje);const mkR=(arr,c)=>arr.map(r=>`<div class="part-row"><div class="part-name">${r.participante.nombre}</div><div class="part-local">${r.participante.local||""}</div><span style="font-size:13px;font-weight:900;color:${c};">${r.puntaje}</span></div>`).join("");const mkG=(lbl,arr,c,ico)=>arr.length?`<div class="grp-block"><div class="grp-hdr"><span>${ico}</span><span style="color:${c};">${lbl}</span><span style="margin-left:auto;font-size:10px;color:var(--gray);">${arr.length} personas · ${Math.round(arr.reduce((s,r)=>s+r.puntaje,0)/arr.length)} prom.</span></div>${mkR(arr,c)}</div>`:"";document.getElementById("acc-grupo").innerHTML=mkG("Expertos ≥80 pts",ex,"#00e676","🥇")+mkG("En Formación 60–79 pts",en,"#ff8c00","📈")+mkG("Principiantes <60 pts",pr,"#ff4444","🔴");}');
+  parts.push('function bQs(){const wR=D.filter(r=>r.respuestas&&Object.keys(r.respuestas).length>0);if(!wR.length){document.getElementById("qs-container").innerHTML="<p style="text-align:center;color:#8892a4;padding:30px;" >Sin respuestas detalladas disponibles.</p>";return;}const L=["A","B","C","D"];document.getElementById("qs-container").innerHTML=QS.map((q,i)=>{const cnt=[0,0,0,0];wR.forEach(r=>{const a=r.respuestas[i];if(a!==undefined&&cnt[a]!==undefined)cnt[a]++;});const tot=wR.length;const cP=tot?Math.round(cnt[q.correct]/tot*100):0;const bars=q.opts.map((opt,j)=>{const pct=tot?Math.round(cnt[j]/tot*100):0;const ok=(j===q.correct);return `<div class="adm-q-row"><div class="adm-q-letter" style="background:${ok?"var(--green)":"rgba(255,255,255,.1)"};color:${ok?"#000":"var(--gray)"}">${L[j]}</div><div style="flex:1;"><div style="font-size:10px;color:${ok?"var(--green)":"var(--gray)"};margin-bottom:3px;">${opt.length>55?opt.substring(0,55)+"…":opt}</div><div class="adm-q-track"><div class="${ok?"adm-q-fill-c":"adm-q-fill-w"}" style="width:${pct}%;"></div></div></div><div class="adm-q-pct" style="color:${ok?"var(--green)":"var(--gray)"}">${pct}%</div></div>`;}).join("");return `<div class="adm-q-card"><div class="adm-q-num">PREGUNTA ${i+1} DE ${QS.length} · ${cP}% correctamente · ${tot} respuestas</div><div class="adm-q-text">${q.q}</div>${bars}</div>`;}).join("");}');
+  parts.push('<\/script></body></html>');
+  const html=parts.join('\n');
 
-  ${resumenHtml}
-
-  <div class="table-wrap">
-    <div class="table-head">
-      <span class="table-title">🏆 RANKING DE RESULTADOS</span>
-      <span style="font-size:10px;color:#8892a4;">Ordenado por puntaje</span>
-    </div>
-    <table>
-      <thead><tr><th>#</th><th>NOMBRE</th><th>LOCAL / TIENDA</th><th>PUNTAJE</th><th>NIVEL</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>
-  </div>
-
-  <div class="footer">ICONE Eval v3 · Politécnico Grancolombiano × Plaza Imperial · Diplomado CX 2026 · iconeialabs.com</div>
-</div>
-<script>
-Chart.defaults.color='#8892a4';Chart.defaults.borderColor='rgba(255,255,255,0.07)';
-const pctTipS=function(c){var t=c.dataset.data.reduce(function(s,v){return s+v;},0);var p=t?Math.round(c.raw/t*100):0;return c.label+': '+p+'% ('+c.raw+' personas)';};
-new Chart(document.getElementById('c-levels'),{type:'doughnut',data:{labels:['Experto','En Formación','Principiante'],datasets:[{data:[${exp3},${form3},${princ3}],backgroundColor:['#00e676','#ff8c00','#ff4444'],borderWidth:0,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom',labels:{padding:10,boxWidth:10,font:{size:10}}},tooltip:{callbacks:{label:pctTipS}}}}});
-const rngS=[0,0,0,0,0];
-[${data.map(r=>r.puntaje).join(',')}].forEach(p=>{if(p<=20)rngS[0]++;else if(p<=40)rngS[1]++;else if(p<=60)rngS[2]++;else if(p<=80)rngS[3]++;else rngS[4]++;});
-new Chart(document.getElementById('c-dist'),{type:'bar',data:{labels:['0–20','21–40','41–60','61–80','81–100'],datasets:[{data:rngS.map(v=>Math.round(v/${n}*100)),backgroundColor:['#ff4444','#ff8c00','#ffd700','#00b3e1','#00e676'],borderRadius:5,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+'%'}}},scales:{y:{ticks:{callback:v=>v+'%'},max:100,grid:{color:'rgba(255,255,255,.05)'}},x:{grid:{display:false}}}}});
-new Chart(document.getElementById('c-part'),{type:'bar',data:{labels:${barLabels},datasets:[{data:${barScores},backgroundColor:${barColors},borderRadius:5,borderSkipped:false}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw+' pts'}}},scales:{x:{min:0,max:100,ticks:{callback:v=>v+''},grid:{color:'rgba(255,255,255,.05)'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}});
-<\/script>
-</body></html>`;
-
-  // Open dashboard in new tab using document.write (no popup blocker)
+  // Open dashboard in new tab
   try{
     const win=window.open('','_blank');
     if(win){win.document.open();win.document.write(html);win.document.close();}
     else{showToast('⚠ Permite ventanas emergentes para este sitio');return;}
   }catch(e){showToast('Error al abrir dashboard: '+e.message);return;}
 
-  // Copy summary to clipboard
-  const expPctFin=Math.round(exp3/n*100);
-  const formPctFin=Math.round(form3/n*100);
-  const princPctFin=Math.round(princ3/n*100);
+  // Copy text summary to clipboard
   const clipLines=[
     '📊 ICONE Eval — '+currentEval+' | Diplomado CX 2026',
     '✅ '+n+' participantes · Promedio: '+avg+'/100',
-    '🥇 Expertos: '+expPctFin+'%  |  📈 En Formación: '+formPctFin+'%  |  🔴 Principiantes: '+princPctFin+'%',
+    '🥇 Expertos: '+expPct+'%  |  📈 En Formación: '+formPct+'%  |  🔴 Principiantes: '+princPct+'%',
     '',
     'Incluye análisis ICONE: Identificar · Conectar · Ejecutar',
     'iconeialabs.com'
@@ -1635,15 +1693,16 @@ new Chart(document.getElementById('c-part'),{type:'bar',data:{labels:${barLabels
   const clipText=clipLines.join('\n');
   const doCopy=function(){
     if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(clipText).then(function(){showToast('📋 Copiado — pega donde quieras');}).catch(function(){showToast('📊 Dashboard abierto en nueva pestaña');});
+      navigator.clipboard.writeText(clipText).then(function(){showToast('✅ Dashboard copiado — compártelo sin contraseña');}).catch(function(){showToast('📊 Dashboard abierto en nueva pestaña');});
     } else {
       const ta=document.createElement('textarea');ta.value=clipText;ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';document.body.appendChild(ta);ta.select();
-      try{document.execCommand('copy');showToast('📋 Copiado — pega donde quieras');}catch(e2){showToast('📊 Dashboard abierto en nueva pestaña');}
+      try{document.execCommand('copy');showToast('✅ Dashboard copiado — compártelo sin contraseña');}catch(e2){showToast('📊 Dashboard abierto en nueva pestaña');}
       document.body.removeChild(ta);
     }
   };
   doCopy();
 }catch(err){console.error('shareLink error:',err);showToast('Error al generar dashboard: '+err.message);}}
+
 
 function limpiarDatos(){if(!confirm(`¿Borrar TODOS los datos de ${currentEval}? No se puede deshacer.`))return;localStorage.removeItem(`${KEY_PREFIX}all_${currentEval}`);refreshAdmin();showToast(`🗑 Datos de ${currentEval} eliminados`);}
 
