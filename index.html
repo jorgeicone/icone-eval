@@ -1944,20 +1944,28 @@ function bQs(){
     '<script>'+dataVars+staticJs+'<\\/script>'+
     '</body></html>';
 
-  // ── Publish dashboard.html to GitHub Pages ────────────────────────────────
+  // ── PASO 1: abrir ventana SINCRÓNICO (evita popup blocker) ────────────────
   const DASHBOARD_URL='https://jorgeicone.github.io/icone-eval/dashboard.html';
-  showToast('⏳ Publicando dashboard...');
+  const win=window.open('','_blank');
+  if(!win){showToast('⚠ Activa ventanas emergentes en tu navegador');return;}
 
+  // Pantalla de carga inmediata
+  win.document.open();
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0b1c30;color:#fff;font-family:"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:18px}.spin{width:48px;height:48px;border:4px solid rgba(0,179,225,.2);border-top-color:#00b3e1;border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style></head><body><div class="spin"></div><h2 style="font-size:16px;font-weight:700;">Publicando dashboard...</h2><p style="font-size:11px;color:#8892a4;">Esto toma unos segundos</p></body></html>');
+  win.document.close();
+
+  // ── PASO 2: subir dashboard.html a GitHub y navegar ───────────────────────
   (async function(){
     try{
       const token=await getToken();
-      // Encode HTML to base64 (handle Unicode)
+
+      // Encode HTML → base64 con soporte Unicode
       const bytes=new TextEncoder().encode(html);
       let binary='';
       bytes.forEach(function(b){binary+=String.fromCharCode(b);});
       const b64=btoa(binary);
 
-      // Check if dashboard.html already exists (need SHA to update)
+      // SHA del archivo existente (requerido para actualizar)
       let sha='';
       try{
         const chk=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',
@@ -1965,40 +1973,41 @@ function bQs(){
         if(chk.ok){const d=await chk.json();sha=d.sha||'';}
       }catch(e){}
 
-      // Push to GitHub
-      const body={message:'Dashboard update '+new Date().toISOString().slice(0,16),content:b64};
-      if(sha)body.sha=sha;
+      // Push a GitHub
+      const payload={message:'Dashboard '+currentEval+' '+new Date().toISOString().slice(0,16),content:b64};
+      if(sha)payload.sha=sha;
       const res=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',{
         method:'PUT',
         headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
-        body:JSON.stringify(body)
+        body:JSON.stringify(payload)
       });
-      if(!res.ok)throw new Error('GitHub API error '+res.status);
+      if(!res.ok)throw new Error('GitHub API '+res.status);
 
-      // Open in new tab
-      window.open(DASHBOARD_URL,'_blank');
+      // Navegar la ventana ya abierta a la URL real de GitHub Pages
+      win.location.href=DASHBOARD_URL;
 
-      // Copy URL to clipboard
-      const copyUrl=function(){
-        if(navigator.clipboard&&navigator.clipboard.writeText){
-          navigator.clipboard.writeText(DASHBOARD_URL)
-            .then(function(){showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');})
-            .catch(function(){showToast('✅ Dashboard publicado: '+DASHBOARD_URL);});
-        } else {
-          var ta=document.createElement('textarea');ta.value=DASHBOARD_URL;
-          ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
-          document.body.appendChild(ta);ta.select();
-          try{document.execCommand('copy');showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');}
-          catch(e2){showToast('✅ Dashboard publicado en GitHub Pages');}
-          document.body.removeChild(ta);
-        }
-      };
-      // Small delay: GitHub Pages needs ~5s to propagate, but URL opens right away
-      setTimeout(copyUrl,800);
+      // Copiar enlace al portapapeles
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(DASHBOARD_URL)
+          .then(function(){showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');})
+          .catch(function(){showToast('✅ Dashboard publicado en nueva pestaña');});
+      } else {
+        var ta=document.createElement('textarea');ta.value=DASHBOARD_URL;
+        ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');}
+        catch(e2){showToast('✅ Dashboard publicado en nueva pestaña');}
+        document.body.removeChild(ta);
+      }
 
     }catch(err2){
-      console.error('shareLink publish error:',err2);
-      showToast('❌ Error publicando: '+err2.message);
+      console.error('shareLink error:',err2);
+      if(win&&!win.closed){
+        win.document.open();
+        win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{background:#0b1c30;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:12px;}</style></head><body><h2 style="color:#ff4444">❌ Error al publicar</h2><p style="color:#8892a4;font-size:12px;">'+err2.message+'</p></body></html>');
+        win.document.close();
+      }
+      showToast('❌ Error: '+err2.message);
     }
   })();
 }catch(err){console.error('shareLink error:',err);showToast('Error al generar dashboard: '+err.message);}}
