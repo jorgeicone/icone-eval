@@ -457,7 +457,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <div style="font-size:9px;color:var(--gray);margin-top:1px;letter-spacing:.5px;">Panel de Evaluaciones · Diplomado CX 2026</div>
     </div>
     <div style="display:flex;gap:7px;align-items:center;">
-      <span style="font-size:10px;color:var(--gray);">Admin</span>
+      <button class="btn btn-secondary btn-sm" style="font-size:11px;" onclick="openChangePass()">🔑 Cambiar clave</button>
       <button class="btn btn-secondary btn-sm" onclick="logoutAdmin()">Salir</button>
     </div>
   </div>
@@ -533,6 +533,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <div class="field"><label>CONFIRMAR</label><input type="password" id="new-pass2" placeholder="Repite la contraseña"/></div>
     <div id="modal-pass-error" style="display:none;color:#ffaaaa;font-size:11px;margin-bottom:10px;"></div>
     <button class="btn btn-primary" onclick="saveNewPass()">Guardar y entrar</button>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR CONTRASEÑA -->
+<div class="modal-overlay" id="modal-change-pass" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:360px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h3 style="font-size:17px;font-weight:900;">🔑 Cambiar contraseña</h3>
+      <button onclick="document.getElementById('modal-change-pass').classList.remove('open')" style="background:none;border:none;color:var(--gray);cursor:pointer;font-size:20px;line-height:1;">✕</button>
+    </div>
+    <div class="field"><label>CONTRASEÑA ACTUAL</label><input type="password" id="cp-actual" placeholder="Contraseña actual"/></div>
+    <div class="field"><label>NUEVA CONTRASEÑA</label><input type="password" id="cp-nueva1" placeholder="Mínimo 8 caracteres"/></div>
+    <div class="field"><label>CONFIRMAR NUEVA</label><input type="password" id="cp-nueva2" placeholder="Repite la nueva contraseña" onkeydown="if(event.key==='Enter')guardarNuevaClave()"/></div>
+    <div id="cp-error" style="display:none;padding:9px;border-radius:7px;background:rgba(255,68,68,.1);border:1px solid rgba(255,68,68,.3);color:#ffaaaa;font-size:11px;margin-bottom:11px;"></div>
+    <div id="cp-ok" style="display:none;padding:9px;border-radius:7px;background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.3);color:#a5f3c5;font-size:11px;margin-bottom:11px;">✅ Contraseña actualizada correctamente.</div>
+    <button class="btn btn-primary" onclick="guardarNuevaClave()">Guardar nueva contraseña</button>
   </div>
 </div>
 
@@ -980,6 +996,35 @@ function saveNewPass(){
   document.getElementById('modal-pass').classList.remove('open');showSection('s-admin');loadAdminDash();
 }
 function logoutAdmin(){showSection('s-landing');}
+
+function openChangePass(){
+  // Reset fields and messages
+  ['cp-actual','cp-nueva1','cp-nueva2'].forEach(id=>{document.getElementById(id).value='';});
+  document.getElementById('cp-error').style.display='none';
+  document.getElementById('cp-ok').style.display='none';
+  document.getElementById('modal-change-pass').classList.add('open');
+}
+
+function guardarNuevaClave(){
+  const actual=document.getElementById('cp-actual').value;
+  const nueva1=document.getElementById('cp-nueva1').value;
+  const nueva2=document.getElementById('cp-nueva2').value;
+  const errEl=document.getElementById('cp-error');
+  const okEl=document.getElementById('cp-ok');
+  errEl.style.display='none';okEl.style.display='none';
+  if(actual!==adminPass){errEl.textContent='La contraseña actual es incorrecta.';errEl.style.display='block';return;}
+  if(nueva1.length<8){errEl.textContent='La nueva contraseña debe tener mínimo 8 caracteres.';errEl.style.display='block';return;}
+  if(nueva1!==nueva2){errEl.textContent='Las contraseñas nuevas no coinciden.';errEl.style.display='block';return;}
+  // Save
+  adminPass=nueva1;
+  localStorage.setItem(KEY_PASS,nueva1);
+  localStorage.setItem(KEY_PASS_CH,'true');
+  passChanged=true;
+  okEl.style.display='block';
+  ['cp-actual','cp-nueva1','cp-nueva2'].forEach(id=>{document.getElementById(id).value='';});
+  setTimeout(()=>document.getElementById('modal-change-pass').classList.remove('open'),1800);
+  showToast('🔑 Contraseña actualizada');
+}
 
 async function loadAdminDash(){
   showToast('☁️ Cargando datos desde la nube...');
