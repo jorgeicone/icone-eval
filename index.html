@@ -1144,7 +1144,7 @@ function buildModsTab(){
       modsGrid.appendChild(card);
       setTimeout(()=>{
         if(charts[`mod_${m}`]){try{charts[`mod_${m}`].destroy();}catch(e){}}
-        charts[`mod_${m}`]=new Chart(document.getElementById(cid),{type:'doughnut',data:{labels:['Experto','En Formación','Principiante'],datasets:[{data:[exp2,form2,princ2],backgroundColor:['#00e676','#ff8c00','#ff4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((s,v)=>s+v,0);const p=t?Math.round(c.raw/t*100):0;return c.label+': '+p+'%';}}}}}}});
+        charts[`mod_${m}`]=new Chart(document.getElementById(cid),{type:'doughnut',data:{labels:['Experto','En Formación','Principiante'],datasets:[{data:[exp2,form2,princ2],backgroundColor:['#00e676','#ff8c00','#ff4444'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>{const t=c.dataset.data.reduce((s,v)=>s+v,0);const p=t?Math.round(c.raw/t*100):0;return c.label+': '+p+'%';}}}}}});
       },50);
       return;
     }
