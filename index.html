@@ -1944,31 +1944,63 @@ function bQs(){
     '<script>'+dataVars+staticJs+'<\\/script>'+
     '</body></html>';
 
-  // Open dashboard in new tab via Blob URL (works on HTTPS, no popup-blocker issues)
-  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-  const blobUrl=URL.createObjectURL(blob);
-  const win=window.open(blobUrl,'_blank');
-  if(!win){showToast('⚠ Permite ventanas emergentes para este sitio');return;}
-  // Revoke blob URL after short delay (page is already loaded)
-  setTimeout(function(){URL.revokeObjectURL(blobUrl);},5000);
+  // ── Publish dashboard.html to GitHub Pages ────────────────────────────────
+  const DASHBOARD_URL='https://jorgeicone.github.io/icone-eval/dashboard.html';
+  showToast('⏳ Publicando dashboard...');
 
-  // Copy toast
-  const clipText='📊 ICONE Eval — '+currentEval+' | Diplomado CX 2026\n'+
-    '✅ '+n+' participantes · Promedio: '+avg+'/100\n'+
-    '🥇 Expertos: '+expPct+'%  |  📈 En Formación: '+formPct+'%  |  🔴 Principiantes: '+princPct+'%\n\n'+
-    'Incluye análisis ICONE: Identificar · Conectar · Ejecutar\niconeialabs.com';
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(clipText)
-      .then(function(){showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');})
-      .catch(function(){showToast('📊 Dashboard abierto en nueva pestaña');});
-  } else {
-    var ta=document.createElement('textarea');ta.value=clipText;
-    ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
-    document.body.appendChild(ta);ta.select();
-    try{document.execCommand('copy');showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');}
-    catch(e2){showToast('📊 Dashboard abierto en nueva pestaña');}
-    document.body.removeChild(ta);
-  }
+  (async function(){
+    try{
+      const token=await getToken();
+      // Encode HTML to base64 (handle Unicode)
+      const bytes=new TextEncoder().encode(html);
+      let binary='';
+      bytes.forEach(function(b){binary+=String.fromCharCode(b);});
+      const b64=btoa(binary);
+
+      // Check if dashboard.html already exists (need SHA to update)
+      let sha='';
+      try{
+        const chk=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',
+          {headers:{'Authorization':'token '+token}});
+        if(chk.ok){const d=await chk.json();sha=d.sha||'';}
+      }catch(e){}
+
+      // Push to GitHub
+      const body={message:'Dashboard update '+new Date().toISOString().slice(0,16),content:b64};
+      if(sha)body.sha=sha;
+      const res=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+        body:JSON.stringify(body)
+      });
+      if(!res.ok)throw new Error('GitHub API error '+res.status);
+
+      // Open in new tab
+      window.open(DASHBOARD_URL,'_blank');
+
+      // Copy URL to clipboard
+      const copyUrl=function(){
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(DASHBOARD_URL)
+            .then(function(){showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');})
+            .catch(function(){showToast('✅ Dashboard publicado: '+DASHBOARD_URL);});
+        } else {
+          var ta=document.createElement('textarea');ta.value=DASHBOARD_URL;
+          ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
+          document.body.appendChild(ta);ta.select();
+          try{document.execCommand('copy');showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');}
+          catch(e2){showToast('✅ Dashboard publicado en GitHub Pages');}
+          document.body.removeChild(ta);
+        }
+      };
+      // Small delay: GitHub Pages needs ~5s to propagate, but URL opens right away
+      setTimeout(copyUrl,800);
+
+    }catch(err2){
+      console.error('shareLink publish error:',err2);
+      showToast('❌ Error publicando: '+err2.message);
+    }
+  })();
 }catch(err){console.error('shareLink error:',err);showToast('Error al generar dashboard: '+err.message);}}
 
 
