@@ -328,10 +328,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 @media(max-width:700px){.open-card2{grid-template-columns:1fr}.commitment-card2{grid-template-columns:1fr}}
 
 /* ── M2 Commitment destacado ── */
-.commitment-card2{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.05));border:1.5px solid var(--yellow);border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin:18px 0;position:relative;overflow:hidden;text-align:left}
-.commitment-card2::before{content:'\2B50';position:absolute;top:-12px;left:18px;font-size:34px;opacity:.3}
-.commitment-card2 .clabel{font-size:10px;color:var(--yellow);letter-spacing:1.8px;font-weight:800;margin-bottom:5px;text-transform:uppercase;padding-left:30px}
-.commitment-card2 .ctext{font-size:13px;font-style:italic;color:var(--white);line-height:1.55;padding-left:30px}
+.commitment-card2{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.05));border:1.5px solid var(--yellow);border-radius:14px;padding:20px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;margin:18px 0;position:relative;text-align:left}
+.commitment-card2 .cstar{width:48px;height:48px;border-radius:50%;background:rgba(255,215,0,.15);border:1.5px solid rgba(255,215,0,.5);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.commitment-card2 .clabel{font-size:10px;color:var(--yellow);letter-spacing:1.8px;font-weight:800;margin-bottom:5px;text-transform:uppercase}
+.commitment-card2 .ctext{font-size:13px;font-style:italic;color:var(--white);line-height:1.55}
 
 /* ── M2 section heads y feedback ── */
 .r-section-head{display:flex;align-items:center;gap:10px;margin:24px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--border);text-align:left}
@@ -1608,6 +1608,7 @@ async function finalizarEvaluacion(timeout=false){
       });
       if(compromiso){
         oh += `<div class="commitment-card2">
+          <div class="cstar">⭐</div>
           <div>
             <div class="clabel">Tu compromiso personal</div>
             <div class="ctext">"${(compromiso.texto||'').replace(/</g,'&lt;')}"</div>
