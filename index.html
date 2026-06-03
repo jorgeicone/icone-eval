@@ -72,6 +72,16 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .feedback-box{margin-top:14px;padding:13px 16px;border-radius:10px;font-size:13px;line-height:1.5;}
 .feedback-correct{background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:#a5f3c5;}
 .feedback-incorrect{background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.25);color:#ffaaaa;}
+.q-open-meta{font-size:11px;color:var(--cyan);background:rgba(0,179,225,.07);border:1px solid rgba(0,179,225,.22);border-radius:9px;padding:9px 12px;margin-bottom:12px;line-height:1.5;}
+.q-open-meta.commitment{color:#ffd87a;background:rgba(255,200,30,.07);border-color:rgba(255,200,30,.3);}
+#open-answer{width:100%;min-height:140px;border-radius:12px;border:1px solid rgba(0,179,225,.25);background:rgba(255,255,255,.04);color:#fff;padding:12px 14px;font-size:14px;line-height:1.55;font-family:inherit;resize:vertical;transition:all .2s;}
+#open-answer:focus{outline:none;border-color:var(--cyan);background:rgba(0,179,225,.06);}
+.char-count{font-size:10px;color:var(--gray);margin-top:6px;text-align:right;}
+.char-count.ok{color:var(--green);}
+.nivel-badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.5px;}
+.nivel-alto{background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.4);}
+.nivel-adecuado{background:rgba(0,179,225,.15);color:var(--cyan);border:1px solid rgba(0,179,225,.4);}
+.nivel-basico{background:rgba(255,140,0,.15);color:var(--orange);border:1px solid rgba(255,140,0,.4);}
 
 /* ── SCORE RING ── */
 .score-ring-wrap{display:flex;justify-content:center;margin:20px 0;}
@@ -277,18 +287,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   </div>
   <div class="container">
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:4px;">
-      <div class="card" style="text-align:center;border-color:rgba(0,179,225,.4);position:relative;overflow:hidden;">
+      <div class="card mod-card-clickable" onclick="iniciarModulo('M1')" style="text-align:center;border-color:rgba(0,179,225,.4);position:relative;overflow:hidden;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 22px rgba(0,179,225,.18)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
         <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));"></div>
         <div style="font-size:28px;margin-bottom:8px;">📚</div>
         <div style="font-weight:700;color:var(--cyan);margin-bottom:3px;">Módulo 1</div>
         <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fundamentos CX</div>
         <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(0,230,118,.12);border:1px solid var(--green);font-size:10px;color:var(--green);font-weight:700;">DISPONIBLE</div>
       </div>
-      <div class="card" style="text-align:center;opacity:.4;">
+      <div class="card mod-card-clickable" onclick="iniciarModulo('M2')" style="text-align:center;border-color:rgba(0,230,118,.4);position:relative;overflow:hidden;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 22px rgba(0,230,118,.18)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cyan));"></div>
         <div style="font-size:28px;margin-bottom:8px;">🤝</div>
-        <div style="font-weight:700;color:var(--gray);margin-bottom:3px;">Módulo 2</div>
+        <div style="font-weight:700;color:var(--green);margin-bottom:3px;">Módulo 2</div>
         <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fidelización</div>
-        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.06);font-size:10px;color:var(--gray);font-weight:700;">PRÓXIMAMENTE</div>
+        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(0,230,118,.12);border:1px solid var(--green);font-size:10px;color:var(--green);font-weight:700;">DISPONIBLE</div>
       </div>
       <div class="card" style="text-align:center;opacity:.4;">
         <div style="font-size:28px;margin-bottom:8px;">🧠</div>
@@ -316,11 +327,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   <div class="container" style="padding-top:36px;">
     <div class="card fade-in">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:22px;">
-        <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📚</div>
+        <div id="reg-icon" style="width:44px;height:44px;border-radius:12px;background:rgba(0,179,225,.12);border:1px solid rgba(0,179,225,.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">📚</div>
         <div>
-          <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;margin-bottom:3px;">MÓDULO 1</div>
-          <h2 style="font-size:18px;font-weight:900;">Fundamentos de la Experiencia del Cliente</h2>
-          <p style="color:var(--gray);font-size:11px;margin-top:2px;">15 preguntas · 20 minutos · Una sola oportunidad</p>
+          <div id="reg-mod-label" style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;margin-bottom:3px;">MÓDULO 1</div>
+          <h2 id="reg-title" style="font-size:18px;font-weight:900;">Fundamentos de la Experiencia del Cliente</h2>
+          <p id="reg-subtitle" style="color:var(--gray);font-size:11px;margin-top:2px;">15 preguntas · 20 minutos · Una sola oportunidad</p>
         </div>
       </div>
       <div id="registro-form">
@@ -336,7 +347,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
       <div id="ya-respondido" style="display:none;text-align:center;padding:20px 0;">
         <div style="font-size:44px;margin-bottom:10px;">✅</div>
         <h3 style="margin-bottom:7px;">Ya completaste esta evaluación</h3>
-        <p style="color:var(--gray);font-size:13px;margin-bottom:18px;">Tu evaluación del Módulo 1 ya fue registrada en este dispositivo.</p>
+        <p id="ya-respondido-text" style="color:var(--gray);font-size:13px;margin-bottom:18px;">Tu evaluación del Módulo 1 ya fue registrada en este dispositivo.</p>
         <div id="ya-respondido-score" style="display:none;background:rgba(0,179,225,.08);border:1px solid rgba(0,179,225,.2);border-radius:12px;padding:14px 20px;margin-bottom:18px;">
           <div style="font-size:28px;font-weight:900;color:var(--cyan);" id="ya-score-val">—</div>
           <div style="font-size:11px;color:var(--gray);margin-top:2px;" id="ya-score-sub">puntos · — de 15 correctas</div>
@@ -385,10 +396,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   <div class="container" style="padding-top:28px;">
     <div class="card fade-in" style="text-align:center;">
       <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:14px;">
-        <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;">POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · MÓDULO 1</div>
+        <div id="result-modlabel" style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:2px;">POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · MÓDULO 1</div>
       </div>
       <h2 style="font-size:20px;margin-bottom:4px;" id="result-name">¡Bien hecho!</h2>
-      <p style="color:var(--gray);font-size:12px;margin-bottom:18px;">Fundamentos de la Experiencia del Cliente</p>
+      <p id="result-modsubtitle" style="color:var(--gray);font-size:12px;margin-bottom:18px;">Fundamentos de la Experiencia del Cliente</p>
+      <div id="result-open-answers" style="display:none;"></div>
       <div class="score-ring-wrap">
         <div class="score-ring">
           <svg width="150" height="150" viewBox="0 0 150 150">
@@ -488,10 +500,13 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <!-- Stats (4 cards) -->
     <div class="adm-stats" id="eval-stats-row"></div>
     <!-- Analytics Tabs -->
-    <div class="adm-tabs">
-      <button class="adm-tab active" onclick="switchAdminTab2('distribucion',this)">📊 Distribución</button>
-      <button class="adm-tab" onclick="switchAdminTab2('por-modulo',this)">📚 Por Módulo</button>
-      <button class="adm-tab" onclick="switchAdminTab2('por-pregunta',this)">❓ Por Pregunta</button>
+    <div class="adm-tabs" id="adm-tabs-bar">
+      <button class="adm-tab active" data-tab="distribucion" onclick="switchAdminTab2('distribucion',this)">📊 Distribución</button>
+      <button class="adm-tab" data-tab="por-modulo" onclick="switchAdminTab2('por-modulo',this)">📚 Por Módulo</button>
+      <button class="adm-tab" data-tab="por-pregunta" onclick="switchAdminTab2('por-pregunta',this)">❓ Por Pregunta</button>
+      <button class="adm-tab m2-only" data-tab="rubrica" onclick="switchAdminTab2('rubrica',this)" style="display:none;">🎯 Rúbrica IA</button>
+      <button class="adm-tab m2-only" data-tab="abiertas" onclick="switchAdminTab2('abiertas',this)" style="display:none;">📝 Abiertas</button>
+      <button class="adm-tab m2-only" data-tab="compromisos" onclick="switchAdminTab2('compromisos',this)" style="display:none;">⭐ Compromisos</button>
     </div>
     <!-- TAB: Distribución -->
     <div id="tab2-distribucion" class="adm-panel">
@@ -512,6 +527,21 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <div id="tab2-por-pregunta" class="adm-panel" style="display:none;">
       <div id="qs-grid" class="adm-qs-grid"></div>
       <div id="qs-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin respuestas detalladas aún.</div>
+    </div>
+    <!-- TAB: Rúbrica IA (solo M2) -->
+    <div id="tab2-rubrica" class="adm-panel" style="display:none;">
+      <div class="chart-card"><div class="chart-title">🎯 RÚBRICA ICONE — Nivel promedio por criterio</div><div style="position:relative;height:340px;"><canvas id="chart-rubrica"></canvas></div></div>
+      <div id="rubrica-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin respuestas abiertas evaluadas aún.</div>
+    </div>
+    <!-- TAB: Abiertas (solo M2) -->
+    <div id="tab2-abiertas" class="adm-panel" style="display:none;">
+      <div id="abiertas-content"></div>
+      <div id="abiertas-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin respuestas abiertas evaluadas aún.</div>
+    </div>
+    <!-- TAB: Compromisos (solo M2) -->
+    <div id="tab2-compromisos" class="adm-panel" style="display:none;">
+      <div id="compromisos-content"></div>
+      <div id="compromisos-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin compromisos registrados aún.</div>
     </div>
     <!-- Participant Accordion -->
     <div class="adm-acc-section">
@@ -695,6 +725,24 @@ const EVALUACIONES={M1:{titulo:'Módulo 1 — Fundamentos CX',tiempo:1200,pregun
 {q:'Un local decide que su Momento Pico será ayudar al cliente a armar un outfit completo. ¿Qué paso del diseño del Pico va PRIMERO?',opts:['Diseñar el gesto exacto (qué decir, cómo hacerlo).','Definir la emoción que quiere generar (confianza, sorpresa, pertenencia).','Elegir el momento del journey donde ocurrirá el pico.','Medir si el cliente reacciona diferente después del gesto.'],correct:2,feedbackOk:'¡Perfecto! Primero ELIGE dónde ocurre el pico. Sin saber cuándo y dónde, no puedes diseñar el qué ni el cómo.',feedbackFail:'Los 3 pasos son en orden: 1) ELEGIR el momento, 2) DEFINIR la emoción, 3) DISEÑAR el gesto.'},
 {q:'¿Cuál es la diferencia principal entre una experiencia "Esperada" y una experiencia "WOW"?',opts:['La experiencia WOW requiere siempre mayor presupuesto.','Lo Esperado cubre lo que el cliente da por sentado; el WOW supera esas expectativas con algo que no anticipaba.','La experiencia WOW solo es posible en locales de lujo.','Lo Esperado implica un trato frío; el WOW implica un trato amable.'],correct:1,feedbackOk:'¡Excelente! El WOW no requiere dinero — requiere intención. Es superar expectativas con algo que el cliente no anticipaba.',feedbackFail:'El WOW no es solo amabilidad ni requiere presupuesto. Es superar las expectativas con algo que el cliente no anticipaba.'},
 {q:'Según el método de los 5 pasos para crear un Momento WOW, ¿cuál es el paso más frecuentemente omitido en la práctica?',opts:['Observar las frustraciones del cliente.','Elegir el Momento de Verdad a mejorar.','Practicar el gesto con el equipo antes de aplicarlo con clientes.','Diseñar el gesto exacto.'],correct:2,feedbackOk:'¡Exacto! PRACTICAR es el paso más omitido. Las empresas diseñan el gesto pero no entrenan a su equipo. Un WOW no practicado se ve forzado.',feedbackFail:'El paso más omitido es PRACTICAR con el equipo. Las empresas diseñan el WOW en papel pero rara vez lo ensayan.'}
+]},
+M2:{titulo:'Módulo 2 — Fidelización y Relacionamiento',tiempo:1200,preguntas:[
+{q:'¿Qué ayuda más a que un cliente se sienta bien atendido?',opts:['Escucharlo, orientarlo y tratarlo con respeto.','Responder rápido sin escuchar.','Decirle que espere sin explicarle nada.','Evitar el contacto con el cliente.'],correct:0,feedbackOk:'Exacto. La escucha y el respeto son la base de una buena atención.',feedbackFail:'La buena atención empieza por escuchar y orientar con respeto.'},
+{q:'¿Qué puede hacer que un cliente quiera volver a Plaza Imperial?',opts:['Sentirse bienvenido, valorado y acompañado.','Que nadie le responda sus inquietudes.','Que lo atiendan de mala manera.','Que no encuentre orientación.'],correct:0,feedbackOk:'Correcto. Sentirse valorado es el motor de la fidelización.',feedbackFail:'Lo que hace volver al cliente es sentirse bienvenido y valorado.'},
+{q:'Cuando un cliente tiene una inconformidad, lo más adecuado es:',opts:['Ignorarlo para evitar problemas.','Escuchar con calma, entender la situación y buscar una alternativa.','Decirle que no es responsabilidad del centro comercial.','Responderle en el mismo tono si está molesto.'],correct:1,feedbackOk:'Perfecto. Escuchar con calma y proponer una alternativa siempre suma.',feedbackFail:'Escuchar con calma y buscar alternativa es lo más adecuado.'},
+{q:'¿Cuál es una forma sencilla de fidelizar a un cliente?',opts:['Hacerlo sentir importante y darle una buena experiencia.','Atenderlo solo si va a comprar.','No saludarlo para no incomodarlo.','Evitar darle información.'],correct:0,feedbackOk:'Sí. Una experiencia que hace sentir importante al cliente lo trae de vuelta.',feedbackFail:'Fidelizar parte de hacer sentir importante al cliente.'},
+{q:'La fidelización significa que el cliente:',opts:['Compra una sola vez y no vuelve.','Se siente satisfecho, regresa y puede recomendar el lugar.','Solo visita el centro comercial por obligación.','No necesita recibir buena atención.'],correct:1,feedbackOk:'Exacto. Regreso + recomendación son la firma de un cliente fidelizado.',feedbackFail:'Fidelizar es lograr que el cliente vuelva y recomiende el lugar.'},
+{q:'¿Por qué es importante hacer seguimiento o dar una buena orientación después de atender a un cliente?',opts:['Porque fortalece la confianza y la relación.','Porque hace perder tiempo.','Porque solo aplica para los líderes.','Porque no tiene relación con el servicio.'],correct:0,feedbackOk:'Correcto. El seguimiento construye confianza a largo plazo.',feedbackFail:'El seguimiento fortalece la confianza y la relación con el cliente.'},
+{q:'¿Qué refleja una buena cultura de servicio?',opts:['Que cada persona del equipo entiende que su trabajo impacta la experiencia del cliente.','Que solo los vendedores deben atender bien.','Que cada área trabaja sin pensar en los demás.','Que el cliente debe resolver todo solo.'],correct:0,feedbackOk:'Así es. Todos somos parte de la experiencia, no solo ventas.',feedbackFail:'La cultura de servicio implica que TODO el equipo impacta la experiencia.'},
+{q:'Cuando no se puede dar al cliente exactamente lo que pide, lo mejor es:',opts:['Decirle simplemente que no.','Ofrecer alternativas, orientar o remitir con quien pueda ayudar.','Cerrarle la conversación.','Dejarlo esperando sin respuesta.'],correct:1,feedbackOk:'Perfecto. Una alternativa cuidadosa convierte un "no" en una buena experiencia.',feedbackFail:'Cuando no se puede, hay que ofrecer alternativa u orientar a quien sí puede ayudar.'},
+{q:'¿Qué diferencia hay entre atención y servicio?',opts:['La atención es el contacto inicial; el servicio es la experiencia completa que vive el cliente.','Son palabras que no tienen ninguna diferencia.','Atención es vender más y servicio es hablar más.','Servicio significa atender solo cuando hay quejas.'],correct:0,feedbackOk:'Exacto. Atención es el inicio, servicio es toda la experiencia.',feedbackFail:'Atención = contacto inicial. Servicio = toda la experiencia del cliente.'},
+{q:'¿Qué ayuda a construir una relación positiva con el cliente?',opts:['Respeto, empatía, claridad, buena actitud y solución.','Frialdad, distancia y poca información.','Prometer cosas que no se pueden cumplir.','Hacer sentir al cliente que molesta.'],correct:0,feedbackOk:'Sí. Respeto + empatía + solución es la fórmula.',feedbackFail:'Respeto, empatía, claridad y solución construyen relaciones positivas.'},
+{type:'open',q:'¿Qué aprendió sobre la importancia de fidelizar a los clientes y visitantes?',criterio:'Fidelización',nivelEsperado:'Adecuado-Alto',minChars:40,puntosMax:8},
+{type:'open',q:'¿Qué puede hacer desde su puesto de trabajo para que un cliente quiera volver a Plaza Imperial?',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'open',q:'¿Qué acción concreta puede realizar para que una persona se sienta bienvenida, segura y bien orientada?',criterio:'Claridad',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'open',q:'¿Cómo puede poner límites con respeto cuando un cliente exige algo que no es posible?',criterio:'Respeto y límites',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'open',q:'¿Cómo cree que su trabajo aporta a la experiencia general del centro comercial?',criterio:'Trabajo en equipo',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'commitment',q:'Escriba un compromiso sencillo y posible de aplicar en su trabajo diario para mejorar la atención, el servicio y la fidelización de los clientes.',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:30,puntosMax:10}
 ]}};
 
 const FB_GENERAL={sobresaliente:'🌟 Sobresaliente. Dominas los conceptos del Módulo 1 con profundidad. Estás listo para aplicar la Peak-End Rule, los 5 Factores y los Momentos de Verdad en tu local desde hoy.',satisfactorio:'✅ Satisfactorio. Tienes una base sólida del Módulo 1. Revisa los temas donde fallaste — son las áreas donde tienes mayor potencial de mejora.',proceso:'⚠️ En Proceso. Estás construyendo tu comprensión de la experiencia del cliente. Te recomendamos repasar los materiales del módulo antes del siguiente.',refuerzo:'🔴 Requiere Refuerzo. Los conceptos del Módulo 1 son la base de todo el diplomado. Te invitamos a revisar la presentación y los recursos antes de continuar.'};
@@ -714,6 +762,111 @@ let outerAccOpen=false;
 const GH_REPO  = "jorgeicone/icone-eval";
 const GH_PART  = "ghp_6g1MgGH3VXcG"; // Part A — Part B in config.json
 let _ghToken   = null;
+
+/* ══════════════════════════════════════════
+   ANTHROPIC API — evaluación de abiertas
+   ══════════════════════════════════════════ */
+const ANTH_PART = "sk-ant-api03-u1zRO16m4KopMbfeU_NHJdC6imdkNhI30r_D7x0IxLEddukkqM"; // Part A — Part B in config.json field "a"
+let _anthKey = null;
+async function getAnthKey(){
+  if(_anthKey) return _anthKey;
+  try{
+    const cfg = await fetch(`https://raw.githubusercontent.com/${GH_REPO}/main/config.json?t=${Date.now()}`);
+    const d = await cfg.json();
+    if(!d.a) return null;
+    _anthKey = ANTH_PART + d.a;
+    return _anthKey;
+  }catch(e){ console.error("Anth key fetch failed",e); return null; }
+}
+
+const RUBRICA_ICONE = `RÚBRICA ICONE — Plaza Imperial · Diplomado CX
+
+Criterios:
+- Claridad: La respuesta se entiende y usa ejemplos sencillos.
+- Aplicación práctica: Conecta el aprendizaje con su puesto de trabajo.
+- Fidelización: Menciona regreso, recomendación, confianza, buena experiencia o vínculo con el cliente.
+- Respeto y límites: Reconoce la importancia de tratar bien sin permitir irrespeto o prometer lo que no se puede cumplir.
+- Trabajo en equipo: Comprende que todos impactan la experiencia del cliente, no solo ventas o servicio al cliente.
+
+Niveles:
+- Básico: respuesta corta, vaga, sin ejemplo o sin conexión clara con el criterio.
+- Adecuado: respuesta clara, con ejemplo aplicable al puesto de trabajo, alineada con el criterio.
+- Alto: respuesta clara + ejemplo concreto + comprensión profunda + reflexión personal.`;
+
+const PUNTOS_NIVEL = {'Básico':{abierta:3,compromiso:4},'Adecuado':{abierta:6,compromiso:7},'Alto':{abierta:8,compromiso:10}};
+
+async function evaluarConIA(pregunta, respuesta, criterio, tipo){
+  const key = await getAnthKey();
+  if(!key) return {nivel:'Adecuado', puntos:(tipo==='commitment'?7:6), error:'no-key'};
+  try{
+    const prompt = `${RUBRICA_ICONE}
+
+EVALUACIÓN A REALIZAR:
+
+Pregunta: "${pregunta}"
+Criterio principal: ${criterio}
+Respuesta del asesor: "${respuesta}"
+
+Tarea: clasifica la respuesta en UNO de los tres niveles según la rúbrica. Considera longitud, claridad, presencia de ejemplo y alineación con el criterio.
+
+Responde EXACTAMENTE con uno de estos tres valores y nada más:
+Básico
+Adecuado
+Alto`;
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'content-type':'application/json',
+        'x-api-key':key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body:JSON.stringify({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:60,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!res.ok){ console.error('IA error',await res.text()); return {nivel:'Adecuado', puntos:(tipo==='commitment'?7:6), error:'api'}; }
+    const data = await res.json();
+    const raw = (data?.content?.[0]?.text||'').trim().toLowerCase();
+    let nivel = 'Adecuado';
+    if(raw.includes('alto')) nivel='Alto';
+    else if(raw.includes('básico')||raw.includes('basico')) nivel='Básico';
+    const puntos = tipo==='commitment'?PUNTOS_NIVEL[nivel].compromiso:PUNTOS_NIVEL[nivel].abierta;
+    return {nivel, puntos};
+  }catch(e){
+    console.error('evaluarConIA error',e);
+    return {nivel:'Adecuado', puntos:(tipo==='commitment'?7:6), error:'exception'};
+  }
+}
+
+/* Selección de módulo desde landing */
+function iniciarModulo(mod){
+  if(mod!=='M1' && mod!=='M2') return;
+  state.modulo = mod;
+  // Tiempo base por módulo
+  const tiempoMod = EVALUACIONES[mod]?.tiempo || 1200;
+  state.timerSeconds = tiempoMod;
+  // Actualizar header de registro
+  const cfgMod = {
+    M1: {icon:'📚', iconBg:'rgba(0,179,225,.12)', iconBd:'rgba(0,179,225,.3)', label:'MÓDULO 1', labelCol:'var(--cyan)', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
+    M2: {icon:'🤝', iconBg:'rgba(0,230,118,.12)', iconBd:'rgba(0,230,118,.3)', label:'MÓDULO 2', labelCol:'var(--green)', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+  }[mod];
+  const ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfgMod.icon;ic.style.background=cfgMod.iconBg;ic.style.borderColor=cfgMod.iconBd;}
+  const ml=document.getElementById('reg-mod-label'); if(ml){ml.textContent=cfgMod.label;ml.style.color=cfgMod.labelCol;}
+  const tt=document.getElementById('reg-title'); if(tt) tt.textContent=cfgMod.titulo;
+  const st=document.getElementById('reg-subtitle'); if(st) st.textContent=cfgMod.subtitulo;
+  const yr=document.getElementById('ya-respondido-text'); if(yr) yr.textContent=`Tu evaluación del ${cfgMod.label.replace('MÓDULO','Módulo')} ya fue registrada en este dispositivo.`;
+  // Actualizar header de resultados también
+  const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${cfgMod.label}`;
+  const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfgMod.titulo;
+  // Reset registro view
+  document.getElementById('registro-form').style.display='block';
+  document.getElementById('ya-respondido').style.display='none';
+  document.getElementById('registro-error').style.display='none';
+  showSection('s-registro');
+}
 
 async function getToken(){
   if(_ghToken) return _ghToken;
@@ -818,8 +971,9 @@ function iniciarEvaluacion(){
   err.style.display='none';
   state.participante={nombre:n,local:l,email:ek,phone:p,rol};
   const saved=localStorage.getItem(progKey);
-  if(saved){const pr=JSON.parse(saved);state.respuestas=pr.respuestas||{};state.currentQ=pr.currentQ||0;state.timerSeconds=pr.timerSeconds||1200;document.getElementById('resume-banner').style.display='block';}
-  else{state.respuestas={};state.currentQ=0;state.timerSeconds=1200;}
+  const tiempoMod = EVALUACIONES[state.modulo]?.tiempo || 1200;
+  if(saved){const pr=JSON.parse(saved);state.respuestas=pr.respuestas||{};state.currentQ=pr.currentQ||0;state.timerSeconds=pr.timerSeconds||tiempoMod;document.getElementById('resume-banner').style.display='block';}
+  else{state.respuestas={};state.currentQ=0;state.timerSeconds=tiempoMod;}
   showSection('s-evaluacion');renderQuestion();startTimer();
 }
 
@@ -863,28 +1017,66 @@ function renderQuestion(){
   document.getElementById('q-counter').textContent=`${i+1}/${tot}`;
   document.getElementById('q-text').textContent=q.q;
   document.getElementById('q-progress').style.width=`${((i+1)/tot)*100}%`;
-  const ans=state.respuestas[i]!==undefined;const sel=state.respuestas[i];
-  const L=['A','B','C','D'];
-  let h='';
-  q.opts.forEach((o,j)=>{
-    let c='option';
-    if(ans){if(j===q.correct)c+=' correct';else if(j===sel)c+=' incorrect';}else if(j===sel)c+=' selected';
-    h+=`<div class="${c}" ${ans?'style="cursor:default"':''} onclick="${ans?'':` selectOption(${j})`}"><div class="option-letter">${L[j]}</div><div class="option-text">${o}</div></div>`;
-  });
-  document.getElementById('q-options').innerHTML=h;
   const fb=document.getElementById('q-feedback');
-  if(ans){const ok=sel===q.correct;fb.innerHTML=`<div class="feedback-box ${ok?'feedback-correct':'feedback-incorrect'}">${ok?'✅':'❌'} ${ok?q.feedbackOk:q.feedbackFail}</div>`;fb.style.display='block';}
-  else fb.style.display='none';
+
+  if(q.type==='open' || q.type==='commitment'){
+    // Render textarea para preguntas abiertas
+    const isCom = q.type==='commitment';
+    const labelTipo = isCom ? '⭐ COMPROMISO PERSONAL' : 'PREGUNTA ABIERTA';
+    document.getElementById('q-num').textContent=`PREGUNTA ${i+1} DE ${tot} · ${labelTipo}`;
+    const respObj = state.respuestas[i];
+    const texto = (respObj && typeof respObj==='object') ? (respObj.texto||'') : '';
+    const html = `<div class="q-open-meta ${isCom?'commitment':''}">Se evaluará con la rúbrica <strong>"${q.criterio}"</strong> · Nivel esperado: ${q.nivelEsperado} · Mínimo ${q.minChars} caracteres.</div>
+      <textarea id="open-answer" placeholder="Escriba con sus propias palabras..." oninput="onOpenInput(this)">${texto.replace(/</g,'&lt;')}</textarea>
+      <div class="char-count" id="char-count">${texto.length} caracteres ${texto.length>=q.minChars?'· ✓ mínimo cubierto':''}</div>`;
+    document.getElementById('q-options').innerHTML = html;
+    fb.style.display='none';
+  } else {
+    // MCQ — render original
+    const ans=state.respuestas[i]!==undefined;const sel=state.respuestas[i];
+    const L=['A','B','C','D'];
+    let h='';
+    q.opts.forEach((o,j)=>{
+      let c='option';
+      if(ans){if(j===q.correct)c+=' correct';else if(j===sel)c+=' incorrect';}else if(j===sel)c+=' selected';
+      h+=`<div class="${c}" ${ans?'style="cursor:default"':''} onclick="${ans?'':` selectOption(${j})`}"><div class="option-letter">${L[j]}</div><div class="option-text">${o}</div></div>`;
+    });
+    document.getElementById('q-options').innerHTML=h;
+    if(ans){const ok=sel===q.correct;fb.innerHTML=`<div class="feedback-box ${ok?'feedback-correct':'feedback-incorrect'}">${ok?'✅':'❌'} ${ok?q.feedbackOk:q.feedbackFail}</div>`;fb.style.display='block';}
+    else fb.style.display='none';
+  }
+
   document.getElementById('btn-prev').disabled=i===0;
   const nb=document.getElementById('btn-next');
-  if(i===tot-1){nb.textContent=Object.keys(state.respuestas).length===tot?'🏆 Ver Resultados':'Finalizar →';nb.onclick=finalizarEvaluacion;}
+  // Cuenta respondidas (objeto cuenta como respondida si tiene texto)
+  const respondidasCount = Object.keys(state.respuestas).filter(k=>{
+    const v=state.respuestas[k];
+    if(v===undefined||v===null) return false;
+    if(typeof v==='object') return !!(v.texto && v.texto.trim().length>0);
+    return true;
+  }).length;
+  if(i===tot-1){nb.textContent=respondidasCount===tot?'🏆 Ver Resultados':'Finalizar →';nb.onclick=finalizarEvaluacion;}
   else{nb.textContent='Siguiente →';nb.onclick=nextQuestion;}
 }
 
+function onOpenInput(el){
+  const idx = state.currentQ;
+  const q = EVALUACIONES[state.modulo].preguntas[idx];
+  state.respuestas[idx] = {texto: el.value, type: q.type};
+  const cc = document.getElementById('char-count');
+  if(cc){
+    const ok = el.value.length >= q.minChars;
+    cc.textContent = el.value.length + ' caracteres' + (ok?' · ✓ mínimo cubierto':'');
+    cc.className = 'char-count' + (ok?' ok':'');
+  }
+  saveProgress();
+}
+
 function selectOption(j){
+  const q=EVALUACIONES[state.modulo].preguntas[state.currentQ];
+  if(q.type==='open'||q.type==='commitment') return;
   if(state.respuestas[state.currentQ]!==undefined)return;
   state.respuestas[state.currentQ]=j;
-  const q=EVALUACIONES[state.modulo].preguntas[state.currentQ];
   const ok=(j===q.correct);
   playSound(ok?'correct':'wrong');
   saveProgress();renderQuestion();
@@ -916,11 +1108,66 @@ function updTimer(){
   if(state.timerSeconds<=120)el.classList.add('urgent');else el.classList.remove('urgent');
 }
 
-function finalizarEvaluacion(timeout=false){
+async function finalizarEvaluacion(timeout=false){
   if(state.timerInterval)clearInterval(state.timerInterval);
   const qs=EVALUACIONES[state.modulo].preguntas;const tot=qs.length;
-  let correctas=0;qs.forEach((q,i)=>{if(state.respuestas[i]===q.correct)correctas++;});
-  const puntaje=Math.round(correctas*(100/tot)*10)/10;
+  const hasOpen = qs.some(q => q.type==='open' || q.type==='commitment');
+
+  let correctas=0;
+  let puntajeRaw=0;
+  let puntajeMax=0;
+  const respuestasAbiertas=[];
+
+  // Mostrar loader IA si hay abiertas
+  if(hasOpen) mostrarLoaderIA();
+
+  // Procesar cerradas
+  qs.forEach((q,i)=>{
+    if(q.type==='open' || q.type==='commitment'){
+      puntajeMax += (q.puntosMax||8);
+      return;
+    }
+    const valorCerrada = (state.modulo==='M2') ? 5 : (100/tot);
+    puntajeMax += valorCerrada;
+    if(state.respuestas[i]===q.correct){
+      correctas++;
+      puntajeRaw += valorCerrada;
+    }
+  });
+
+  // Procesar abiertas con IA en paralelo
+  if(hasOpen){
+    const promises=[];
+    qs.forEach((q,i)=>{
+      if(q.type==='open' || q.type==='commitment'){
+        const respObj = state.respuestas[i] || {texto:''};
+        const texto = (respObj.texto||'').trim() || '(sin respuesta)';
+        promises.push(
+          evaluarConIA(q.q, texto, q.criterio, q.type).then(r => ({i, q, texto, nivel:r.nivel, puntos:r.puntos, error:r.error}))
+        );
+      }
+    });
+    try{
+      const results = await Promise.all(promises);
+      results.forEach(r=>{
+        puntajeRaw += r.puntos;
+        respuestasAbiertas.push({
+          idx: r.i,
+          pregunta: r.q.q,
+          criterio: r.q.criterio,
+          tipo: r.q.type,
+          texto: r.texto,
+          nivel: r.nivel,
+          puntos: r.puntos,
+          puntosMax: r.q.puntosMax||8
+        });
+      });
+    }catch(e){ console.error('Error evaluando abiertas:',e); }
+    ocultarLoaderIA();
+  }
+
+  const puntaje = puntajeMax > 0 ? Math.round((puntajeRaw/puntajeMax*100)*10)/10 : 0;
+
   let status,sClass,fb;
   if(puntaje>=90){status='⭐ Sobresaliente';sClass='status-sobresaliente';fb=FB_GENERAL.sobresaliente;}
   else if(puntaje>=75){status='✅ Satisfactorio';sClass='status-satisfactorio';fb=FB_GENERAL.satisfactorio;}
@@ -928,7 +1175,7 @@ function finalizarEvaluacion(timeout=false){
   else{status='🔴 Requiere Refuerzo';sClass='status-refuerzo';fb=FB_GENERAL.refuerzo;}
 
   // Store with respuestas for per-question analytics (V3+)
-  const rd={participante:state.participante,modulo:state.modulo,correctas,total:tot,puntaje,status,fecha:new Date().toISOString(),timeout,respuestas:{...state.respuestas}};
+  const rd={participante:state.participante,modulo:state.modulo,correctas,total:tot,puntaje,status,fecha:new Date().toISOString(),timeout,respuestas:{...state.respuestas},respuestasAbiertas};
 
   if(state.participante){
     const ek=state.participante.email;
@@ -948,9 +1195,19 @@ function finalizarEvaluacion(timeout=false){
   const greet=puntaje>=90?`¡Felicitaciones, ${firstName}! 🏆`:puntaje>=75?`¡Bien hecho, ${firstName}!`:puntaje>=60?`Gracias por participar, ${firstName}.`:`Sigue adelante, ${firstName}.`;
   document.getElementById('result-name').textContent=greet;
   document.getElementById('result-score').textContent=puntaje;
-  document.getElementById('result-correct-count').textContent=`${correctas} de ${tot} preguntas correctas`;
+  // M2: contar solo cerradas para el "correctas de N"
+  const totCerradas = qs.filter(q=>!(q.type==='open'||q.type==='commitment')).length;
+  document.getElementById('result-correct-count').textContent = hasOpen
+    ? `${correctas} de ${totCerradas} cerradas correctas · ${respuestasAbiertas.length} respuestas abiertas evaluadas con IA`
+    : `${correctas} de ${tot} preguntas correctas`;
   document.getElementById('result-general-feedback').textContent=fb;
   const badge=document.getElementById('result-badge');badge.className=`status-badge ${sClass}`;badge.textContent=status;
+
+  // Actualizar header de resultados según módulo
+  const modLabel = state.modulo==='M2' ? 'MÓDULO 2' : 'MÓDULO 1';
+  const modSub = state.modulo==='M2' ? 'Fidelización y Relacionamiento' : 'Fundamentos de la Experiencia del Cliente';
+  const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${modLabel}`;
+  const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=modSub;
 
   const circ=2*Math.PI*64;
   setTimeout(()=>{const c=document.getElementById('ring-circle');c.style.transition='stroke-dashoffset 1.5s ease';c.setAttribute('stroke-dashoffset',circ*(1-puntaje/100));},300);
@@ -958,21 +1215,79 @@ function finalizarEvaluacion(timeout=false){
   // Build question breakdown (inside outer accordion — collapsed by default)
   const L=['A','B','C','D'];let bh='';
   qs.forEach((q,i)=>{
-    const ua=state.respuestas[i];const ok=ua===q.correct;
     const short=q.q.length>78?q.q.substring(0,78)+'…':q.q;
-    bh+=`<div class="acc-item ${ok?'ok':'fail'}">
-      <div class="acc-header" onclick="toggleAcc(${i})">
-        <span style="font-size:14px;flex-shrink:0;">${ok?'✅':'❌'}</span>
-        <span class="acc-q-text"><strong>${i+1}.</strong> ${short}</span>
-        <span class="acc-arrow" id="acc-arrow-${i}">▼</span>
-      </div>
-      <div class="acc-body" id="acc-body-${i}">
-        <div class="acc-ans">Tu respuesta: <strong style="color:${ok?'var(--green)':'var(--red)'}">${ua!==undefined?L[ua]+') '+q.opts[ua]:'Sin responder'}</strong>${!ok?`<br>Correcta: <strong style="color:var(--green)">${L[q.correct]}) ${q.opts[q.correct]}</strong>`:''}</div>
-        <div class="acc-fb ${ok?'ok':'fail'}">${ok?q.feedbackOk:q.feedbackFail}</div>
-      </div>
-    </div>`;
+    if(q.type==='open' || q.type==='commitment'){
+      const ra = respuestasAbiertas.find(r=>r.idx===i);
+      const nivel = ra?.nivel || '—';
+      const puntos = ra?.puntos ?? 0;
+      const texto = ra?.texto || '(sin respuesta)';
+      const nivelCls = nivel==='Alto'?'nivel-alto':(nivel==='Básico'?'nivel-basico':'nivel-adecuado');
+      const tagTipo = q.type==='commitment' ? '⭐ Compromiso' : '✏️ Abierta';
+      bh+=`<div class="acc-item ok">
+        <div class="acc-header" onclick="toggleAcc(${i})">
+          <span style="font-size:14px;flex-shrink:0;">${q.type==='commitment'?'⭐':'✏️'}</span>
+          <span class="acc-q-text"><strong>${i+1}.</strong> ${short}</span>
+          <span class="nivel-badge ${nivelCls}" style="margin-right:6px;">${nivel}</span>
+          <span class="acc-arrow" id="acc-arrow-${i}">▼</span>
+        </div>
+        <div class="acc-body" id="acc-body-${i}">
+          <div class="acc-ans"><span style="color:var(--gray);font-size:10px;">${tagTipo} · Criterio: ${q.criterio} · ${puntos}/${q.puntosMax||8} pts</span><br><br>Tu respuesta:<br><em style="color:#cde0f0;">"${(texto||'').replace(/</g,'&lt;')}"</em></div>
+          <div class="acc-fb ok">Evaluada con la rúbrica ICONE — nivel <strong>${nivel}</strong>.</div>
+        </div>
+      </div>`;
+    } else {
+      const ua=state.respuestas[i];const ok=ua===q.correct;
+      bh+=`<div class="acc-item ${ok?'ok':'fail'}">
+        <div class="acc-header" onclick="toggleAcc(${i})">
+          <span style="font-size:14px;flex-shrink:0;">${ok?'✅':'❌'}</span>
+          <span class="acc-q-text"><strong>${i+1}.</strong> ${short}</span>
+          <span class="acc-arrow" id="acc-arrow-${i}">▼</span>
+        </div>
+        <div class="acc-body" id="acc-body-${i}">
+          <div class="acc-ans">Tu respuesta: <strong style="color:${ok?'var(--green)':'var(--red)'}">${ua!==undefined?L[ua]+') '+q.opts[ua]:'Sin responder'}</strong>${!ok?`<br>Correcta: <strong style="color:var(--green)">${L[q.correct]}) ${q.opts[q.correct]}</strong>`:''}</div>
+          <div class="acc-fb ${ok?'ok':'fail'}">${ok?q.feedbackOk:q.feedbackFail}</div>
+        </div>
+      </div>`;
+    }
   });
   document.getElementById('result-breakdown').innerHTML=bh;
+
+  // Render open-answers summary section (above breakdown)
+  const openContainer = document.getElementById('result-open-answers');
+  if(openContainer){
+    if(respuestasAbiertas.length){
+      const compromiso = respuestasAbiertas.find(r=>r.tipo==='commitment');
+      const abiertas = respuestasAbiertas.filter(r=>r.tipo==='open').sort((a,b)=>a.idx-b.idx);
+      let oh = '<div style="margin-top:18px;padding:14px 16px;border-radius:12px;background:rgba(0,179,225,.05);border:1px solid rgba(0,179,225,.18);">';
+      oh += '<div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:10px;">🤖 RESPUESTAS ABIERTAS — EVALUADAS POR IA</div>';
+      abiertas.forEach(r=>{
+        const cls = r.nivel==='Alto'?'nivel-alto':(r.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
+        oh += `<div style="margin-bottom:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:10px;color:var(--gray);">Criterio: <strong style="color:#fff;">${r.criterio}</strong></span>
+            <span class="nivel-badge ${cls}">${r.nivel} · ${r.puntos}/${r.puntosMax} pts</span>
+          </div>
+          <div style="font-size:11px;color:#cde0f0;font-style:italic;line-height:1.5;">"${(r.texto||'').replace(/</g,'&lt;')}"</div>
+        </div>`;
+      });
+      if(compromiso){
+        const cls = compromiso.nivel==='Alto'?'nivel-alto':(compromiso.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
+        oh += `<div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(255,200,30,.06);border:2px solid rgba(255,200,30,.35);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+            <span style="font-size:11px;font-weight:700;color:#ffd87a;">⭐ TU COMPROMISO PERSONAL</span>
+            <span class="nivel-badge ${cls}">${compromiso.nivel} · ${compromiso.puntos}/${compromiso.puntosMax} pts</span>
+          </div>
+          <div style="font-size:12px;color:#fff;line-height:1.5;">"${(compromiso.texto||'').replace(/</g,'&lt;')}"</div>
+        </div>`;
+      }
+      oh += '</div>';
+      openContainer.innerHTML = oh;
+      openContainer.style.display = 'block';
+    } else {
+      openContainer.innerHTML = '';
+      openContainer.style.display = 'none';
+    }
+  }
 
   // Reset outer accordion state
   outerAccOpen=false;
@@ -985,6 +1300,25 @@ function finalizarEvaluacion(timeout=false){
   showSection('s-resultados');
   setTimeout(()=>playSound('complete'),600);
 }
+
+function mostrarLoaderIA(){
+  let ov = document.getElementById('ia-loader-overlay');
+  if(!ov){
+    ov = document.createElement('div');
+    ov.id = 'ia-loader-overlay';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(11,28,48,0.95);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);text-align:center;padding:20px;';
+    ov.innerHTML = '<div style="width:80px;height:80px;border:5px solid rgba(0,179,225,0.2);border-top-color:#00b3e1;border-radius:50%;animation:ia-spin 1s linear infinite;margin-bottom:24px"></div><h2 style="color:#00b3e1;margin-bottom:12px;font-size:18px;">🤖 Evaluando con la rúbrica ICONE</h2><p style="color:#8a9bb4;font-size:13px;max-width:340px;">Analizando tus respuestas abiertas con inteligencia artificial. Esto puede tomar unos segundos...</p>';
+    if(!document.querySelector('style#ia-spin-style')){
+      const s = document.createElement('style');
+      s.id = 'ia-spin-style';
+      s.textContent = '@keyframes ia-spin{to{transform:rotate(360deg)}}';
+      document.head.appendChild(s);
+    }
+    document.body.appendChild(ov);
+  }
+  ov.style.display = 'flex';
+}
+function ocultarLoaderIA(){ const ov = document.getElementById('ia-loader-overlay'); if(ov) ov.style.display='none'; }
 
 /* ── OUTER ACCORDION toggle ── */
 function toggleOuterAcc(){
@@ -1072,6 +1406,14 @@ function selectEval(mod,btn){
   document.querySelectorAll('.eval-pill').forEach(p=>p.classList.remove('active'));
   if(btn)btn.classList.add('active');else document.querySelector('.eval-pill')?.classList.add('active');
   currentEvalData=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
+  // Mostrar / ocultar tabs específicos de M2
+  document.querySelectorAll('#adm-tabs-bar .m2-only').forEach(t=>{ t.style.display = (mod==='M2'?'inline-block':'none'); });
+  // Si estamos en un tab M2-only y cambiamos a otro módulo, volver a distribucion
+  const activeTab = document.querySelector('#adm-tabs-bar .adm-tab.active');
+  if(activeTab && mod!=='M2' && activeTab.classList.contains('m2-only')){
+    const distBtn = document.querySelector('#adm-tabs-bar .adm-tab[data-tab="distribucion"]');
+    switchAdminTab2('distribucion', distBtn);
+  }
   updStats2(currentEvalData);
   updCharts2(currentEvalData);
   buildQsTab(currentEvalData);
@@ -1081,6 +1423,12 @@ function selectEval(mod,btn){
   // Rebuild mods tab if currently visible
   const modTab=document.getElementById('tab2-por-modulo');
   if(modTab&&modTab.style.display!=='none') buildModsTab(currentEvalData);
+  // Rebuild M2 tabs si están visibles
+  if(mod==='M2'){
+    const rT=document.getElementById('tab2-rubrica');if(rT && rT.style.display!=='none') buildRubricaTab(currentEvalData);
+    const aT=document.getElementById('tab2-abiertas');if(aT && aT.style.display!=='none') buildAbiertasTab(currentEvalData);
+    const cT=document.getElementById('tab2-compromisos');if(cT && cT.style.display!=='none') buildCompromisosTab(currentEvalData);
+  }
 }
 
 function updStats2(data){
@@ -1184,8 +1532,25 @@ function buildQsTab(data){
   const qs=EVALUACIONES[currentEval]?.preguntas||[];
   const L=['A','B','C','D'];
   qsGrid.innerHTML=qs.map((q,i)=>{
+    // Pregunta abierta o de compromiso (sin opciones cerradas)
+    if(q.type==='open' || q.type==='commitment'){
+      const respsOpen = withResp.map(r=>r.respuestasAbiertas?.find(x=>x.idx===i)).filter(Boolean);
+      const total = respsOpen.length;
+      const cAlto = respsOpen.filter(x=>x.nivel==='Alto').length;
+      const cAdec = respsOpen.filter(x=>x.nivel==='Adecuado').length;
+      const cBas = respsOpen.filter(x=>x.nivel==='Básico').length;
+      const pct = n => total?Math.round(n/total*100):0;
+      const tipoLbl = q.type==='commitment' ? '⭐ COMPROMISO' : '✏️ ABIERTA';
+      return `<div class="adm-q-card">
+        <div class="adm-q-num">PREGUNTA ${i+1} DE ${qs.length} · ${tipoLbl} · ${total} respuestas</div>
+        <div class="adm-q-text">${q.q}</div>
+        <div class="adm-q-row"><div class="adm-q-letter correct-opt">A</div><div style="flex:1;"><div style="font-size:10px;color:var(--green);margin-bottom:3px;">Alto</div><div class="adm-q-track"><div class="adm-q-fill-c" style="width:${pct(cAlto)}%;"></div></div></div><div class="adm-q-pct" style="color:var(--green);">${pct(cAlto)}%</div></div>
+        <div class="adm-q-row"><div class="adm-q-letter" style="background:rgba(0,179,225,.2);color:var(--cyan);">A</div><div style="flex:1;"><div style="font-size:10px;color:var(--cyan);margin-bottom:3px;">Adecuado</div><div class="adm-q-track"><div class="adm-q-fill-c" style="width:${pct(cAdec)}%;background:var(--cyan);"></div></div></div><div class="adm-q-pct" style="color:var(--cyan);">${pct(cAdec)}%</div></div>
+        <div class="adm-q-row"><div class="adm-q-letter wrong-opt">B</div><div style="flex:1;"><div style="font-size:10px;color:var(--orange);margin-bottom:3px;">Básico</div><div class="adm-q-track"><div class="adm-q-fill-w" style="width:${pct(cBas)}%;"></div></div></div><div class="adm-q-pct" style="color:var(--orange);">${pct(cBas)}%</div></div>
+      </div>`;
+    }
     const counts=[0,0,0,0];
-    withResp.forEach(r=>{const ans=r.respuestas[i];if(ans!==undefined&&counts[ans]!==undefined)counts[ans]++;});
+    withResp.forEach(r=>{const ans=r.respuestas[i];if(ans!==undefined&&typeof ans==='number'&&counts[ans]!==undefined)counts[ans]++;});
     const total=withResp.length;
     const correctPct=total?Math.round(counts[q.correct]/total*100):0;
     const bars=q.opts.map((opt,j)=>{
@@ -1206,6 +1571,137 @@ function buildQsTab(data){
       <div>${bars}</div>
     </div>`;
   }).join('');
+}
+
+/* ══════════════════════════════════════════
+   ADMIN — M2 TABS (Rúbrica IA, Abiertas, Compromisos)
+   ══════════════════════════════════════════ */
+const NIVEL_NUM = {'Básico':1,'Adecuado':2,'Alto':3};
+
+function buildRubricaTab(data){
+  const empty=document.getElementById('rubrica-empty');
+  const withOpen = (data||[]).filter(r=>r.respuestasAbiertas&&r.respuestasAbiertas.length);
+  if(charts.rubrica){try{charts.rubrica.destroy();}catch(e){}delete charts.rubrica;}
+  if(!withOpen.length){if(empty)empty.style.display='block';return;}
+  if(empty) empty.style.display='none';
+  // Agregar por criterio
+  const buckets={};
+  withOpen.forEach(r=>{
+    r.respuestasAbiertas.forEach(x=>{
+      if(!x.criterio) return;
+      if(!buckets[x.criterio]) buckets[x.criterio]=[];
+      buckets[x.criterio].push(NIVEL_NUM[x.nivel]||2);
+    });
+  });
+  const labels = Object.keys(buckets);
+  const avg = labels.map(k=>{
+    const arr=buckets[k]; return arr.length?(arr.reduce((s,v)=>s+v,0)/arr.length):0;
+  });
+  const canvas=document.getElementById('chart-rubrica');
+  if(!canvas) return;
+  Chart.defaults.color='#8892a4';
+  charts.rubrica = new Chart(canvas,{
+    type:'radar',
+    data:{labels, datasets:[{label:'Nivel promedio', data:avg, backgroundColor:'rgba(0,179,225,0.18)', borderColor:'#00b3e1', borderWidth:2, pointBackgroundColor:'#00e676', pointRadius:5}]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      scales:{r:{min:0,max:3,ticks:{stepSize:1,backdropColor:'transparent',color:'#8a9bb4',callback:v=>['','Básico','Adecuado','Alto'][v]||''},grid:{color:'rgba(255,255,255,.1)'},angleLines:{color:'rgba(255,255,255,.1)'},pointLabels:{color:'#cde0f0',font:{size:11}}}},
+      plugins:{legend:{labels:{color:'#cde0f0'}},tooltip:{callbacks:{label:c=>`${c.label}: ${c.raw.toFixed(2)} / 3`}}}
+    }
+  });
+}
+
+function buildAbiertasTab(data){
+  const cont=document.getElementById('abiertas-content');
+  const empty=document.getElementById('abiertas-empty');
+  const withOpen = (data||[]).filter(r=>r.respuestasAbiertas&&r.respuestasAbiertas.length);
+  if(!withOpen.length){cont.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty) empty.style.display='none';
+  // Asignar # asesor estable (orden por email)
+  const ordered = withOpen.slice().sort((a,b)=>(a.participante?.email||'').localeCompare(b.participante?.email||''));
+  const numByEmail = {};
+  ordered.forEach((r,i)=>{numByEmail[r.participante?.email||'_'+i] = i+1;});
+  // Agrupar por pregunta (idx)
+  const qs = EVALUACIONES.M2.preguntas;
+  const opensIdx = qs.map((q,i)=>({q,i})).filter(x=>x.q.type==='open');
+  let html = '';
+  opensIdx.forEach(({q,i})=>{
+    const items = withOpen.map(r=>{
+      const x = r.respuestasAbiertas.find(a=>a.idx===i);
+      if(!x) return null;
+      return {asesor: numByEmail[r.participante?.email||''], rol: r.participante?.rol||'—', nivel:x.nivel, texto:x.texto};
+    }).filter(Boolean);
+    const order = {'Alto':0,'Adecuado':1,'Básico':2};
+    items.sort((a,b)=>(order[a.nivel]??3)-(order[b.nivel]??3));
+    html += `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:12px;">
+      <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:6px;">PREGUNTA ${i+1} · CRITERIO: ${q.criterio}</div>
+      <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:#fff;">${q.q}</div>`;
+    items.forEach(it=>{
+      const cls = it.nivel==='Alto'?'nivel-alto':(it.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
+      html += `<div style="padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:8px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+          <span style="font-size:10px;color:var(--gray);">Asesor #${it.asesor} · ${it.rol}</span>
+          <span class="nivel-badge ${cls}">${it.nivel}</span>
+        </div>
+        <div style="font-size:12px;color:#cde0f0;line-height:1.5;font-style:italic;">"${(it.texto||'').replace(/</g,'&lt;')}"</div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  cont.innerHTML = html;
+}
+
+function buildCompromisosTab(data){
+  const cont=document.getElementById('compromisos-content');
+  const empty=document.getElementById('compromisos-empty');
+  const withCom = (data||[]).map(r=>{
+    const c = r.respuestasAbiertas?.find(a=>a.tipo==='commitment');
+    if(!c) return null;
+    return {participante:r.participante, nivel:c.nivel, texto:c.texto, puntos:c.puntos, puntosMax:c.puntosMax};
+  }).filter(Boolean);
+  if(!withCom.length){cont.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty) empty.style.display='none';
+  // Word cloud — top 10 palabras
+  const stop = new Set(['de','la','el','en','y','a','que','los','un','una','las','para','con','por','del','se','su','al','es','sus','o','este','esto','esta','como','me','mi','lo','le','ya','no','si','sí','más','mas','ser','le','les','desde','hacia','muy','soy','soyy','está','están','pero','sin','también','tambien','pues','solo','sólo','poder','hacer','dar','ver','asi','así','tan','o','u']);
+  const wc = {};
+  withCom.forEach(c=>{
+    (c.texto||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z\s]/g,' ').split(/\s+/).forEach(w=>{
+      if(w && w.length>3 && !stop.has(w)) wc[w]=(wc[w]||0)+1;
+    });
+  });
+  const top = Object.entries(wc).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const maxC = top[0]?.[1]||1;
+  // Ordenar compromisos por nivel
+  const orderN = {'Alto':0,'Adecuado':1,'Básico':2};
+  withCom.sort((a,b)=>(orderN[a.nivel]??3)-(orderN[b.nivel]??3));
+  let html = '';
+  // Word cloud
+  if(top.length){
+    html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;">';
+    html += '<div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:10px;">☁️ PALABRAS MÁS REPETIDAS EN LOS COMPROMISOS</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;padding:10px 0;">';
+    top.forEach(([w,c])=>{
+      const size = 12 + Math.round((c/maxC)*22);
+      const op = 0.5 + (c/maxC)*0.5;
+      html += `<span style="font-size:${size}px;font-weight:700;color:rgba(0,179,225,${op});padding:3px 9px;border-radius:8px;background:rgba(0,179,225,0.06);">${w} <span style="font-size:9px;opacity:.7;">${c}</span></span>`;
+    });
+    html += '</div></div>';
+  }
+  // Lista de compromisos
+  html += '<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;">';
+  html += `<div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:10px;">⭐ COMPROMISOS REGISTRADOS (${withCom.length})</div>`;
+  withCom.forEach(c=>{
+    const cls = c.nivel==='Alto'?'nivel-alto':(c.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
+    html += `<div style="padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:11px;font-weight:600;color:#fff;">${c.participante?.nombre||'—'} · <span style="color:var(--gray);font-weight:400;">${c.participante?.local||'—'}</span></span>
+        <span class="nivel-badge ${cls}">${c.nivel} · ${c.puntos}/${c.puntosMax}</span>
+      </div>
+      <div style="font-size:12px;color:#cde0f0;line-height:1.5;">"${(c.texto||'').replace(/</g,'&lt;')}"</div>
+    </div>`;
+  });
+  html += '</div>';
+  cont.innerHTML = html;
 }
 
 function buildAccordion(data){
@@ -1501,12 +1997,19 @@ function openPerfil(email,mod){
 function closePerfilModal(e){if(e.target===document.getElementById('modal-perfil'))document.getElementById('modal-perfil').classList.remove('open');}
 
 function switchAdminTab2(tab,btn){
-  document.querySelectorAll('.adm-tab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+  document.querySelectorAll('#adm-tabs-bar .adm-tab').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
   document.getElementById('tab2-distribucion').style.display=tab==='distribucion'?'block':'none';
   document.getElementById('tab2-por-modulo').style.display=tab==='por-modulo'?'block':'none';
   document.getElementById('tab2-por-pregunta').style.display=tab==='por-pregunta'?'block':'none';
+  const r=document.getElementById('tab2-rubrica');if(r) r.style.display=tab==='rubrica'?'block':'none';
+  const a=document.getElementById('tab2-abiertas');if(a) a.style.display=tab==='abiertas'?'block':'none';
+  const c=document.getElementById('tab2-compromisos');if(c) c.style.display=tab==='compromisos'?'block':'none';
   if(tab==='por-modulo') buildModsTab();
   if(tab==='distribucion') updCharts2(currentEvalData);
+  if(tab==='rubrica') buildRubricaTab(currentEvalData);
+  if(tab==='abiertas') buildAbiertasTab(currentEvalData);
+  if(tab==='compromisos') buildCompromisosTab(currentEvalData);
 }
 
 async function refreshAdmin(){
@@ -1528,7 +2031,7 @@ function exportCSV(){
       ['ICONE Eval — Diplomado CX 2026','','','','','','',''],
       ['Politécnico Grancolombiano × Plaza Imperial','','','','','','',''],
       ['','','','','','','',''],
-      ['NOMBRE','LOCAL','EMAIL','WHATSAPP','PUNTAJE','CORRECTAS','NIVEL','FECHA'],
+       ['NOMBRE','LOCAL','EMAIL','WHATSAPP','PUNTAJE','CORRECTAS','NIVEL','FECHA'],
       ...data.map(r=>[
         r.participante.nombre,
         r.participante.local,
@@ -1567,6 +2070,66 @@ function exportCSV(){
     wsStats['!cols']=[{wch:26},{wch:14}];
     XLSX.utils.book_append_sheet(wb,wsStats,'Estadísticas');
 
+    // ── Hojas extra para M2 (cerradas, abiertas, compromisos) ──
+    if(currentEval==='M2'){
+      const qsM2 = EVALUACIONES.M2?.preguntas || [];
+      const cerradas = qsM2.map((q,i)=>({q,i})).filter(x=>!(x.q.type==='open'||x.q.type==='commitment'));
+      const opens = qsM2.map((q,i)=>({q,i})).filter(x=>x.q.type==='open');
+      const compromiso = qsM2.findIndex(q=>q.type==='commitment');
+      const L=['A','B','C','D'];
+      // Cerradas
+      const headCer = ['NOMBRE','LOCAL','EMAIL', ...cerradas.map(x=>`P${x.i+1}`), 'CORRECTAS','% ACIERTO'];
+      const rowsCer = data.map(r=>{
+        const row=[r.participante?.nombre||'',r.participante?.local||'',r.participante?.email||''];
+        let ok=0;
+        cerradas.forEach(({q,i})=>{
+          const ans=r.respuestas?.[i];
+          if(typeof ans==='number'){
+            const correct=ans===q.correct;
+            if(correct)ok++;
+            row.push(`${L[ans]||'?'} ${correct?'✓':'✗'}`);
+          } else row.push('—');
+        });
+        row.push(`${ok}/${cerradas.length}`);
+        row.push(cerradas.length?Math.round(ok/cerradas.length*100)+'%':'0%');
+        return row;
+      });
+      const wsCer = XLSX.utils.aoa_to_sheet([headCer, ...rowsCer]);
+      wsCer['!cols'] = [{wch:24},{wch:24},{wch:24}, ...cerradas.map(()=>({wch:8})), {wch:11},{wch:12}];
+      XLSX.utils.book_append_sheet(wb,wsCer,'M2 - Cerradas');
+      // Abiertas
+      const headAb = ['NOMBRE','LOCAL'];
+      opens.forEach(({i})=>{ headAb.push(`P${i+1} TEXTO`); headAb.push(`P${i+1} NIVEL`); });
+      headAb.push('PROMEDIO NIVEL');
+      const rowsAb = data.map(r=>{
+        const row=[r.participante?.nombre||'',r.participante?.local||''];
+        const niveles=[];
+        opens.forEach(({i})=>{
+          const x = r.respuestasAbiertas?.find(a=>a.idx===i);
+          row.push(x?.texto||'—');
+          row.push(x?.nivel||'—');
+          if(x?.nivel) niveles.push({Básico:1,Adecuado:2,Alto:3}[x.nivel]||2);
+        });
+        row.push(niveles.length?(niveles.reduce((s,v)=>s+v,0)/niveles.length).toFixed(2):'—');
+        return row;
+      });
+      const wsAb = XLSX.utils.aoa_to_sheet([headAb, ...rowsAb]);
+      const abCols = [{wch:24},{wch:20}];
+      opens.forEach(()=>{abCols.push({wch:60});abCols.push({wch:11});});
+      abCols.push({wch:11});
+      wsAb['!cols'] = abCols;
+      XLSX.utils.book_append_sheet(wb,wsAb,'M2 - Abiertas');
+      // Compromisos
+      const headCom = ['NOMBRE','LOCAL','ROL','EMAIL','COMPROMISO','NIVEL IA','PUNTOS'];
+      const rowsCom = data.map(r=>{
+        const c = r.respuestasAbiertas?.find(a=>a.tipo==='commitment');
+        return [r.participante?.nombre||'',r.participante?.local||'',r.participante?.rol||'',r.participante?.email||'', c?.texto||'—', c?.nivel||'—', c?(c.puntos+'/'+c.puntosMax):'—'];
+      });
+      const wsCom = XLSX.utils.aoa_to_sheet([headCom, ...rowsCom]);
+      wsCom['!cols'] = [{wch:24},{wch:22},{wch:18},{wch:24},{wch:70},{wch:11},{wch:10}];
+      XLSX.utils.book_append_sheet(wb,wsCom,'M2 - Compromisos');
+    }
+
     XLSX.writeFile(wb,`ICONE_Eval_${currentEval}_${new Date().toISOString().split('T')[0]}.xlsx`);
     showToast('📊 Excel descargado correctamente');
   }catch(err){
@@ -1594,11 +2157,12 @@ function generarResumenEjecutivo(data, qs){
   var strongQs=[];var weakQs=[];
   if(withResp.length&&qs&&qs.length){
     var qStats=qs.map(function(q,i){
+      if(q.type==='open'||q.type==='commitment') return null;
       var correct=withResp.filter(function(r){return r.respuestas[i]===q.correct;}).length;
       var pct=withResp.length?Math.round(correct/withResp.length*100):0;
       var txt=(q.q||q.pregunta||'').length>70?(q.q||q.pregunta||'').substring(0,70)+'…':(q.q||q.pregunta||'');
       return {i:i+1,text:txt,pct:pct};
-    }).sort(function(a,b){return b.pct-a.pct;});
+    }).filter(Boolean).sort(function(a,b){return b.pct-a.pct;});
     strongQs=qStats.slice(0,2);
     weakQs=qStats.slice(-3).reverse();
   }
@@ -1687,7 +2251,10 @@ function shareLink(){try{
   const fecha=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
 
   const embeddedData=JSON.stringify(data);
-  const embeddedQs=JSON.stringify(qs.map(q=>({q:q.q,opts:q.opts,correct:q.correct})));
+  // TODO M2: enriquecer dashboard con radar de criterios + top compromisos anonimizados.
+  // El dashboard actual ya muestra distribución de puntajes que sirve genéricamente para M2,
+  // pero no aprovecha respuestasAbiertas. Mantener nombres/emails fuera del dashboard público.
+  const embeddedQs=JSON.stringify(qs.map(q=>({q:q.q,opts:q.opts||[],correct:q.correct,type:q.type||'mcq'})));
 
   const rng=[0,0,0,0,0];
   data.forEach(r=>{const p=r.puntaje;if(p<=20)rng[0]++;else if(p<=40)rng[1]++;else if(p<=60)rng[2]++;else if(p<=80)rng[3]++;else rng[4]++;});
