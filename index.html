@@ -241,6 +241,57 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 /* ── RESPONSIVE ── */
 @media(max-width:700px){.stats-row{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.card{padding:18px}.question-text{font-size:15px}.journey-connector{width:10px}.journey-node{padding:6px 4px}.adm-stats{grid-template-columns:repeat(2,1fr)}.adm-charts2{grid-template-columns:1fr}.adm-mods-grid{grid-template-columns:repeat(2,1fr)}}
 ::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* ── NEW WELCOME / MODULE-SELECT / M1-INTRO STYLES ── */
+.welcome-tag{display:inline-block;padding:5px 16px;background:rgba(0,179,225,.12);border:1px solid var(--cyan);color:var(--cyan);font-size:10px;letter-spacing:2px;font-weight:700;border-radius:100px;margin-bottom:14px}
+.welcome-title{font-size:38px;font-weight:900;margin-bottom:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2}
+.welcome-subtitle{font-size:14px;color:var(--gray);line-height:1.6;margin-bottom:26px}
+.welcome-form{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;backdrop-filter:blur(20px)}
+.welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.welcome-grid .welcome-full{grid-column:span 2}
+.welcome-grid label{font-size:10px;color:var(--cyan);letter-spacing:1.5px;font-weight:700;margin-bottom:6px;display:block}
+.welcome-grid input, .welcome-grid select{width:100%;padding:12px 14px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:10px;color:var(--white);font-family:inherit;font-size:13px}
+.welcome-grid select option{background:#112240;color:#fff;}
+.welcome-grid input:focus, .welcome-grid select:focus{outline:none;border-color:var(--cyan)}
+.btn-primary{display:inline-block;padding:13px 22px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;border:none;border-radius:10px;font-weight:800;cursor:pointer;font-family:inherit;font-size:14px;letter-spacing:.3px}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-secondary{display:inline-block;padding:11px 18px;background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border);border-radius:10px;font-weight:700;cursor:pointer;font-family:inherit;font-size:13px}
+.btn-secondary:hover{background:rgba(255,255,255,.08)}
+.hi-line{font-size:14px;color:var(--cyan);margin-bottom:6px;letter-spacing:.5px}
+.hi-line strong{color:var(--white)}
+.mod-select-title{font-size:28px;font-weight:800;margin-bottom:8px;line-height:1.25}
+.mod-select-instr{font-size:13px;color:var(--gray);margin-bottom:24px}
+.mod-select-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.mod-select-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px 18px;text-align:center;cursor:pointer;transition:all .25s}
+.mod-select-card:hover{transform:translateY(-4px)}
+.mod-select-card.m1{border-color:rgba(0,179,225,.5);box-shadow:0 0 24px rgba(0,179,225,.15)}
+.mod-select-card.m1:hover{box-shadow:0 12px 30px rgba(0,179,225,.25)}
+.mod-select-card.m2{border-color:rgba(0,230,118,.5);box-shadow:0 0 24px rgba(0,230,118,.15)}
+.mod-select-card.m2:hover{box-shadow:0 12px 30px rgba(0,230,118,.25)}
+.mod-num{font-size:11px;color:var(--gray);letter-spacing:2px;font-weight:700}
+.mod-select-card.m1 .mod-num{color:var(--cyan)}
+.mod-select-card.m2 .mod-num{color:var(--green)}
+.mod-icon{font-size:42px;margin:10px 0 8px}
+.mod-name{font-size:17px;font-weight:800;color:var(--white);margin-bottom:4px}
+.mod-desc{font-size:11.5px;color:var(--gray);line-height:1.45;margin-bottom:14px}
+.mod-badge{display:inline-block;padding:4px 14px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px}
+.mod-badge.disp{background:rgba(0,230,118,.15);color:var(--green);border:1px solid var(--green)}
+.mod-badge.soon{background:rgba(138,155,180,.12);color:var(--gray);border:1px solid var(--gray)}
+.mod-meta{font-size:10px;color:var(--gray);margin-top:10px;letter-spacing:.5px}
+.intro-back{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--gray);cursor:pointer;margin-bottom:18px}
+.intro-back:hover{color:var(--cyan)}
+.cx-track{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:22px;background:rgba(0,0,0,.25);border-radius:16px;border:1px solid var(--border);position:relative;margin-bottom:24px}
+.cx-step{flex:1;text-align:center;position:relative;z-index:1}
+.cx-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,rgba(0,179,225,.18),rgba(90,47,207,.18));border:2px solid var(--cyan);display:inline-flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:10px}
+.cx-line{position:absolute;top:53px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,var(--cyan) 0%,var(--purple) 100%);z-index:0;opacity:.4}
+.cx-name{font-size:11px;color:var(--cyan);font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.cx-sub{font-size:10px;color:var(--gray);margin-top:3px;line-height:1.4}
+.intro-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+.intro-stat{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.intro-stat .v{font-size:22px;color:var(--cyan);font-weight:800}
+.intro-stat .l{font-size:10px;color:var(--gray);letter-spacing:1px;font-weight:700;margin-top:4px}
+@media(max-width:700px){.welcome-title{font-size:28px}.welcome-grid{grid-template-columns:1fr}.welcome-grid .welcome-full{grid-column:span 1}.mod-select-grid{grid-template-columns:1fr}.cx-track{flex-wrap:wrap}.cx-step{flex:0 0 33%}.cx-line{display:none}.intro-stats{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -259,61 +310,124 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="particles"></div>
 <div class="toast" id="toast"></div>
 
-<!-- ══════════ LANDING ══════════ -->
-<div id="s-landing" class="section active">
+<!-- ══════════ S-HOME (Bienvenida + Registro) ══════════ -->
+<div id="s-home" class="section active">
   <div class="top-bar">
     <div class="logo">ICONE<span>.</span>Eval</div>
     <button class="btn btn-secondary btn-sm" onclick="goAdmin()">🔒 Panel Admin</button>
   </div>
-  <div class="hero fade-in">
-    <div class="hero-poli-badge">
-      ✦ POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN OFICIAL · DIPLOMADO CX
-    </div>
-    <h1>Mide tu dominio de<br><span class="accent">Experiencia del Cliente</span></h1>
-    <p>Evaluaciones interactivas para los asesores de Plaza Imperial. Obtén retroalimentación personalizada en tiempo real.</p>
-    <!-- CX Journey Bar -->
-    <div class="journey-bar">
-      <div class="journey-node"><div class="jicon">🔍</div><div class="jlabel">ANTES</div></div>
-      <div class="journey-connector"></div>
-      <div class="journey-node"><div class="jicon">🚶</div><div class="jlabel">LLEGADA</div></div>
-      <div class="journey-connector"></div>
-      <div class="journey-node"><div class="jicon">💬</div><div class="jlabel">ATENCIÓN</div></div>
-      <div class="journey-connector"></div>
-      <div class="journey-node"><div class="jicon">🛍️</div><div class="jlabel">COMPRA</div></div>
-      <div class="journey-connector"></div>
-      <div class="journey-node"><div class="jicon">💫</div><div class="jlabel">WOW</div></div>
-    </div>
-    <button class="btn btn-primary" style="max-width:300px;margin:0 auto;" onclick="showSection('s-registro')">▶ Iniciar Evaluación</button>
+  <div class="wrap-narrow" style="max-width:760px;margin:0 auto;padding:40px 20px">
+    <div class="welcome-tag">✦ POLITÉCNICO GRANCOLOMBIANO × PLAZA IMPERIAL</div>
+    <h1 class="welcome-title">Evaluación CX · Plaza Imperial</h1>
+    <p class="welcome-subtitle">Espacio de evaluación del Diplomado para todo el equipo: ventas, líderes, seguridad, servicios generales y administración. Registra tus datos y luego elige el módulo que vas a evaluar.</p>
+
+    <form id="form-bienvenida" onsubmit="continuarAModulos(event)" class="welcome-form">
+      <div class="welcome-grid">
+        <div class="welcome-full">
+          <label>NOMBRE COMPLETO *</label>
+          <input id="bw-nombre" required placeholder="Ej: Laura Martínez González">
+        </div>
+        <div>
+          <label>LOCAL / TIENDA / ÁREA *</label>
+          <input id="bw-local" required placeholder="Ej: Tienda Bosi · Seguridad CC">
+        </div>
+        <div>
+          <label>ROL EN LA ORGANIZACIÓN *</label>
+          <select id="bw-rol" required>
+            <option value="">— Selecciona tu rol —</option>
+            <option>Asesor / Vendedor</option>
+            <option>Líder / Gerente</option>
+            <option>Cajero / Servicio</option>
+            <option>Seguridad</option>
+            <option>Servicios generales</option>
+            <option>Administrativo</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div>
+          <label>CORREO ELECTRÓNICO *</label>
+          <input id="bw-email" type="email" required placeholder="correo@ejemplo.com">
+        </div>
+        <div>
+          <label>WHATSAPP *</label>
+          <input id="bw-phone" required placeholder="Ej: 300 123 4567">
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" style="width:100%;margin-top:14px">Continuar → Elegir módulo</button>
+    </form>
   </div>
-  <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:4px;">
-      <div class="card mod-card-clickable" onclick="iniciarModulo('M1')" style="text-align:center;border-color:rgba(0,179,225,.4);position:relative;overflow:hidden;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 22px rgba(0,179,225,.18)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));"></div>
-        <div style="font-size:28px;margin-bottom:8px;">📚</div>
-        <div style="font-weight:700;color:var(--cyan);margin-bottom:3px;">Módulo 1</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fundamentos CX</div>
-        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(0,230,118,.12);border:1px solid var(--green);font-size:10px;color:var(--green);font-weight:700;">DISPONIBLE</div>
+</div>
+
+<!-- ══════════ S-MODULO-SELECT ══════════ -->
+<div id="s-modulo-select" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="navigateTo('s-home')">← Cambiar datos</button>
+  </div>
+  <div class="wrap-narrow" style="max-width:1000px;margin:0 auto;padding:40px 20px">
+    <p class="hi-line">¡Hola, <strong id="hi-name">Asesor</strong>! 👋</p>
+    <h2 class="mod-select-title">Elige el módulo que vas a evaluar hoy</h2>
+    <p class="mod-select-instr">Cada módulo se responde una sola vez por correo registrado. Te recomendamos comenzar por el Módulo 1 si es tu primera vez.</p>
+
+    <div class="mod-select-grid">
+      <div class="mod-select-card m1" onclick="elegirModulo('M1')">
+        <div class="mod-num">MÓDULO 1</div>
+        <div class="mod-icon">📚</div>
+        <div class="mod-name">Fundamentos CX</div>
+        <div class="mod-desc">Recorrido del cliente, Peak-End Rule, 5 Factores y Momentos de Verdad.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">15 preguntas · 20 min</div>
       </div>
-      <div class="card mod-card-clickable" onclick="iniciarModulo('M2')" style="text-align:center;border-color:rgba(0,230,118,.4);position:relative;overflow:hidden;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 22px rgba(0,230,118,.18)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
-        <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--cyan));"></div>
-        <div style="font-size:28px;margin-bottom:8px;">🤝</div>
-        <div style="font-weight:700;color:var(--green);margin-bottom:3px;">Módulo 2</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">Fidelización</div>
-        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(0,230,118,.12);border:1px solid var(--green);font-size:10px;color:var(--green);font-weight:700;">DISPONIBLE</div>
+      <div class="mod-select-card m2" onclick="elegirModulo('M2')">
+        <div class="mod-num">MÓDULO 2</div>
+        <div class="mod-icon">🤝</div>
+        <div class="mod-name">Fidelización</div>
+        <div class="mod-desc">Relacionamiento, manejo de inconformidades, atención vs servicio.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">16 ítems · 20 min · con IA</div>
       </div>
-      <div class="card" style="text-align:center;opacity:.4;">
-        <div style="font-size:28px;margin-bottom:8px;">🧠</div>
-        <div style="font-weight:700;color:var(--gray);margin-bottom:3px;">Módulo 3</div>
-        <div style="font-size:11px;color:var(--gray);margin-bottom:10px;">PNL aplicado</div>
-        <div style="display:inline-block;padding:3px 11px;border-radius:100px;background:rgba(255,255,255,.06);font-size:10px;color:var(--gray);font-weight:700;">PRÓXIMAMENTE</div>
+      <div class="mod-select-card m3" style="opacity:.45;cursor:not-allowed" onclick="showToast('Módulo 3 estará disponible próximamente')">
+        <div class="mod-num">MÓDULO 3</div>
+        <div class="mod-icon">🧠</div>
+        <div class="mod-name">PNL aplicado</div>
+        <div class="mod-desc">Programación Neurolingüística aplicada al servicio al cliente.</div>
+        <div class="mod-badge soon">PRÓXIMAMENTE</div>
+        <div class="mod-meta">en construcción</div>
       </div>
     </div>
-    <div style="margin-top:24px;padding:14px 18px;border-radius:12px;background:rgba(19,55,89,0.4);border:1px solid rgba(0,179,225,.2);display:flex;align-items:center;gap:12px;">
-      <div style="width:38px;height:38px;border-radius:8px;background:var(--poli);border:1px solid rgba(0,179,225,.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:var(--cyan);letter-spacing:-.5px;flex-shrink:0;">PG</div>
-      <div>
-        <div style="font-size:11px;font-weight:700;color:var(--white);margin-bottom:2px;">Politécnico Grancolombiano × Plaza Imperial</div>
-        <div style="font-size:10px;color:var(--gray);">Diplomado en Innovación y Estrategias de Experiencia del Consumidor · 2026</div>
-      </div>
+  </div>
+</div>
+
+<!-- ══════════ S-M1-INTRO (Intro Módulo 1 con íconos CX) ══════════ -->
+<div id="s-m1-intro" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="navigateTo('s-modulo-select')">← Volver</button>
+  </div>
+  <div class="wrap-narrow" style="max-width:920px;margin:0 auto;padding:40px 20px">
+    <a class="intro-back" onclick="navigateTo('s-modulo-select')">← Volver a elegir módulo</a>
+    <div class="welcome-tag">📚 MÓDULO 1</div>
+    <h2 class="welcome-title" style="font-size:30px">Fundamentos de la Experiencia del Cliente</h2>
+    <p class="welcome-subtitle">Este módulo evalúa tu dominio de las 5 etapas del recorrido del cliente. Cada pregunta se basa en una de estas etapas o en los conceptos transversales del Diplomado.</p>
+
+    <div class="cx-track">
+      <div class="cx-line"></div>
+      <div class="cx-step"><div class="cx-icon">🔍</div><div class="cx-name">Antes</div><div class="cx-sub">Expectativa<br>y descubrimiento</div></div>
+      <div class="cx-step"><div class="cx-icon">🚶</div><div class="cx-name">Llegada</div><div class="cx-sub">Primera<br>impresión</div></div>
+      <div class="cx-step"><div class="cx-icon">💬</div><div class="cx-name">Atención</div><div class="cx-sub">Interacción<br>directa</div></div>
+      <div class="cx-step"><div class="cx-icon">🛍️</div><div class="cx-name">Compra</div><div class="cx-sub">Momento<br>decisivo</div></div>
+      <div class="cx-step"><div class="cx-icon">💫</div><div class="cx-name">WOW</div><div class="cx-sub">Memoria<br>positiva</div></div>
+    </div>
+
+    <div class="intro-stats">
+      <div class="intro-stat"><div class="v">15</div><div class="l">PREGUNTAS</div></div>
+      <div class="intro-stat"><div class="v">20 min</div><div class="l">DURACIÓN</div></div>
+      <div class="intro-stat"><div class="v">1 vez</div><div class="l">POR CORREO</div></div>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px dashed var(--border);padding-top:20px;margin-top:20px">
+      <button class="btn-secondary" onclick="navigateTo('s-modulo-select')">← Cambiar de módulo</button>
+      <button class="btn-primary" onclick="comenzarEvalDesdeIntro()">▶ Comenzar Evaluación</button>
     </div>
   </div>
 </div>
@@ -322,7 +436,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="s-registro" class="section">
   <div class="top-bar">
     <div class="logo">ICONE<span>.</span>Eval</div>
-    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">← Volver</button>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-home')">← Volver</button>
   </div>
   <div class="container" style="padding-top:36px;">
     <div class="card fade-in">
@@ -391,7 +505,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="s-resultados" class="section">
   <div class="top-bar">
     <div class="logo">ICONE<span>.</span>Eval</div>
-    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">🏠 Inicio</button>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-home')">🏠 Inicio</button>
   </div>
   <div class="container" style="padding-top:28px;">
     <div class="card fade-in" style="text-align:center;">
@@ -445,7 +559,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <div id="s-admin-login" class="section">
   <div class="top-bar">
     <div class="logo">ICONE<span>.</span>Eval</div>
-    <button class="btn btn-secondary btn-sm" onclick="showSection('s-landing')">← Volver</button>
+    <button class="btn btn-secondary btn-sm" onclick="showSection('s-home')">← Volver</button>
   </div>
   <div class="container" style="max-width:380px;padding-top:80px;">
     <div class="card fade-in" style="border-color:rgba(0,179,225,.3);">
@@ -841,14 +955,14 @@ Alto`;
   }
 }
 
-/* Selección de módulo desde landing */
+/* Helper navigateTo == showSection */
+function navigateTo(id){ showSection(id); }
+
+/* Selección de módulo — nuevo flujo: si no hay registro, ir a s-home; si hay, arrancar eval */
 function iniciarModulo(mod){
   if(mod!=='M1' && mod!=='M2') return;
   state.modulo = mod;
-  // Tiempo base por módulo
-  const tiempoMod = EVALUACIONES[mod]?.tiempo || 1200;
-  state.timerSeconds = tiempoMod;
-  // Actualizar header de registro
+  // Actualizar headers dependientes del módulo (resultados, registro legacy)
   const cfgMod = {
     M1: {icon:'📚', iconBg:'rgba(0,179,225,.12)', iconBd:'rgba(0,179,225,.3)', label:'MÓDULO 1', labelCol:'var(--cyan)', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
     M2: {icon:'🤝', iconBg:'rgba(0,230,118,.12)', iconBd:'rgba(0,230,118,.3)', label:'MÓDULO 2', labelCol:'var(--green)', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
@@ -858,15 +972,149 @@ function iniciarModulo(mod){
   const tt=document.getElementById('reg-title'); if(tt) tt.textContent=cfgMod.titulo;
   const st=document.getElementById('reg-subtitle'); if(st) st.textContent=cfgMod.subtitulo;
   const yr=document.getElementById('ya-respondido-text'); if(yr) yr.textContent=`Tu evaluación del ${cfgMod.label.replace('MÓDULO','Módulo')} ya fue registrada en este dispositivo.`;
-  // Actualizar header de resultados también
   const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${cfgMod.label}`;
   const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfgMod.titulo;
-  // Reset registro view
-  document.getElementById('registro-form').style.display='block';
-  document.getElementById('ya-respondido').style.display='none';
-  document.getElementById('registro-error').style.display='none';
-  showSection('s-registro');
+  // Rehidratar participante desde localStorage si existe
+  if(!state.participante){
+    const cached = localStorage.getItem('iconeEval_participante');
+    if(cached){ try{ state.participante = JSON.parse(cached); }catch(e){} }
+  }
+  // Si NO hay participante registrado → ir al s-home
+  if(!state.participante || !state.participante.email){
+    showSection('s-home');
+    return;
+  }
+  // Si SÍ está registrado: M1 → intro con íconos CX; M2 → directo a eval
+  if(mod === 'M1'){
+    const first = (state.participante.nombre||'').split(' ')[0]||'Asesor';
+    const hn = document.getElementById('hi-name'); if(hn) hn.textContent = first;
+    showSection('s-m1-intro');
+  } else {
+    iniciarEvaluacionDirecto();
+  }
 }
+
+/* Persistir datos de bienvenida y avanzar a selección de módulo */
+function continuarAModulos(ev){
+  ev.preventDefault();
+  const nombre = document.getElementById('bw-nombre').value.trim();
+  const local = document.getElementById('bw-local').value.trim();
+  const rol = document.getElementById('bw-rol').value;
+  const email = document.getElementById('bw-email').value.trim().toLowerCase();
+  const phone = document.getElementById('bw-phone').value.trim();
+  if(!nombre||!local||!rol||!email||!phone){ showToast('Completa todos los campos'); return; }
+  if(!/\S+@\S+\.\S+/.test(email)){ showToast('Correo no válido'); return; }
+  state.participante = { nombre, local, email, phone, rol };
+  localStorage.setItem('iconeEval_participante', JSON.stringify(state.participante));
+  // Espejar al formulario legacy s-registro por si la lógica antigua lo consulta
+  const r1=document.getElementById('r-nombre'); if(r1) r1.value=nombre;
+  const r2=document.getElementById('r-local'); if(r2) r2.value=local;
+  const r3=document.getElementById('r-email'); if(r3) r3.value=email;
+  const r4=document.getElementById('r-phone'); if(r4) r4.value=phone;
+  const r5=document.getElementById('r-rol'); if(r5) r5.value=rol;
+  // Saludo personalizado
+  const first = nombre.split(' ')[0]||'Asesor';
+  const hn = document.getElementById('hi-name'); if(hn) hn.textContent = first;
+  navigateTo('s-modulo-select');
+}
+
+/* Elegir módulo desde la pantalla de selección */
+function elegirModulo(mod){
+  if(mod!=='M1' && mod!=='M2') return;
+  state.modulo = mod;
+  // Actualizar headers (igual que iniciarModulo)
+  const cfgMod = {
+    M1: {icon:'📚', label:'MÓDULO 1', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
+    M2: {icon:'🤝', label:'MÓDULO 2', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+  }[mod];
+  const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${cfgMod.label}`;
+  const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfgMod.titulo;
+  if(mod === 'M1'){
+    navigateTo('s-m1-intro');
+  } else {
+    iniciarEvaluacionDirecto();
+  }
+}
+
+function comenzarEvalDesdeIntro(){ iniciarEvaluacionDirecto(); }
+
+/* Arranca la evaluación con el state.participante ya seteado */
+function iniciarEvaluacionDirecto(){
+  if(!state.participante){
+    const cached = localStorage.getItem('iconeEval_participante');
+    if(cached){ try{ state.participante = JSON.parse(cached); }catch(e){} }
+  }
+  if(!state.participante || !state.participante.email){
+    showToast('Falta registro — vuelve al inicio');
+    navigateTo('s-home');
+    return;
+  }
+  const ek = state.participante.email.toLowerCase();
+  const doneKey = `${KEY_PREFIX}${state.modulo}_${ek}_done`;
+  const progKey = `${KEY_PREFIX}${state.modulo}_${ek}_progress`;
+  const tiempoMod = EVALUACIONES[state.modulo]?.tiempo || 1200;
+  // Si ya respondió → mostrar pantalla legacy de "ya respondido"
+  if(localStorage.getItem(doneKey)==='true'){
+    // Espejar al form legacy para que enviarDatosGuardados funcione
+    const r3=document.getElementById('r-email'); if(r3) r3.value=ek;
+    document.getElementById('registro-form').style.display='none';
+    document.getElementById('ya-respondido').style.display='block';
+    const allKey=`${KEY_PREFIX}all_${state.modulo}`;
+    const all=JSON.parse(localStorage.getItem(allKey)||'[]');
+    const rec=all.find(r=>r.participante?.email===ek);
+    if(rec){
+      document.getElementById('ya-respondido-score').style.display='block';
+      document.getElementById('ya-score-val').textContent=rec.puntaje+'/100';
+      document.getElementById('ya-score-sub').textContent=`${rec.correctas} de ${rec.total} correctas · ${rec.status}`;
+      const be=document.getElementById('btn-enviar-guardado'); if(be) be.dataset.email=ek;
+    } else {
+      document.getElementById('ya-respondido-score').style.display='none';
+      const be=document.getElementById('btn-enviar-guardado'); if(be) be.style.display='none';
+    }
+    showSection('s-registro');
+    return;
+  }
+  // Reanudar progreso si existe
+  const saved=localStorage.getItem(progKey);
+  if(saved){
+    try{
+      const pr=JSON.parse(saved);
+      state.respuestas=pr.respuestas||{};
+      state.currentQ=pr.currentQ||0;
+      state.timerSeconds=pr.timerSeconds||tiempoMod;
+      const rb=document.getElementById('resume-banner'); if(rb) rb.style.display='block';
+    }catch(e){
+      state.respuestas={}; state.currentQ=0; state.timerSeconds=tiempoMod;
+    }
+  } else {
+    state.respuestas={}; state.currentQ=0; state.timerSeconds=tiempoMod;
+  }
+  showSection('s-evaluacion');
+  renderQuestion();
+  startTimer();
+}
+
+/* Auto-rehidratar formulario de bienvenida con datos guardados */
+window.addEventListener('DOMContentLoaded', function(){
+  const cached = localStorage.getItem('iconeEval_participante');
+  if(!cached) return;
+  try{
+    const p = JSON.parse(cached);
+    const set = (id,v)=>{ const el=document.getElementById(id); if(el && v) el.value = v; };
+    set('bw-nombre', p.nombre);
+    set('bw-local', p.local);
+    set('bw-email', p.email);
+    set('bw-phone', p.phone);
+    set('bw-rol', p.rol);
+    // Saludo
+    if(p.nombre){
+      const first = p.nombre.split(' ')[0];
+      const hn = document.getElementById('hi-name'); if(hn) hn.textContent = first;
+    }
+    // Rehidratar state
+    if(!state.participante) state.participante = p;
+  }catch(e){}
+});
 
 async function getToken(){
   if(_ghToken) return _ghToken;
@@ -1350,7 +1598,7 @@ function saveNewPass(){
   adminPass=p1;localStorage.setItem(KEY_PASS,p1);localStorage.setItem(KEY_PASS_CH,'true');passChanged=true;
   document.getElementById('modal-pass').classList.remove('open');showSection('s-admin');loadAdminDash();
 }
-function logoutAdmin(){showSection('s-landing');}
+function logoutAdmin(){showSection('s-home');}
 
 function openChangePass(){
   // Reset fields and messages
