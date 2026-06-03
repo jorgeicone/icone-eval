@@ -644,7 +644,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     </div>
     <!-- TAB: Rúbrica IA (solo M2) -->
     <div id="tab2-rubrica" class="adm-panel" style="display:none;">
-      <div class="chart-card"><div class="chart-title">🎯 RÚBRICA ICONE — Nivel promedio por criterio</div><div style="position:relative;height:340px;"><canvas id="chart-rubrica"></canvas></div></div>
+      <div class="chart-card"><div class="chart-title">🎯 RÚBRICA DEL DOCENTE LÍDER — Nivel promedio por criterio</div><div style="position:relative;height:340px;"><canvas id="chart-rubrica"></canvas></div></div>
       <div id="rubrica-empty" style="display:none;text-align:center;padding:40px;color:var(--gray);">Sin respuestas abiertas evaluadas aún.</div>
     </div>
     <!-- TAB: Abiertas (solo M2) -->
@@ -893,7 +893,7 @@ async function getAnthKey(){
   }catch(e){ console.error("Anth key fetch failed",e); return null; }
 }
 
-const RUBRICA_ICONE = `RÚBRICA ICONE — Plaza Imperial · Diplomado CX
+const RUBRICA_ICONE = `RÚBRICA DISEÑADA POR EL DOCENTE LÍDER — Módulo 2 · Plaza Imperial · Diplomado CX
 
 Criterios:
 - Claridad: La respuesta se entiende y usa ejemplos sencillos.
@@ -1480,7 +1480,7 @@ async function finalizarEvaluacion(timeout=false){
         </div>
         <div class="acc-body" id="acc-body-${i}">
           <div class="acc-ans"><span style="color:var(--gray);font-size:10px;">${tagTipo} · Criterio: ${q.criterio} · ${puntos}/${q.puntosMax||8} pts</span><br><br>Tu respuesta:<br><em style="color:#cde0f0;">"${(texto||'').replace(/</g,'&lt;')}"</em></div>
-          <div class="acc-fb ok">Evaluada con la rúbrica ICONE — nivel <strong>${nivel}</strong>.</div>
+          <div class="acc-fb ok">Evaluada con la rúbrica del docente líder — nivel <strong>${nivel}</strong>.</div>
         </div>
       </div>`;
     } else {
@@ -1555,7 +1555,7 @@ function mostrarLoaderIA(){
     ov = document.createElement('div');
     ov.id = 'ia-loader-overlay';
     ov.style.cssText = 'position:fixed;inset:0;background:rgba(11,28,48,0.95);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);text-align:center;padding:20px;';
-    ov.innerHTML = '<div style="width:80px;height:80px;border:5px solid rgba(0,179,225,0.2);border-top-color:#00b3e1;border-radius:50%;animation:ia-spin 1s linear infinite;margin-bottom:24px"></div><h2 style="color:#00b3e1;margin-bottom:12px;font-size:18px;">🤖 Evaluando con la rúbrica ICONE</h2><p style="color:#8a9bb4;font-size:13px;max-width:340px;">Analizando tus respuestas abiertas con inteligencia artificial. Esto puede tomar unos segundos...</p>';
+    ov.innerHTML = '<div style="width:80px;height:80px;border:5px solid rgba(0,179,225,0.2);border-top-color:#00b3e1;border-radius:50%;animation:ia-spin 1s linear infinite;margin-bottom:24px"></div><h2 style="color:#00b3e1;margin-bottom:12px;font-size:18px;">🤖 Evaluando con la rúbrica del docente líder</h2><p style="color:#8a9bb4;font-size:13px;max-width:340px;">Analizando tus respuestas abiertas con inteligencia artificial. Esto puede tomar unos segundos...</p>';
     if(!document.querySelector('style#ia-spin-style')){
       const s = document.createElement('style');
       s.id = 'ia-spin-style';
