@@ -292,6 +292,61 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .intro-stat .l{font-size:10px;color:var(--gray);letter-spacing:1px;font-weight:700;margin-top:4px}
 @media(max-width:700px){.welcome-title{font-size:28px}.welcome-grid{grid-template-columns:1fr}.welcome-grid .welcome-full{grid-column:span 1}.mod-select-grid{grid-template-columns:1fr}.cx-track{flex-wrap:wrap}.cx-step{flex:0 0 33%}.cx-line{display:none}.intro-stats{grid-template-columns:1fr}}
 
+
+/* ── M2 Result Breakdown ── */
+.bd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:0 0 28px 0}
+.bd-card2{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;transition:transform .25s}
+.bd-card2:hover{transform:translateY(-3px)}
+.bd-card2.cerradas{border-color:rgba(0,179,225,.45)}
+.bd-card2.abiertas{border-color:rgba(255,215,0,.45)}
+.bd-card2.compromiso{border-color:rgba(255,140,0,.45)}
+.bd-icon2{font-size:26px;margin-bottom:6px}
+.bd-label2{font-size:9.5px;color:var(--gray);letter-spacing:1.5px;font-weight:700;margin-bottom:6px;text-transform:uppercase}
+.bd-score2{font-size:28px;font-weight:900;line-height:1}
+.bd-score2 .max{font-size:13px;font-weight:600;color:var(--gray);opacity:.7;margin-left:2px}
+.bd-card2.cerradas .bd-score2{color:var(--cyan)}
+.bd-card2.abiertas .bd-score2{color:var(--yellow)}
+.bd-card2.compromiso .bd-score2{color:var(--orange)}
+.bd-meta2{font-size:10px;color:var(--gray);margin-top:6px;font-weight:600}
+.bd-bar-wrap2{height:5px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:12px;overflow:hidden}
+.bd-bar2{height:100%;border-radius:3px}
+.bd-card2.cerradas .bd-bar2{background:linear-gradient(90deg,var(--cyan),#0080a8)}
+.bd-card2.abiertas .bd-bar2{background:linear-gradient(90deg,var(--yellow),#cca400)}
+.bd-card2.compromiso .bd-bar2{background:linear-gradient(90deg,var(--orange),#cc6f00)}
+@media(max-width:700px){.bd-grid{grid-template-columns:1fr}}
+
+/* ── M2 Open answer cards rediseño ── */
+.open-card2{background:rgba(0,0,0,.2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;text-align:left}
+.open-card2 .ocrit{font-size:9.5px;color:var(--gray);letter-spacing:1.2px;text-transform:uppercase;font-weight:700}
+.open-card2 .ocrit strong{color:var(--cyan)}
+.open-card2 .oquestion{font-size:12px;color:var(--white);font-weight:600;line-height:1.45;margin-top:3px}
+.open-card2 .oanswer{font-size:12.5px;color:var(--gray);font-style:italic;line-height:1.5;margin-top:6px;padding-left:10px;border-left:2px solid var(--border)}
+.olevel-badge{padding:7px 12px;border-radius:100px;font-size:10.5px;font-weight:800;letter-spacing:.3px;white-space:nowrap}
+.olevel-badge.alto{background:rgba(0,230,118,.15);color:var(--green);border:1px solid var(--green)}
+.olevel-badge.adecuado{background:rgba(0,179,225,.15);color:var(--cyan);border:1px solid var(--cyan)}
+.olevel-badge.basico{background:rgba(255,140,0,.15);color:var(--orange);border:1px solid var(--orange)}
+@media(max-width:700px){.open-card2{grid-template-columns:1fr}.commitment-card2{grid-template-columns:1fr}}
+
+/* ── M2 Commitment destacado ── */
+.commitment-card2{background:linear-gradient(135deg,rgba(255,215,0,.08),rgba(255,140,0,.05));border:1.5px solid var(--yellow);border-radius:14px;padding:20px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;margin:18px 0;position:relative;overflow:hidden;text-align:left}
+.commitment-card2::before{content:'\2B50';position:absolute;top:-12px;left:18px;font-size:34px;opacity:.3}
+.commitment-card2 .clabel{font-size:10px;color:var(--yellow);letter-spacing:1.8px;font-weight:800;margin-bottom:5px;text-transform:uppercase;padding-left:30px}
+.commitment-card2 .ctext{font-size:13px;font-style:italic;color:var(--white);line-height:1.55;padding-left:30px}
+
+/* ── M2 section heads y feedback ── */
+.r-section-head{display:flex;align-items:center;gap:10px;margin:24px 0 14px;padding-bottom:10px;border-bottom:1px solid var(--border);text-align:left}
+.r-section-head h3{font-size:13px;color:var(--cyan);font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.r-section-head .count{margin-left:auto;font-size:11px;color:var(--gray);font-weight:600}
+.r-feedback-msg{border-left:3px solid var(--orange);border-radius:8px;padding:12px 16px;font-size:13px;color:var(--white);line-height:1.5;margin-bottom:24px;background:rgba(255,140,0,.06);text-align:left}
+.r-feedback-msg.sob{border-color:var(--green);background:rgba(0,230,118,.06)}
+.r-feedback-msg.sat{border-color:var(--cyan);background:rgba(0,179,225,.06)}
+.r-feedback-msg.proc{border-color:var(--orange);background:rgba(255,140,0,.06)}
+.r-feedback-msg.ref{border-color:var(--red);background:rgba(255,68,68,.06)}
+.r-feedback-msg strong{color:var(--orange)}
+.r-feedback-msg.sob strong{color:var(--green)}
+.r-feedback-msg.sat strong{color:var(--cyan)}
+.r-feedback-msg.ref strong{color:var(--red)}
+
 </style>
 </head>
 <body>
@@ -1446,7 +1501,7 @@ async function finalizarEvaluacion(timeout=false){
   // M2: contar solo cerradas para el "correctas de N"
   const totCerradas = qs.filter(q=>!(q.type==='open'||q.type==='commitment')).length;
   document.getElementById('result-correct-count').textContent = hasOpen
-    ? `${correctas} de ${totCerradas} cerradas correctas · ${respuestasAbiertas.length} respuestas abiertas evaluadas con IA`
+    ? `${correctas} de ${totCerradas} cerradas correctas · ${respuestasAbiertas.length} respuestas abiertas evaluadas`
     : `${correctas} de ${tot} preguntas correctas`;
   document.getElementById('result-general-feedback').textContent=fb;
   const badge=document.getElementById('result-badge');badge.className=`status-badge ${sClass}`;badge.textContent=status;
@@ -1506,31 +1561,71 @@ async function finalizarEvaluacion(timeout=false){
     if(respuestasAbiertas.length){
       const compromiso = respuestasAbiertas.find(r=>r.tipo==='commitment');
       const abiertas = respuestasAbiertas.filter(r=>r.tipo==='open').sort((a,b)=>a.idx-b.idx);
-      let oh = '<div style="margin-top:18px;padding:14px 16px;border-radius:12px;background:rgba(0,179,225,.05);border:1px solid rgba(0,179,225,.18);">';
-      oh += '<div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:1.5px;margin-bottom:10px;">🤖 RESPUESTAS ABIERTAS — EVALUADAS POR IA</div>';
+      const cerradasCorrectasN = correctas;
+      const cerradasPtsN = cerradasCorrectasN * 5;
+      const abiertasPtsN = abiertas.reduce((s,r)=>s+(r.puntos||0),0);
+      const compromisoPtsN = compromiso ? (compromiso.puntos||0) : 0;
+      const compromisoNivelN = compromiso ? (compromiso.nivel||'—') : '—';
+      const lvlCls = nv => nv==='Alto'?'alto':(nv==='Básico'?'basico':'adecuado');
+      let oh = '';
+      oh += `<div class="bd-grid">
+        <div class="bd-card2 cerradas">
+          <div class="bd-icon2">📝</div>
+          <div class="bd-label2">Selección múltiple</div>
+          <div class="bd-score2">${cerradasPtsN}<span class="max">/50</span></div>
+          <div class="bd-meta2">${cerradasCorrectasN} de 10 correctas</div>
+          <div class="bd-bar-wrap2"><div class="bd-bar2" style="width:${Math.min(100,cerradasPtsN*2)}%"></div></div>
+        </div>
+        <div class="bd-card2 abiertas">
+          <div class="bd-icon2">💬</div>
+          <div class="bd-label2">Respuestas abiertas</div>
+          <div class="bd-score2">${abiertasPtsN}<span class="max">/40</span></div>
+          <div class="bd-meta2">${abiertas.length} respuestas evaluadas</div>
+          <div class="bd-bar-wrap2"><div class="bd-bar2" style="width:${Math.min(100,abiertasPtsN*2.5)}%"></div></div>
+        </div>
+        <div class="bd-card2 compromiso">
+          <div class="bd-icon2">⭐</div>
+          <div class="bd-label2">Compromiso personal</div>
+          <div class="bd-score2">${compromisoPtsN}<span class="max">/10</span></div>
+          <div class="bd-meta2">Nivel: ${compromisoNivelN}</div>
+          <div class="bd-bar-wrap2"><div class="bd-bar2" style="width:${Math.min(100,compromisoPtsN*10)}%"></div></div>
+        </div>
+      </div>`;
+      oh += `<div class="r-section-head">
+        <h3>💬 Respuestas abiertas evaluadas</h3>
+        <span class="count">${abiertas.length} preguntas · rúbrica del docente líder del Módulo ${state.modulo.replace('M','')}</span>
+      </div>`;
       abiertas.forEach(r=>{
-        const cls = r.nivel==='Alto'?'nivel-alto':(r.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
-        oh += `<div style="margin-bottom:10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid var(--border);">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
-            <span style="font-size:10px;color:var(--gray);">Criterio: <strong style="color:#fff;">${r.criterio}</strong></span>
-            <span class="nivel-badge ${cls}">${r.nivel} · ${r.puntos}/${r.puntosMax} pts</span>
+        const qfull = (EVALUACIONES[state.modulo].preguntas[r.idx]||{}).q || '';
+        oh += `<div class="open-card2">
+          <div>
+            <div class="ocrit">Criterio · <strong>${r.criterio}</strong></div>
+            <div class="oquestion">${qfull.replace(/</g,'&lt;')}</div>
+            <div class="oanswer">"${(r.texto||'(sin respuesta)').replace(/</g,'&lt;')}"</div>
           </div>
-          <div style="font-size:11px;color:#cde0f0;font-style:italic;line-height:1.5;">"${(r.texto||'').replace(/</g,'&lt;')}"</div>
+          <span class="olevel-badge ${lvlCls(r.nivel)}">${r.nivel} · ${r.puntos}/${r.puntosMax}</span>
         </div>`;
       });
       if(compromiso){
-        const cls = compromiso.nivel==='Alto'?'nivel-alto':(compromiso.nivel==='Básico'?'nivel-basico':'nivel-adecuado');
-        oh += `<div style="margin-top:12px;padding:12px 14px;border-radius:10px;background:rgba(255,200,30,.06);border:2px solid rgba(255,200,30,.35);">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;">
-            <span style="font-size:11px;font-weight:700;color:#ffd87a;">⭐ TU COMPROMISO PERSONAL</span>
-            <span class="nivel-badge ${cls}">${compromiso.nivel} · ${compromiso.puntos}/${compromiso.puntosMax} pts</span>
+        oh += `<div class="commitment-card2">
+          <div>
+            <div class="clabel">Tu compromiso personal</div>
+            <div class="ctext">"${(compromiso.texto||'').replace(/</g,'&lt;')}"</div>
           </div>
-          <div style="font-size:12px;color:#fff;line-height:1.5;">"${(compromiso.texto||'').replace(/</g,'&lt;')}"</div>
+          <span class="olevel-badge ${lvlCls(compromiso.nivel)}">${compromiso.nivel} · ${compromiso.puntos}/${compromiso.puntosMax}</span>
         </div>`;
       }
-      oh += '</div>';
       openContainer.innerHTML = oh;
       openContainer.style.display = 'block';
+      const fbEl = document.getElementById('result-general-feedback');
+      if(fbEl){
+        fbEl.classList.add('r-feedback-msg');
+        fbEl.classList.remove('sob','sat','proc','ref');
+        if(sClass==='status-sobresaliente') fbEl.classList.add('sob');
+        else if(sClass==='status-satisfactorio') fbEl.classList.add('sat');
+        else if(sClass==='status-proceso') fbEl.classList.add('proc');
+        else fbEl.classList.add('ref');
+      }
     } else {
       openContainer.innerHTML = '';
       openContainer.style.display = 'none';
