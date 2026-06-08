@@ -274,6 +274,26 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .mod-select-card.m4{border-color:rgba(255,140,0,.5);box-shadow:0 0 24px rgba(255,140,0,.15)}
 .mod-select-card.m4:hover{box-shadow:0 12px 30px rgba(255,140,0,.25)}
 .mod-select-card.m4 .mod-num{color:var(--orange)}
+.mod-select-card.m4s1{border-color:rgba(0,179,225,.5);box-shadow:0 0 24px rgba(0,179,225,.12)}
+.mod-select-card.m4s1:hover{box-shadow:0 12px 30px rgba(0,179,225,.22)}
+.mod-select-card.m4s2{border-color:rgba(255,140,0,.5);box-shadow:0 0 24px rgba(255,140,0,.12)}
+.mod-select-card.m4s2:hover{box-shadow:0 12px 30px rgba(255,140,0,.22)}
+.mod-select-card.m4s3{border-color:rgba(90,47,207,.5);box-shadow:0 0 24px rgba(90,47,207,.12)}
+.mod-select-card.m4s3:hover{box-shadow:0 12px 30px rgba(90,47,207,.22)}
+.mod-select-card.m4s4{border-color:rgba(0,230,118,.5);box-shadow:0 0 24px rgba(0,230,118,.12)}
+.mod-select-card.m4s4:hover{box-shadow:0 12px 30px rgba(0,230,118,.22)}
+.mod-select-card.mc{border-color:rgba(255,215,0,.5);box-shadow:0 0 24px rgba(255,215,0,.12)}
+.mod-select-card.mc:hover{box-shadow:0 12px 30px rgba(255,215,0,.22)}
+.mc-criterio{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
+.mc-crit-title{font-size:14px;font-weight:800;color:var(--white);margin-bottom:4px}
+.mc-crit-desc{font-size:12px;color:var(--gray);margin-bottom:12px;line-height:1.5}
+.mc-opciones{display:flex;gap:8px;flex-wrap:wrap}
+.mc-opciones label{display:flex;align-items:center;gap:6px;cursor:pointer;padding:7px 12px;border-radius:8px;border:1px solid var(--border);font-size:12px;transition:all .2s}
+.mc-opciones label:hover{background:rgba(255,215,0,.08);border-color:var(--yellow)}
+.mc-val.exc{color:var(--green);font-weight:700}
+.mc-val.bue{color:var(--cyan);font-weight:700}
+.mc-val.dev{color:var(--orange);font-weight:700}
+.mc-val.nol{color:var(--red);font-weight:700}
 .mod-icon{font-size:42px;margin:10px 0 8px}
 .mod-name{font-size:17px;font-weight:800;color:var(--white);margin-bottom:4px}
 .mod-desc{font-size:11.5px;color:var(--gray);line-height:1.45;margin-bottom:14px}
@@ -458,8 +478,151 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="mod-name">Venta y Cierre</div>
         <div class="mod-desc">Tipos de cliente, venta consultiva, objeciones y Master Closer.</div>
         <div class="mod-badge disp">DISPONIBLE</div>
-        <div class="mod-meta">20 ítems · 20 min · con IA</div>
+        <div class="mod-meta">4 sesiones + Master Closer · 100 pts</div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S-M4-SESIONES (Selector de sesiones Módulo 4) ══════════ -->
+<div id="s-m4-sesiones" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="navigateTo('s-modulo-select')">← Módulos</button>
+  </div>
+  <div style="max-width:940px;margin:0 auto;padding:32px 20px 48px">
+    <div class="welcome-tag">🎯 MÓDULO 4 — VENTA Y CIERRE</div>
+    <h2 class="welcome-title" style="font-size:26px;margin-bottom:6px">Selecciona tu sesión</h2>
+    <p class="welcome-subtitle" style="margin-bottom:28px">4 quizzes (10 preguntas c/u) + evaluación práctica Master Closer. Puntaje total: 100 pts.</p>
+    <div class="mod-select-grid">
+      <div class="mod-select-card m4s1" onclick="elegirSesionM4('M4S1')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--cyan)">SESIÓN 1</div>
+        <div class="mod-icon">👥</div>
+        <div class="mod-name">Tipos de Cliente</div>
+        <div class="mod-desc">Apurado, Indeciso, Comparador, Racional y Emocional.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">10 preguntas · 10 min · 17.5 pts</div>
+      </div>
+      <div class="mod-select-card m4s2" onclick="elegirSesionM4('M4S2')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--orange)">SESIÓN 2</div>
+        <div class="mod-icon">🔍</div>
+        <div class="mod-name">Venta Consultiva</div>
+        <div class="mod-desc">Diagnóstico, escucha activa y preguntas poderosas.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">10 preguntas · 10 min · 17.5 pts</div>
+      </div>
+      <div class="mod-select-card m4s3" onclick="elegirSesionM4('M4S3')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--purple)">SESIÓN 3</div>
+        <div class="mod-icon">🛡️</div>
+        <div class="mod-name">Manejo de Objeciones</div>
+        <div class="mod-desc">Escuchar, validar, resolver y reconducir al cierre.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">10 preguntas · 10 min · 17.5 pts</div>
+      </div>
+      <div class="mod-select-card m4s4" onclick="elegirSesionM4('M4S4')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--green)">SESIÓN 4</div>
+        <div class="mod-icon">🏆</div>
+        <div class="mod-name">Cierre y Negociación</div>
+        <div class="mod-desc">Señales de compra, técnicas de cierre y ganar-ganar.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">10 preguntas · 10 min · 17.5 pts</div>
+      </div>
+      <div class="mod-select-card mc" onclick="navigateTo('s-master-closer')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--yellow)">SESIÓN 5</div>
+        <div class="mod-icon">⭐</div>
+        <div class="mod-name">Master Closer</div>
+        <div class="mod-desc">Evaluación práctica en vivo. 5 criterios de desempeño.</div>
+        <div class="mod-badge" style="background:rgba(255,215,0,.15);color:var(--yellow);border:1px solid rgba(255,215,0,.4)">30 PUNTOS</div>
+        <div class="mod-meta">rúbrica docente · evaluación práctica</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S-MASTER-CLOSER (Rúbrica práctica M4 S5) ══════════ -->
+<div id="s-master-closer" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="navigateTo('s-m4-sesiones')">← Sesiones M4</button>
+  </div>
+  <div style="max-width:820px;margin:0 auto;padding:32px 20px 64px">
+    <div class="welcome-tag">⭐ SESIÓN 5 — MÓDULO 4</div>
+    <h2 class="welcome-title" style="font-size:24px;margin-bottom:6px">Evaluación Master Closer</h2>
+    <p class="welcome-subtitle" style="margin-bottom:24px">Rúbrica práctica en vivo. Evalúa el desempeño del participante en 5 criterios. Puntaje máximo: 30 puntos.</p>
+    <div style="background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);border-radius:14px;padding:18px 20px;margin-bottom:22px">
+      <div style="font-size:11px;color:var(--yellow);letter-spacing:2px;font-weight:700;margin-bottom:10px">ESCALA DE PUNTAJE POR CRITERIO</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center">
+        <div><div style="font-size:22px;font-weight:900;color:var(--green)">6</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Excelente</div></div>
+        <div><div style="font-size:22px;font-weight:900;color:var(--cyan)">4.5</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Bueno</div></div>
+        <div><div style="font-size:22px;font-weight:900;color:var(--orange)">3</div><div style="font-size:11px;color:var(--gray);margin-top:2px">En desarrollo</div></div>
+        <div><div style="font-size:22px;font-weight:900;color:var(--red)">0</div><div style="font-size:11px;color:var(--gray);margin-top:2px">No logrado</div></div>
+      </div>
+    </div>
+    <div style="margin-bottom:20px">
+      <label style="font-size:11px;color:var(--gray);letter-spacing:1.5px;font-weight:700">PARTICIPANTE EVALUADO</label>
+      <input type="text" id="mc-nombre" placeholder="Escribe el nombre del participante..." style="width:100%;margin-top:8px;padding:11px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:14px;box-sizing:border-box">
+    </div>
+    <div id="mc-criterios-wrap">
+      <div class="mc-criterio">
+        <div class="mc-crit-title">1. Diagnóstico del cliente</div>
+        <div class="mc-crit-desc">Identifica el tipo de cliente y adapta su enfoque al perfil detectado durante el roleplay.</div>
+        <div class="mc-opciones">
+          <label><input type="radio" name="c1" value="6"><span class="mc-val exc"> 6 — Excelente</span></label>
+          <label><input type="radio" name="c1" value="4.5"><span class="mc-val bue"> 4.5 — Bueno</span></label>
+          <label><input type="radio" name="c1" value="3"><span class="mc-val dev"> 3 — En desarrollo</span></label>
+          <label><input type="radio" name="c1" value="0"><span class="mc-val nol"> 0 — No logrado</span></label>
+        </div>
+      </div>
+      <div class="mc-criterio">
+        <div class="mc-crit-title">2. Venta consultiva</div>
+        <div class="mc-crit-desc">Pregunta antes de ofrecer, descubre la necesidad real y construye su propuesta sobre lo que el cliente reveló.</div>
+        <div class="mc-opciones">
+          <label><input type="radio" name="c2" value="6"><span class="mc-val exc"> 6 — Excelente</span></label>
+          <label><input type="radio" name="c2" value="4.5"><span class="mc-val bue"> 4.5 — Bueno</span></label>
+          <label><input type="radio" name="c2" value="3"><span class="mc-val dev"> 3 — En desarrollo</span></label>
+          <label><input type="radio" name="c2" value="0"><span class="mc-val nol"> 0 — No logrado</span></label>
+        </div>
+      </div>
+      <div class="mc-criterio">
+        <div class="mc-crit-title">3. Manejo de objeciones</div>
+        <div class="mc-crit-desc">Aplica el método Escuchar → Validar → Resolver → Reconducir sin discutir ni ceder el precio de inmediato.</div>
+        <div class="mc-opciones">
+          <label><input type="radio" name="c3" value="6"><span class="mc-val exc"> 6 — Excelente</span></label>
+          <label><input type="radio" name="c3" value="4.5"><span class="mc-val bue"> 4.5 — Bueno</span></label>
+          <label><input type="radio" name="c3" value="3"><span class="mc-val dev"> 3 — En desarrollo</span></label>
+          <label><input type="radio" name="c3" value="0"><span class="mc-val nol"> 0 — No logrado</span></label>
+        </div>
+      </div>
+      <div class="mc-criterio">
+        <div class="mc-crit-title">4. Técnica de cierre</div>
+        <div class="mc-crit-desc">Detecta la señal de compra y aplica la técnica correcta: alternativa, directo, urgencia o resumen.</div>
+        <div class="mc-opciones">
+          <label><input type="radio" name="c4" value="6"><span class="mc-val exc"> 6 — Excelente</span></label>
+          <label><input type="radio" name="c4" value="4.5"><span class="mc-val bue"> 4.5 — Bueno</span></label>
+          <label><input type="radio" name="c4" value="3"><span class="mc-val dev"> 3 — En desarrollo</span></label>
+          <label><input type="radio" name="c4" value="0"><span class="mc-val nol"> 0 — No logrado</span></label>
+        </div>
+      </div>
+      <div class="mc-criterio">
+        <div class="mc-crit-title">5. Impacto y persuasión <span style="font-weight:400;color:var(--gray)">(voto del público)</span></div>
+        <div class="mc-crit-desc">Energía, seguridad, conexión emocional y capacidad de persuasión durante el roleplay. Lo califica el grupo.</div>
+        <div class="mc-opciones">
+          <label><input type="radio" name="c5" value="6"><span class="mc-val exc"> 6 — Excelente</span></label>
+          <label><input type="radio" name="c5" value="4.5"><span class="mc-val bue"> 4.5 — Bueno</span></label>
+          <label><input type="radio" name="c5" value="3"><span class="mc-val dev"> 3 — En desarrollo</span></label>
+          <label><input type="radio" name="c5" value="0"><span class="mc-val nol"> 0 — No logrado</span></label>
+        </div>
+      </div>
+    </div>
+    <div id="mc-resultado" style="display:none;margin-top:24px;background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.3);border-radius:16px;padding:28px;text-align:center">
+      <div id="mc-score-num" style="font-size:56px;font-weight:900;color:var(--yellow);line-height:1">0</div>
+      <div style="font-size:13px;color:var(--gray);margin-top:4px">puntos de 30</div>
+      <div id="mc-nivel-text" style="font-size:16px;font-weight:800;margin-top:14px;color:var(--white)">—</div>
+      <button class="btn btn-secondary btn-sm" style="margin-top:18px" onclick="resetMasterCloser()">Nueva evaluación</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px">
+      <button class="btn btn-secondary" onclick="navigateTo('s-m4-sesiones')">← Volver</button>
+      <button class="btn btn-primary" onclick="calcularMasterCloser()">Calcular puntaje →</button>
     </div>
   </div>
 </div>
@@ -924,27 +1087,53 @@ M2:{titulo:'Módulo 2 — Fidelización y Relacionamiento',tiempo:1200,preguntas
 {type:'open',q:'¿Cómo cree que su trabajo aporta a la experiencia general del centro comercial?',criterio:'Trabajo en equipo',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
 {type:'commitment',q:'Escriba un compromiso sencillo y posible de aplicar en su trabajo diario para mejorar la atención, el servicio y la fidelización de los clientes.',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:30,puntosMax:10}
 ]},
-M4:{titulo:'Módulo 4 — Venta Consultiva y Cierre',tiempo:1200,preguntas:[
-{q:'¿Cuál de los siguientes perfiles corresponde al cliente racional?',opts:['Toma decisiones basándose en emociones y experiencias pasadas.','Analiza datos, precios y características antes de decidir; necesita información detallada.','Se deja llevar por el impulso del momento sin comparar opciones.','Busca validación social antes de comprar.'],correct:1,feedbackOk:'Exacto. El cliente racional necesita datos, comparaciones y argumentos lógicos para decidir.',feedbackFail:'El cliente racional analiza información antes de decidir. No actúa por impulso ni emoción — necesita hechos concretos.'},
-{q:'¿Qué estrategia es más efectiva con un cliente indeciso?',opts:['Presionarlo para que decida rápido antes de que se arrepienta.','Reducir sus opciones, ayudarlo a ordenar sus criterios y darle seguridad.','Dejarlo solo para que piense sin ninguna orientación.','Mostrarle el mayor número posible de productos para que elija.'],correct:1,feedbackOk:'Correcto. El indeciso necesita guía, no presión. Simplificar opciones y generar seguridad es la clave.',feedbackFail:'El cliente indeciso se bloquea con demasiadas opciones y se inhibe bajo presión. La clave es guiarlo con pocas alternativas claras.'},
-{q:'Cuando un cliente difícil hace una queja agresiva, la mejor respuesta es:',opts:['Responderle en el mismo tono para que sienta que le hablan en serio.','Ignorarlo hasta que se calme por su cuenta.','Escucharlo sin interrumpir, reconocer su malestar y proponer una solución concreta.','Llamar a un superior de inmediato sin intentar resolver nada.'],correct:2,feedbackOk:'Perfecto. Escuchar, reconocer y proponer solución transforma a un cliente difícil en un embajador de la marca.',feedbackFail:'Con clientes difíciles, confrontar o ignorar empeora la situación. Escuchar con calma y proponer solución concreta es lo más efectivo.'},
-{q:'El cliente emocional toma decisiones principalmente por:',opts:['Análisis de costo-beneficio y comparación racional.','Datos técnicos y especificaciones del producto.','Cómo se siente durante la experiencia y el vínculo que establece con el vendedor.','Comparación de precios en internet antes de llegar al local.'],correct:2,feedbackOk:'Exacto. El cliente emocional compra experiencias y relaciones, no solo productos.',feedbackFail:'El cliente emocional decide con el corazón. El vínculo y la experiencia pesan más que los datos técnicos o el precio.'},
-{q:'¿En qué se diferencia la venta consultiva de la venta tradicional?',opts:['La venta consultiva se enfoca en ofrecer el mayor descuento posible.','La venta consultiva prioriza el diagnóstico de la necesidad real del cliente antes de proponer una solución.','En la venta consultiva el vendedor habla más que el cliente para persuadirlo.','La venta consultiva solo aplica a productos de alto valor económico.'],correct:1,feedbackOk:'Correcto. Diagnosticar antes de proponer es la esencia de la venta consultiva.',feedbackFail:'La venta consultiva escucha primero, entiende la necesidad real y luego propone. No se trata de precio ni de cuánto habla el vendedor.'},
-{q:'¿Cuál es la primera acción clave en la venta consultiva?',opts:['Cerrar el trato antes de que el cliente cambie de opinión.','Mostrar el producto estrella del local inmediatamente.','Hacer preguntas para entender qué necesita realmente el cliente.','Entregar el folleto con todos los precios disponibles.'],correct:2,feedbackOk:'Exacto. Diagnosticar es el primer paso. Sin entender la necesidad, cualquier propuesta es un disparo al aire.',feedbackFail:'Vender sin diagnosticar es como recetar sin examinar. El primer paso siempre es preguntar y escuchar activamente.'},
-{q:'Una propuesta de valor efectiva en venta consultiva debe:',opts:['Centrarse en el precio más bajo del mercado.','Listar todas las características técnicas del producto.','Conectar los beneficios del producto con la necesidad específica que el cliente expresó.','Usar lenguaje técnico para demostrar conocimiento experto.'],correct:2,feedbackOk:'¡Perfecto! La propuesta de valor se construye sobre lo que el cliente ya dijo que necesita.',feedbackFail:'Una propuesta de valor no es un catálogo de características. Es un puente entre lo que el cliente necesita y lo que el producto le puede dar.'},
-{q:'La técnica del "boomerang" para manejar objeciones consiste en:',opts:['Ignorar la objeción y continuar con el argumento de venta.','Convertir la objeción del cliente en una razón a favor de la compra.','Ofrecer un descuento adicional cada vez que el cliente objete.','Pedir tiempo para consultar con un supervisor antes de responder.'],correct:1,feedbackOk:'Exacto. Con el boomerang, la objeción se devuelve convertida en beneficio. Ejemplo: "¿es muy caro?" → "precisamente, por el precio vas a durar el doble."',feedbackFail:'El boomerang no evade la objeción: la transforma. Lo que el cliente ve como desventaja, el vendedor lo presenta como razón a favor de comprar.'},
-{q:'Cuando un cliente dice "está muy caro", la técnica de compensación implica:',opts:['Reducir inmediatamente el precio sin ningún argumento.','Reconocer el precio y equilibrarlo mencionando los beneficios adicionales que justifican la inversión.','Decirle que hay opciones más baratas disponibles en otra tienda.','Ignorar el comentario y cambiar de tema rápidamente.'],correct:1,feedbackOk:'Correcto. Compensar es balancear el precio con el valor: "sí, el precio es mayor, y a cambio obtienes..."',feedbackFail:'La técnica de compensación no baja el precio: eleva el valor percibido. Se reconoce el costo y se equilibra con los beneficios concretos.'},
-{q:'La técnica del "rodeo" para manejar objeciones consiste en:',opts:['Cambiar de tema y volver a la objeción más tarde.','Hacer preguntas que lleven al cliente a responder y resolver su propia objeción.','Llamar a otro vendedor para que maneje la situación difícil.','Prometer algo que la empresa no puede cumplir para cerrar la venta.'],correct:1,feedbackOk:'¡Exacto! Con el rodeo, el vendedor guía al cliente con preguntas estratégicas para que él mismo encuentre la respuesta.',feedbackFail:'El rodeo usa preguntas inteligentes para que el cliente se convenza solo. No esquiva la objeción: hace que el cliente la resuelva por su cuenta.'},
-{q:'¿Cuál de las siguientes es una "señal de compra" del cliente?',opts:['El cliente dice que va a pensarlo y se despide sin más.','El cliente pregunta por tiempo de garantía, métodos de pago o disponibilidad del producto.','El cliente pide que lo dejen solo para ver el producto con calma.','El cliente compara precios en su celular antes de hablar con el vendedor.'],correct:1,feedbackOk:'Correcto. Las preguntas sobre garantía, pago o disponibilidad indican que el cliente ya está listo para decidir.',feedbackFail:'Cuando un cliente pregunta por garantía, formas de pago o cuándo puede llevarse el producto, ya está comprando en su mente. ¡Esa es la señal!'},
-{q:'La técnica de cierre por "alternativa" consiste en:',opts:['Darle al cliente una sola opción para no confundirlo.','Ofrecer al cliente dos opciones positivas para que elija entre ellas, eliminando el "no" del menú.','Presentar una oferta con tiempo limitado para generar urgencia extrema.','Pedir al cliente que firme el contrato sin más explicaciones.'],correct:1,feedbackOk:'¡Perfecto! "¿Lo prefiere en azul o en negro?" — ambas respuestas son sí. La alternativa elimina el "no" del menú.',feedbackFail:'El cierre por alternativa no pregunta "¿lo compra o no?". Plantea dos opciones positivas asumiendo que el cliente ya decidió comprar.'},
-{q:'¿Cuál de las siguientes actitudes define a un negociador efectivo en el punto de venta?',opts:['Ceder en todo lo que el cliente pide para evitar conflictos.','Mantener una postura rígida sin escuchar las necesidades del cliente.','Buscar un acuerdo donde ambas partes ganen, escuchando y proponiendo alternativas concretas.','Hablar más rápido y fuerte que el cliente para dominar la conversación.'],correct:2,feedbackOk:'Exacto. La negociación efectiva busca el ganar-ganar, no la imposición ni la rendición.',feedbackFail:'Un buen negociador no cede todo ni impone todo: construye acuerdos donde ambas partes sienten que ganaron algo.'},
-{q:'¿Cuál de las siguientes características define mejor a un Master Closer?',opts:['Alguien que presiona al cliente hasta lograr la venta a cualquier costo.','Un vendedor que combina escucha activa, empatía, manejo de objeciones y seguimiento postventa con consistencia.','Quien cierra el mayor número de ventas en el menor tiempo posible.','El vendedor que ofrece los descuentos más agresivos del equipo.'],correct:1,feedbackOk:'¡Exacto! Un Master Closer no presiona: guía. Su poder está en la consistencia de todas las fases del proceso.',feedbackFail:'El Master Closer no es el más agresivo ni quien más descuenta. Es quien domina todo el proceso: escucha, conecta, rebate objeciones, cierra y hace seguimiento.'},
-{q:'La postventa es parte del proceso del Master Closer porque:',opts:['Es un requisito administrativo que no impacta en las ventas futuras.','Permite cobrar comisiones adicionales por el seguimiento realizado.','Construye fidelización, genera referidos y establece relaciones a largo plazo que multiplican las ventas.','Solo aplica cuando el cliente tiene algún reclamo o problema con el producto.'],correct:2,feedbackOk:'Correcto. La postventa no es un costo: es una inversión en relaciones que generan más ventas futuras.',feedbackFail:'La postventa cierra el ciclo de confianza. Un cliente bien atendido después de comprar recomienda, regresa y trae más personas.'},
-{type:'open',q:'¿Cómo identificaría en su trabajo diario el tipo de cliente que tiene enfrente (racional, emocional, indeciso o difícil) y qué ajuste haría en su manera de atenderlo?',criterio:'Tipos de cliente',nivelEsperado:'Adecuado-Alto',minChars:40,puntosMax:8},
-{type:'open',q:'Describa una situación real en que tuvo que manejar una objeción de un cliente. ¿Cómo lo resolvió? ¿Qué haría diferente aplicando las técnicas del módulo?',criterio:'Manejo de objeciones',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
-{type:'open',q:'¿Qué señales de compra ha identificado en clientes reales de su local o área? ¿Cómo puede usarlas para mejorar su tasa de cierre?',criterio:'Cierre efectivo',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
-{type:'open',q:'¿Qué elementos del perfil del Master Closer considera más desafiantes de desarrollar en usted mismo y por qué?',criterio:'Autoconocimiento vendedor',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
-{type:'commitment',q:'Escriba un compromiso concreto que pueda aplicar desde mañana para mejorar su proceso de venta consultiva, manejo de objeciones o cierre con sus clientes en Plaza Imperial.',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:30,puntosMax:10}
+M4S1:{titulo:'Sesión 1 — Tipos de Cliente',tiempo:600,preguntas:[
+{q:'¿Cómo se llama el tipo de cliente que siempre tiene prisa y quiere decidir rápido?',opts:['El Indeciso','El Apurado','El Racional','El Emocional'],correct:1,feedbackOk:'Exacto. El Apurado valora la velocidad y la eficiencia.',feedbackFail:'El Apurado es quien siempre tiene prisa. Los otros perfiles tienen motivadores distintos.'},
+{q:'¿Cuál es la mejor estrategia con El Apurado?',opts:['Mostrarle todo el catálogo','Darle 2 opciones claras y ser rápido','Pedirle que regrese luego','Explicarle la ficha técnica detallada'],correct:1,feedbackOk:'Correcto. Menos opciones, más velocidad. El Apurado pierde interés si lo enredas.',feedbackFail:'Con El Apurado: velocidad y síntesis. Dos opciones máximo, y cierra rápido.'},
+{q:'¿Qué tipo de cliente pide consejos a todos, no se decide y necesita que lo guíen?',opts:['El Comparador','El Apurado','El Indeciso','El Racional'],correct:2,feedbackOk:'Correcto. El Indeciso necesita dirección, no más opciones.',feedbackFail:'Ese es El Indeciso. El Comparador busca el mejor precio; El Racional quiere datos.'},
+{q:'¿Cuál es la clave para atender bien a El Indeciso?',opts:['Darle más opciones para que elija','Reducir opciones y recomendarle una','Dejarlo solo para que decida','Bajarle el precio'],correct:1,feedbackOk:'Exacto. Menos opciones y una recomendación clara son lo que necesita El Indeciso.',feedbackFail:'El Indeciso se paraliza con demasiadas opciones. Tu trabajo: recomendar y guiar.'},
+{q:'¿Qué tipo de cliente busca el mejor precio y te exige que lo convenzas frente a la competencia?',opts:['El Emocional','El Comparador','El Apurado','El Indeciso'],correct:1,feedbackOk:'Correcto. El Comparador pone precio vs. precio. Tu respuesta: valor vs. precio.',feedbackFail:'Ese es El Comparador. El Emocional compra por cómo se siente, no por precio.'},
+{q:'¿Qué NO debes hacer con El Comparador?',opts:['Hablar de valor y diferencias','Entrar en guerra de precios','Mostrar la garantía','Resaltar el servicio'],correct:1,feedbackOk:'Correcto. Entrar en guerra de precios te hace perder margen y credibilidad.',feedbackFail:'Con El Comparador, nunca entres en guerra de precios. Habla de valor, diferencial y experiencia.'},
+{q:'¿Cuál es el tipo de cliente que toma decisiones basado en datos, lógica y argumentos técnicos?',opts:['El Racional','El Emocional','El Apurado','El Indeciso'],correct:0,feedbackOk:'Correcto. El Racional necesita hechos, pruebas y razonamientos sólidos.',feedbackFail:'El Racional es quien pide datos, pruebas y razones claras. Nunca frases vacías.'},
+{q:'¿Qué le mueve a El Racional para tomar una decisión de compra?',opts:['Que lo apuren','Datos, pruebas e información','Frases emotivas','Que decidas por él'],correct:1,feedbackOk:'Exacto. Con El Racional: hechos, comparativas y argumentos sólidos.',feedbackFail:'El Racional no compra por emoción. Necesita datos concretos y argumentos lógicos.'},
+{q:'¿Qué es lo que más valora El Emocional al comprar?',opts:['El precio','Cómo lo hace sentir','La ficha técnica','La garantía'],correct:1,feedbackOk:'Correcto. El Emocional compra experiencias y sensaciones, no características.',feedbackFail:'El Emocional compra según cómo lo hace sentir el producto o el asesor. La emoción manda.'},
+{q:'¿Cuál es la habilidad más importante de un vendedor al tratar con distintos tipos de cliente?',opts:['Tratar a todos exactamente igual','Leer al cliente y adaptar tu jugada','Memorizar el catálogo','Bajar precios para vender más'],correct:1,feedbackOk:'Perfecto. Leer al cliente y adaptar tu estilo es la ventaja del asesor de alto impacto.',feedbackFail:'Un vendedor de alto impacto lee al cliente y cambia su estrategia. No hay un guion único.'}
+]},
+M4S2:{titulo:'Sesión 2 — Venta Consultiva',tiempo:600,preguntas:[
+{q:'¿Qué significa vender preguntando?',opts:['Hablar mucho del producto','Averiguar la necesidad antes de ofrecer','Mostrar lo más caro primero','Cerrar lo más rápido posible'],correct:1,feedbackOk:'Correcto. La venta consultiva empieza por entender, no por hablar.',feedbackFail:'Vender preguntando significa diagnosticar antes de prescribir. Sin diagnóstico, tu oferta es un disparo al azar.'},
+{q:'¿Cuál es la diferencia entre despachar y asesorar?',opts:['Muestra lo que hay y espera','Pregunta y recomienda a la medida','Habla solo de características','Asume lo que el cliente quiere'],correct:1,feedbackOk:'Exacto. Asesorar implica preguntar y personalizar. Despachar es solo entregar.',feedbackFail:'Asesorar = preguntar + recomendar a la medida. Despachar = entregar sin entender.'},
+{q:'¿Qué distingue la necesidad declarada de la necesidad real?',opts:['Son lo mismo','La declarada es lo que dice; la real es lo que verdaderamente necesita','La real siempre es el precio','La declarada es la más importante'],correct:1,feedbackOk:'Correcto. La declarada es lo que el cliente dice; la real es lo que subyace.',feedbackFail:'La necesidad declarada es lo que el cliente dice. La real es lo que verdaderamente necesita. Un buen asesor descubre la real.'},
+{q:'¿Cuál es la mejor pregunta consultiva para iniciar la venta?',opts:['¿Le ayudo en algo?','¿Para qué ocasión lo busca?','¿Se lo lleva?','¿Vio el precio?'],correct:1,feedbackOk:'Correcto. Preguntar por la ocasión descubre el contexto y la necesidad real.',feedbackFail:'"¿Para qué ocasión?" abre el diagnóstico. Las otras no generan información útil.'},
+{q:'¿Qué es la escucha activa en ventas?',opts:['Interrumpir para proponer','Confirmar y repetir lo clave sin interrumpir','Hablar más que el cliente','Adelantarte a lo que va a decir'],correct:1,feedbackOk:'Exacto. Escuchar activamente es confirmar, resumir y no interrumpir.',feedbackFail:'Escucha activa = dejar hablar, confirmar lo clave y nunca interrumpir.'},
+{q:'¿Para qué sirve una pregunta consultiva potente?',opts:['Llenar el silencio','Guiar la conversación hacia el cierre','Demostrar cuánto sabes','Apurar al cliente'],correct:1,feedbackOk:'Correcto. Las preguntas consultivas revelan la necesidad y abren el camino al cierre.',feedbackFail:'Las preguntas consultivas no son para llenar silencios. Son para guiar la venta.'},
+{q:'¿Sobre qué debes construir tu propuesta de valor?',opts:['El producto más caro','La necesidad que el cliente te contó','Lo que más te conviene vender','El inventario que sobra'],correct:1,feedbackOk:'Exacto. Tu propuesta debe conectar con lo que el cliente dijo que necesita.',feedbackFail:'La propuesta de valor se construye sobre la necesidad del cliente, no tus intereses.'},
+{q:'¿Qué error rompe la venta consultiva antes de empezar?',opts:['Preguntar antes de ofrecer','Soltar características técnicas sin preguntar','Escuchar activamente','Recomendar a la medida'],correct:1,feedbackOk:'Correcto. Ofrecer sin preguntar rompe la confianza del cliente.',feedbackFail:'El error mortal: ofrecer antes de escuchar. Siempre diagnostica antes de prescribir.'},
+{q:'¿Cuál es la primera pregunta que convierte una venta transaccional en consultiva?',opts:['¿Está mirando no más?','¿Qué está buscando exactamente hoy?','Eso vale $X.','¿Se lo lleva?'],correct:1,feedbackOk:'Perfecto. Esta pregunta activa el modo asesor desde el inicio.',feedbackFail:'"¿Qué está buscando exactamente hoy?" arranca el diagnóstico. Las otras no abren conversación.'},
+{q:'El asesor consultivo nunca dice "Tenemos esto". En cambio, siempre ___.',opts:['habla primero','pregunta primero','insiste en el precio','muestra el catálogo'],correct:1,feedbackOk:'Exacto. El asesor consultivo pregunta primero, siempre.',feedbackFail:'El asesor consultivo pregunta primero. Hablar de productos sin preguntar es solo despachar.'}
+]},
+M4S3:{titulo:'Sesión 3 — Manejo de Objeciones',tiempo:600,preguntas:[
+{q:'¿Qué es una objeción en ventas?',opts:['Un rechazo definitivo','Una duda con disfraz — una oportunidad','Una pérdida de tiempo','Una señal para rendirse'],correct:1,feedbackOk:'Correcto. Las objeciones son dudas, no rechazos. Quien objeta, aún está interesado.',feedbackFail:'Una objeción es una oportunidad. El cliente que objeta todavía está en la conversación.'},
+{q:'¿Cuál es el primer paso del método de manejo de objeciones?',opts:['Resolver de inmediato','Escuchar — dejar terminar','Bajar el precio','Cambiar de tema'],correct:1,feedbackOk:'Exacto. Siempre deja que el cliente termine antes de responder.',feedbackFail:'El primer paso es ESCUCHAR. Interrumpir invalida al cliente y cierra la conversación.'},
+{q:'En el método de 4 pasos, ¿qué va después de escuchar?',opts:['Validar','Discutir','Ignorar','Cerrar'],correct:0,feedbackOk:'Correcto. Escuchar → Validar → Resolver → Reconducir.',feedbackFail:'El segundo paso es VALIDAR. Reconocer la duda sin darle razón: "Entiendo tu punto".'},
+{q:'¿Por qué es clave validar la objeción antes de responder?',opts:['Para llevar la contraria','Porque baja la guardia del cliente y abre el canal','Para hablar más fuerte','Para ofrecer descuento'],correct:1,feedbackOk:'Exacto. Validar baja la guardia del cliente y abre el canal para resolver.',feedbackFail:'Validar = reconocer sin atacar. Lleva la conversación a un lugar de confianza.'},
+{q:'El cliente dice: "Está muy caro." ¿Cuál es la respuesta correcta?',opts:['Bajar el precio de inmediato','Preguntar ¿comparado con qué? y mostrar valor','Decir que no se puede bajar','Ignorar el comentario'],correct:1,feedbackOk:'Perfecto. Pregunta para entender el referente y luego construye el valor.',feedbackFail:'"¿Comparado con qué?" te da información para responder con valor. Bajar el precio sin preguntar es rendirse.'},
+{q:'El cliente dice: "Lo voy a pensar." ¿Qué haces?',opts:['Despedirlo amablemente','Preguntar qué le genera la duda','Insistir con el precio','Ofrecer otro producto'],correct:1,feedbackOk:'Correcto. Preguntar qué le genera la duda activa la conversación real.',feedbackFail:'"Lo voy a pensar" es una objeción velada. Tu misión: descubrir la duda real.'},
+{q:'¿Qué está PROHIBIDO en el manejo de objeciones?',opts:['Escuchar con calma','Discutir o llevar la contraria','Validar la duda','Hacer una pregunta'],correct:1,feedbackOk:'Correcto. Discutir cierra la venta instantáneamente.',feedbackFail:'Discutir está prohibido. Aunque tengas razón, pelear con el cliente te hace perder la venta.'},
+{q:'¿Qué pasa si ofreces descuento de inmediato ante la objeción de precio?',opts:['Es lo ideal','Devalúa el producto y reduce el margen','Siempre cierra la venta','Es lo que el cliente respeta más'],correct:1,feedbackOk:'Exacto. Descuento inmediato devalúa el producto y enseña a pedir más.',feedbackFail:'Descuento sin resistencia devalúa el producto y enseña al cliente que siempre puede pedir más.'},
+{q:'¿En cuántas grandes categorías se agrupan las objeciones típicas?',opts:['Más de 20 tipos','4 categorías: precio, lo pienso, comparación y duda','Solo el precio','Ninguna categoría clara'],correct:1,feedbackOk:'Correcto. Dominar las 4 categorías te prepara para el 90% de situaciones.',feedbackFail:'Las objeciones se agrupan en 4: precio, "lo pienso", comparación con otro y dudas sobre el producto.'},
+{q:'¿Qué viene SIEMPRE después de resolver la objeción?',opts:['Terminar la conversación','Volver al cierre — reconducir','Cambiar de producto','Llamar al jefe'],correct:1,feedbackOk:'Perfecto. Resolver sin cerrar es trabajo perdido. Siempre reconducir al cierre.',feedbackFail:'Escuchar → Validar → Resolver → RECONDUCIR AL CIERRE. Sin ese último paso, la venta no se completa.'}
+]},
+M4S4:{titulo:'Sesión 4 — Cierre y Negociación',tiempo:600,preguntas:[
+{q:'¿Cuál es una señal de compra clara de un cliente?',opts:['El cliente mira la salida','Saca la billetera o pregunta por la entrega','Cruza los brazos y calla','Dice que solo está mirando'],correct:1,feedbackOk:'Correcto. Sacar la billetera o preguntar por detalles logísticos es señal de compra.',feedbackFail:'Sacar la billetera o preguntar por la entrega es una señal clara. ¡Cierra en ese momento!'},
+{q:'¿Qué técnica de cierre da dos opciones al cliente en vez de preguntar si compra?',opts:['Directo','Alternativa','Urgencia','Resumen'],correct:1,feedbackOk:'Exacto. El cierre alternativa: "¿Lo lleva en rojo o en negro?" — cualquier respuesta implica sí.',feedbackFail:'El cierre alternativa ofrece dos opciones. Cualquiera que elija el cliente implica comprar.'},
+{q:'Un cliente revisó el producto, preguntó el precio y tiene la billetera en mano. ¿Qué cierre usas?',opts:['Directo','Alternativa','Urgencia','Resumen'],correct:0,feedbackOk:'Correcto. Cierre directo: "¿Lo llevamos?" — cuando la señal es clara, no des vueltas.',feedbackFail:'Con señales claras usa el cierre directo. "¿Lo llevamos?" — simple, sin rodeos.'},
+{q:'¿Por qué es obligatorio proponer el cierre?',opts:['Para esperar que el cliente lo pida','Porque si no lo pides, no se cierra','Para bajar el precio','Para mostrar más productos'],correct:1,feedbackOk:'Correcto. La mayoría de las ventas se pierden por no pedir el cierre.',feedbackFail:'Sin propuesta de cierre, la venta no ocurre. El cliente raramente cierra solo.'},
+{q:'¿Qué significa negociar en ganar-ganar?',opts:['Regalar para no perder la venta','Intercambiar: dar algo y recibir algo a cambio','Ceder en todo','Subir el precio'],correct:1,feedbackOk:'Exacto. Negociar = intercambiar. Si das algo, recibes algo a cambio.',feedbackFail:'Ganar-ganar no es regalar. Es intercambiar: "Te doy X si tú me das Y."'},
+{q:'El cliente pide descuento. ¿Qué haces primero?',opts:['Decir que sí de inmediato','Pedir algo a cambio: combo, contado o referido','Decir que no y cerrar el tema','Ignorarlo'],correct:1,feedbackOk:'Correcto. Intercambia antes de ceder. Siempre pide algo a cambio.',feedbackFail:'Nunca des descuento sin pedir algo: "Si lo llevas en combo, sí puedo ajustarlo."'},
+{q:'¿Qué pasa si siempre cedes en precio sin negociar?',opts:['Fidelizas al cliente','Reduces el margen y el cliente aprende a pedir más','Es señal de buen servicio','Aumenta el valor percibido'],correct:1,feedbackOk:'Exacto. Ceder sin intercambiar enseña al cliente que siempre puede pedir más descuento.',feedbackFail:'Ceder siempre = perder margen y entrenar al cliente a pedir más cada vez.'},
+{q:'Detectas la señal de compra. ¿Cuál es el siguiente paso?',opts:['Seguir mostrando productos','Proponer el cierre','Hablar de la competencia','Esperar en silencio'],correct:1,feedbackOk:'Correcto. Ante la señal de compra, propón el cierre de inmediato.',feedbackFail:'Cuando ves la señal, actúas. Proponer el cierre en el momento correcto es la diferencia.'},
+{q:'¿Qué técnica de cierre usas cuando el stock es limitado o la oferta vence pronto?',opts:['Resumen','Urgencia y escasez','Alternativa','Directo'],correct:1,feedbackOk:'Exacto. El cierre urgencia activa el miedo a perder la oportunidad.',feedbackFail:'El cierre urgencia/escasez usa un límite real de tiempo o unidades para activar la decisión.'},
+{q:'¿Qué es una negociación exitosa en el piso de ventas?',opts:['Que tú ganes y el cliente pierda','Que ambos sientan que ganaron','Vender siempre al precio más bajo','Evitar negociar a toda costa'],correct:1,feedbackOk:'Perfecto. El ganar-ganar genera confianza, recompra y referidos.',feedbackFail:'Ganar-ganar = los dos salen satisfechos. Eso construye clientes que vuelven y refieren.'}
 ]}};
 
 const FB_GENERAL={sobresaliente:'🌟 Sobresaliente. Dominas los conceptos de este módulo con profundidad. Estás listo para aplicar la Peak-End Rule, los 5 Factores y los Momentos de Verdad en tu local desde hoy.',satisfactorio:'✅ Satisfactorio. Tienes una base sólida en este módulo. Revisa los temas donde fallaste — son las áreas donde tienes mayor potencial de mejora.',proceso:'⚠️ En Proceso. Estás construyendo tu comprensión de la experiencia del cliente. Te recomendamos repasar los materiales del módulo antes del siguiente.',refuerzo:'🔴 Requiere Refuerzo. Los conceptos de este módulo son base del diplomado. Te invitamos a revisar la presentación y los recursos antes de continuar.'};
@@ -1054,7 +1243,7 @@ function iniciarModulo(mod){
   const cfgMod = {
     M1: {icon:'📚', iconBg:'rgba(0,179,225,.12)', iconBd:'rgba(0,179,225,.3)', label:'MÓDULO 1', labelCol:'var(--cyan)', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
     M2: {icon:'🤝', iconBg:'rgba(0,230,118,.12)', iconBd:'rgba(0,230,118,.3)', label:'MÓDULO 2', labelCol:'var(--green)', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'},
-    M4: {icon:'🎯', iconBg:'rgba(255,140,0,.12)', iconBd:'rgba(255,140,0,.3)', label:'MÓDULO 4', labelCol:'var(--orange)', titulo:'Venta Consultiva y Cierre', subtitulo:'20 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+    M4: {icon:'🎯', iconBg:'rgba(255,140,0,.12)', iconBd:'rgba(255,140,0,.3)', label:'MÓDULO 4', labelCol:'var(--orange)', titulo:'Venta Consultiva y Cierre', subtitulo:'4 sesiones · Quiz + Master Closer · 100 pts'}
   }[mod];
   const ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfgMod.icon;ic.style.background=cfgMod.iconBg;ic.style.borderColor=cfgMod.iconBd;}
   const ml=document.getElementById('reg-mod-label'); if(ml){ml.textContent=cfgMod.label;ml.style.color=cfgMod.labelCol;}
@@ -1078,6 +1267,8 @@ function iniciarModulo(mod){
     const first = (state.participante.nombre||'').split(' ')[0]||'Asesor';
     const hn = document.getElementById('hi-name'); if(hn) hn.textContent = first;
     showSection('s-m1-intro');
+  } else if(mod === 'M4'){
+    showSection('s-m4-sesiones');
   } else {
     iniciarEvaluacionDirecto();
   }
@@ -1111,19 +1302,75 @@ function continuarAModulos(ev){
 function elegirModulo(mod){
   if(mod!=='M1' && mod!=='M2' && mod!=='M4') return;
   state.modulo = mod;
-  // Actualizar headers (igual que iniciarModulo)
   const cfgMod = {
     M1: {icon:'📚', label:'MÓDULO 1', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
     M2: {icon:'🤝', label:'MÓDULO 2', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'},
-    M4: {icon:'🎯', label:'MÓDULO 4', titulo:'Venta Consultiva y Cierre', subtitulo:'20 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+    M4: {icon:'🎯', label:'MÓDULO 4', titulo:'Venta Consultiva y Cierre', subtitulo:'4 sesiones · Quiz + Master Closer · 100 pts'}
   }[mod];
   const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${cfgMod.label}`;
   const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfgMod.titulo;
   if(mod === 'M1'){
     navigateTo('s-m1-intro');
+  } else if(mod === 'M4'){
+    navigateTo('s-m4-sesiones');
   } else {
     iniciarEvaluacionDirecto();
   }
+}
+
+function elegirSesionM4(ses){
+  var allowed=['M4S1','M4S2','M4S3','M4S4'];
+  if(allowed.indexOf(ses)<0) return;
+  state.modulo=ses;
+  var cfgMap={
+    M4S1:{icon:'👥',iconBg:'rgba(0,179,225,.12)',iconBd:'rgba(0,179,225,.3)',label:'SESIÓN 1 — M4',labelCol:'var(--cyan)',titulo:'Tipos de Cliente',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'},
+    M4S2:{icon:'🔍',iconBg:'rgba(255,140,0,.12)',iconBd:'rgba(255,140,0,.3)',label:'SESIÓN 2 — M4',labelCol:'var(--orange)',titulo:'Venta Consultiva',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'},
+    M4S3:{icon:'🛡️',iconBg:'rgba(90,47,207,.12)',iconBd:'rgba(90,47,207,.3)',label:'SESIÓN 3 — M4',labelCol:'var(--purple)',titulo:'Manejo de Objeciones',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'},
+    M4S4:{icon:'🏆',iconBg:'rgba(0,230,118,.12)',iconBd:'rgba(0,230,118,.3)',label:'SESIÓN 4 — M4',labelCol:'var(--green)',titulo:'Cierre y Negociación',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'}
+  };
+  var cfg=cfgMap[ses]; if(!cfg) return;
+  var ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfg.icon;ic.style.background=cfg.iconBg;ic.style.borderColor=cfg.iconBd;}
+  var ml=document.getElementById('reg-mod-label'); if(ml){ml.textContent=cfg.label;ml.style.color=cfg.labelCol;}
+  var tt=document.getElementById('reg-title'); if(tt) tt.textContent=cfg.titulo;
+  var st=document.getElementById('reg-subtitle'); if(st) st.textContent=cfg.subtitulo;
+  var yr=document.getElementById('ya-respondido-text'); if(yr) yr.textContent='Tu evaluación de esta sesión ya fue registrada en este dispositivo.';
+  var rml=document.getElementById('result-modlabel'); if(rml) rml.textContent='POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · '+cfg.label;
+  var rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfg.titulo;
+  if(!state.participante){
+    var cached=localStorage.getItem('iconeEval_participante');
+    if(cached){try{state.participante=JSON.parse(cached);}catch(e){}}
+  }
+  if(!state.participante||!state.participante.email){showSection('s-home');return;}
+  iniciarEvaluacionDirecto();
+}
+
+function calcularMasterCloser(){
+  var total=0,allAnswered=true;
+  for(var i=1;i<=5;i++){
+    var val=document.querySelector('input[name="c'+i+'"]:checked');
+    if(!val){allAnswered=false;break;}
+    total+=parseFloat(val.value);
+  }
+  if(!allAnswered){showToast('Por favor califica los 5 criterios antes de calcular.');return;}
+  var scoreEl=document.getElementById('mc-score-num');
+  var nivelEl=document.getElementById('mc-nivel-text');
+  var resEl=document.getElementById('mc-resultado');
+  if(scoreEl) scoreEl.textContent=total;
+  var nivel='';
+  if(total>=27) nivel='⭐ MASTER CLOSER — Desempeño sobresaliente';
+  else if(total>=21) nivel='✅ Vendedor de Alto Impacto';
+  else if(total>=15) nivel='📈 En Desarrollo — ¡Sigue entrenando!';
+  else nivel='🔄 Necesita Refuerzo — Práctica adicional recomendada';
+  if(nivelEl) nivelEl.textContent=nivel;
+  if(resEl){resEl.style.display='block';resEl.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+
+function resetMasterCloser(){
+  var radios=document.querySelectorAll('#mc-criterios-wrap input[type=radio]');
+  radios.forEach(function(r){r.checked=false;});
+  var nombre=document.getElementById('mc-nombre'); if(nombre) nombre.value='';
+  var resEl=document.getElementById('mc-resultado'); if(resEl) resEl.style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function comenzarEvalDesdeIntro(){ iniciarEvaluacionDirecto(); }
