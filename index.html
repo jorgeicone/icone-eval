@@ -271,6 +271,9 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .mod-num{font-size:11px;color:var(--gray);letter-spacing:2px;font-weight:700}
 .mod-select-card.m1 .mod-num{color:var(--cyan)}
 .mod-select-card.m2 .mod-num{color:var(--green)}
+.mod-select-card.m4{border-color:rgba(255,140,0,.5);box-shadow:0 0 24px rgba(255,140,0,.15)}
+.mod-select-card.m4:hover{box-shadow:0 12px 30px rgba(255,140,0,.25)}
+.mod-select-card.m4 .mod-num{color:var(--orange)}
 .mod-icon{font-size:42px;margin:10px 0 8px}
 .mod-name{font-size:17px;font-weight:800;color:var(--white);margin-bottom:4px}
 .mod-desc{font-size:11.5px;color:var(--gray);line-height:1.45;margin-bottom:14px}
@@ -448,6 +451,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="mod-desc">Programación Neurolingüística aplicada al servicio al cliente.</div>
         <div class="mod-badge soon">PRÓXIMAMENTE</div>
         <div class="mod-meta">en construcción</div>
+      </div>
+      <div class="mod-select-card m4" onclick="elegirModulo('M4')">
+        <div class="mod-num">MÓDULO 4</div>
+        <div class="mod-icon">🎯</div>
+        <div class="mod-name">Venta y Cierre</div>
+        <div class="mod-desc">Tipos de cliente, venta consultiva, objeciones y Master Closer.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">20 ítems · 20 min · con IA</div>
       </div>
     </div>
   </div>
@@ -912,6 +923,28 @@ M2:{titulo:'Módulo 2 — Fidelización y Relacionamiento',tiempo:1200,preguntas
 {type:'open',q:'¿Cómo puede poner límites con respeto cuando un cliente exige algo que no es posible?',criterio:'Respeto y límites',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
 {type:'open',q:'¿Cómo cree que su trabajo aporta a la experiencia general del centro comercial?',criterio:'Trabajo en equipo',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
 {type:'commitment',q:'Escriba un compromiso sencillo y posible de aplicar en su trabajo diario para mejorar la atención, el servicio y la fidelización de los clientes.',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:30,puntosMax:10}
+]},
+M4:{titulo:'Módulo 4 — Venta Consultiva y Cierre',tiempo:1200,preguntas:[
+{q:'¿Cuál de los siguientes perfiles corresponde al cliente racional?',opts:['Toma decisiones basándose en emociones y experiencias pasadas.','Analiza datos, precios y características antes de decidir; necesita información detallada.','Se deja llevar por el impulso del momento sin comparar opciones.','Busca validación social antes de comprar.'],correct:1,feedbackOk:'Exacto. El cliente racional necesita datos, comparaciones y argumentos lógicos para decidir.',feedbackFail:'El cliente racional analiza información antes de decidir. No actúa por impulso ni emoción — necesita hechos concretos.'},
+{q:'¿Qué estrategia es más efectiva con un cliente indeciso?',opts:['Presionarlo para que decida rápido antes de que se arrepienta.','Reducir sus opciones, ayudarlo a ordenar sus criterios y darle seguridad.','Dejarlo solo para que piense sin ninguna orientación.','Mostrarle el mayor número posible de productos para que elija.'],correct:1,feedbackOk:'Correcto. El indeciso necesita guía, no presión. Simplificar opciones y generar seguridad es la clave.',feedbackFail:'El cliente indeciso se bloquea con demasiadas opciones y se inhibe bajo presión. La clave es guiarlo con pocas alternativas claras.'},
+{q:'Cuando un cliente difícil hace una queja agresiva, la mejor respuesta es:',opts:['Responderle en el mismo tono para que sienta que le hablan en serio.','Ignorarlo hasta que se calme por su cuenta.','Escucharlo sin interrumpir, reconocer su malestar y proponer una solución concreta.','Llamar a un superior de inmediato sin intentar resolver nada.'],correct:2,feedbackOk:'Perfecto. Escuchar, reconocer y proponer solución transforma a un cliente difícil en un embajador de la marca.',feedbackFail:'Con clientes difíciles, confrontar o ignorar empeora la situación. Escuchar con calma y proponer solución concreta es lo más efectivo.'},
+{q:'El cliente emocional toma decisiones principalmente por:',opts:['Análisis de costo-beneficio y comparación racional.','Datos técnicos y especificaciones del producto.','Cómo se siente durante la experiencia y el vínculo que establece con el vendedor.','Comparación de precios en internet antes de llegar al local.'],correct:2,feedbackOk:'Exacto. El cliente emocional compra experiencias y relaciones, no solo productos.',feedbackFail:'El cliente emocional decide con el corazón. El vínculo y la experiencia pesan más que los datos técnicos o el precio.'},
+{q:'¿En qué se diferencia la venta consultiva de la venta tradicional?',opts:['La venta consultiva se enfoca en ofrecer el mayor descuento posible.','La venta consultiva prioriza el diagnóstico de la necesidad real del cliente antes de proponer una solución.','En la venta consultiva el vendedor habla más que el cliente para persuadirlo.','La venta consultiva solo aplica a productos de alto valor económico.'],correct:1,feedbackOk:'Correcto. Diagnosticar antes de proponer es la esencia de la venta consultiva.',feedbackFail:'La venta consultiva escucha primero, entiende la necesidad real y luego propone. No se trata de precio ni de cuánto habla el vendedor.'},
+{q:'¿Cuál es la primera acción clave en la venta consultiva?',opts:['Cerrar el trato antes de que el cliente cambie de opinión.','Mostrar el producto estrella del local inmediatamente.','Hacer preguntas para entender qué necesita realmente el cliente.','Entregar el folleto con todos los precios disponibles.'],correct:2,feedbackOk:'Exacto. Diagnosticar es el primer paso. Sin entender la necesidad, cualquier propuesta es un disparo al aire.',feedbackFail:'Vender sin diagnosticar es como recetar sin examinar. El primer paso siempre es preguntar y escuchar activamente.'},
+{q:'Una propuesta de valor efectiva en venta consultiva debe:',opts:['Centrarse en el precio más bajo del mercado.','Listar todas las características técnicas del producto.','Conectar los beneficios del producto con la necesidad específica que el cliente expresó.','Usar lenguaje técnico para demostrar conocimiento experto.'],correct:2,feedbackOk:'¡Perfecto! La propuesta de valor se construye sobre lo que el cliente ya dijo que necesita.',feedbackFail:'Una propuesta de valor no es un catálogo de características. Es un puente entre lo que el cliente necesita y lo que el producto le puede dar.'},
+{q:'La técnica del "boomerang" para manejar objeciones consiste en:',opts:['Ignorar la objeción y continuar con el argumento de venta.','Convertir la objeción del cliente en una razón a favor de la compra.','Ofrecer un descuento adicional cada vez que el cliente objete.','Pedir tiempo para consultar con un supervisor antes de responder.'],correct:1,feedbackOk:'Exacto. Con el boomerang, la objeción se devuelve convertida en beneficio. Ejemplo: "¿es muy caro?" → "precisamente, por el precio vas a durar el doble."',feedbackFail:'El boomerang no evade la objeción: la transforma. Lo que el cliente ve como desventaja, el vendedor lo presenta como razón a favor de comprar.'},
+{q:'Cuando un cliente dice "está muy caro", la técnica de compensación implica:',opts:['Reducir inmediatamente el precio sin ningún argumento.','Reconocer el precio y equilibrarlo mencionando los beneficios adicionales que justifican la inversión.','Decirle que hay opciones más baratas disponibles en otra tienda.','Ignorar el comentario y cambiar de tema rápidamente.'],correct:1,feedbackOk:'Correcto. Compensar es balancear el precio con el valor: "sí, el precio es mayor, y a cambio obtienes..."',feedbackFail:'La técnica de compensación no baja el precio: eleva el valor percibido. Se reconoce el costo y se equilibra con los beneficios concretos.'},
+{q:'La técnica del "rodeo" para manejar objeciones consiste en:',opts:['Cambiar de tema y volver a la objeción más tarde.','Hacer preguntas que lleven al cliente a responder y resolver su propia objeción.','Llamar a otro vendedor para que maneje la situación difícil.','Prometer algo que la empresa no puede cumplir para cerrar la venta.'],correct:1,feedbackOk:'¡Exacto! Con el rodeo, el vendedor guía al cliente con preguntas estratégicas para que él mismo encuentre la respuesta.',feedbackFail:'El rodeo usa preguntas inteligentes para que el cliente se convenza solo. No esquiva la objeción: hace que el cliente la resuelva por su cuenta.'},
+{q:'¿Cuál de las siguientes es una "señal de compra" del cliente?',opts:['El cliente dice que va a pensarlo y se despide sin más.','El cliente pregunta por tiempo de garantía, métodos de pago o disponibilidad del producto.','El cliente pide que lo dejen solo para ver el producto con calma.','El cliente compara precios en su celular antes de hablar con el vendedor.'],correct:1,feedbackOk:'Correcto. Las preguntas sobre garantía, pago o disponibilidad indican que el cliente ya está listo para decidir.',feedbackFail:'Cuando un cliente pregunta por garantía, formas de pago o cuándo puede llevarse el producto, ya está comprando en su mente. ¡Esa es la señal!'},
+{q:'La técnica de cierre por "alternativa" consiste en:',opts:['Darle al cliente una sola opción para no confundirlo.','Ofrecer al cliente dos opciones positivas para que elija entre ellas, eliminando el "no" del menú.','Presentar una oferta con tiempo limitado para generar urgencia extrema.','Pedir al cliente que firme el contrato sin más explicaciones.'],correct:1,feedbackOk:'¡Perfecto! "¿Lo prefiere en azul o en negro?" — ambas respuestas son sí. La alternativa elimina el "no" del menú.',feedbackFail:'El cierre por alternativa no pregunta "¿lo compra o no?". Plantea dos opciones positivas asumiendo que el cliente ya decidió comprar.'},
+{q:'¿Cuál de las siguientes actitudes define a un negociador efectivo en el punto de venta?',opts:['Ceder en todo lo que el cliente pide para evitar conflictos.','Mantener una postura rígida sin escuchar las necesidades del cliente.','Buscar un acuerdo donde ambas partes ganen, escuchando y proponiendo alternativas concretas.','Hablar más rápido y fuerte que el cliente para dominar la conversación.'],correct:2,feedbackOk:'Exacto. La negociación efectiva busca el ganar-ganar, no la imposición ni la rendición.',feedbackFail:'Un buen negociador no cede todo ni impone todo: construye acuerdos donde ambas partes sienten que ganaron algo.'},
+{q:'¿Cuál de las siguientes características define mejor a un Master Closer?',opts:['Alguien que presiona al cliente hasta lograr la venta a cualquier costo.','Un vendedor que combina escucha activa, empatía, manejo de objeciones y seguimiento postventa con consistencia.','Quien cierra el mayor número de ventas en el menor tiempo posible.','El vendedor que ofrece los descuentos más agresivos del equipo.'],correct:1,feedbackOk:'¡Exacto! Un Master Closer no presiona: guía. Su poder está en la consistencia de todas las fases del proceso.',feedbackFail:'El Master Closer no es el más agresivo ni quien más descuenta. Es quien domina todo el proceso: escucha, conecta, rebate objeciones, cierra y hace seguimiento.'},
+{q:'La postventa es parte del proceso del Master Closer porque:',opts:['Es un requisito administrativo que no impacta en las ventas futuras.','Permite cobrar comisiones adicionales por el seguimiento realizado.','Construye fidelización, genera referidos y establece relaciones a largo plazo que multiplican las ventas.','Solo aplica cuando el cliente tiene algún reclamo o problema con el producto.'],correct:2,feedbackOk:'Correcto. La postventa no es un costo: es una inversión en relaciones que generan más ventas futuras.',feedbackFail:'La postventa cierra el ciclo de confianza. Un cliente bien atendido después de comprar recomienda, regresa y trae más personas.'},
+{type:'open',q:'¿Cómo identificaría en su trabajo diario el tipo de cliente que tiene enfrente (racional, emocional, indeciso o difícil) y qué ajuste haría en su manera de atenderlo?',criterio:'Tipos de cliente',nivelEsperado:'Adecuado-Alto',minChars:40,puntosMax:8},
+{type:'open',q:'Describa una situación real en que tuvo que manejar una objeción de un cliente. ¿Cómo lo resolvió? ¿Qué haría diferente aplicando las técnicas del módulo?',criterio:'Manejo de objeciones',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'open',q:'¿Qué señales de compra ha identificado en clientes reales de su local o área? ¿Cómo puede usarlas para mejorar su tasa de cierre?',criterio:'Cierre efectivo',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'open',q:'¿Qué elementos del perfil del Master Closer considera más desafiantes de desarrollar en usted mismo y por qué?',criterio:'Autoconocimiento vendedor',nivelEsperado:'Adecuado',minChars:40,puntosMax:8},
+{type:'commitment',q:'Escriba un compromiso concreto que pueda aplicar desde mañana para mejorar su proceso de venta consultiva, manejo de objeciones o cierre con sus clientes en Plaza Imperial.',criterio:'Aplicación práctica',nivelEsperado:'Adecuado',minChars:30,puntosMax:10}
 ]}};
 
 const FB_GENERAL={sobresaliente:'🌟 Sobresaliente. Dominas los conceptos de este módulo con profundidad. Estás listo para aplicar la Peak-End Rule, los 5 Factores y los Momentos de Verdad en tu local desde hoy.',satisfactorio:'✅ Satisfactorio. Tienes una base sólida en este módulo. Revisa los temas donde fallaste — son las áreas donde tienes mayor potencial de mejora.',proceso:'⚠️ En Proceso. Estás construyendo tu comprensión de la experiencia del cliente. Te recomendamos repasar los materiales del módulo antes del siguiente.',refuerzo:'🔴 Requiere Refuerzo. Los conceptos de este módulo son base del diplomado. Te invitamos a revisar la presentación y los recursos antes de continuar.'};
@@ -1015,12 +1048,13 @@ function navigateTo(id){ showSection(id); }
 
 /* Selección de módulo — nuevo flujo: si no hay registro, ir a s-home; si hay, arrancar eval */
 function iniciarModulo(mod){
-  if(mod!=='M1' && mod!=='M2') return;
+  if(mod!=='M1' && mod!=='M2' && mod!=='M4') return;
   state.modulo = mod;
   // Actualizar headers dependientes del módulo (resultados, registro legacy)
   const cfgMod = {
     M1: {icon:'📚', iconBg:'rgba(0,179,225,.12)', iconBd:'rgba(0,179,225,.3)', label:'MÓDULO 1', labelCol:'var(--cyan)', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
-    M2: {icon:'🤝', iconBg:'rgba(0,230,118,.12)', iconBd:'rgba(0,230,118,.3)', label:'MÓDULO 2', labelCol:'var(--green)', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+    M2: {icon:'🤝', iconBg:'rgba(0,230,118,.12)', iconBd:'rgba(0,230,118,.3)', label:'MÓDULO 2', labelCol:'var(--green)', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'},
+    M4: {icon:'🎯', iconBg:'rgba(255,140,0,.12)', iconBd:'rgba(255,140,0,.3)', label:'MÓDULO 4', labelCol:'var(--orange)', titulo:'Venta Consultiva y Cierre', subtitulo:'20 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
   }[mod];
   const ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfgMod.icon;ic.style.background=cfgMod.iconBg;ic.style.borderColor=cfgMod.iconBd;}
   const ml=document.getElementById('reg-mod-label'); if(ml){ml.textContent=cfgMod.label;ml.style.color=cfgMod.labelCol;}
@@ -1075,12 +1109,13 @@ function continuarAModulos(ev){
 
 /* Elegir módulo desde la pantalla de selección */
 function elegirModulo(mod){
-  if(mod!=='M1' && mod!=='M2') return;
+  if(mod!=='M1' && mod!=='M2' && mod!=='M4') return;
   state.modulo = mod;
   // Actualizar headers (igual que iniciarModulo)
   const cfgMod = {
     M1: {icon:'📚', label:'MÓDULO 1', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
-    M2: {icon:'🤝', label:'MÓDULO 2', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
+    M2: {icon:'🤝', label:'MÓDULO 2', titulo:'Fidelización y Relacionamiento', subtitulo:'16 preguntas · 20 minutos · Incluye respuestas abiertas con IA'},
+    M4: {icon:'🎯', label:'MÓDULO 4', titulo:'Venta Consultiva y Cierre', subtitulo:'20 preguntas · 20 minutos · Incluye respuestas abiertas con IA'}
   }[mod];
   const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${cfgMod.label}`;
   const rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfgMod.titulo;
