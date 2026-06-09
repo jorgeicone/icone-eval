@@ -990,7 +990,7 @@ const KEY_PASS_CH= 'iconeEvalPassChanged';
 
 /* ── MIGRATION: merge iEval_ + iconeEval_ data ── */
 (function migrateOldData(){
-  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
   mods.forEach(m=>{
     const oldAllKey = `iEval_all_${m}`;
     const newAllKey = `iconeEval_all_${m}`;
@@ -1503,7 +1503,7 @@ async function loadFromCloud(){
 function mergeCloudToLocal(cloudRecords){
   // Filter out test/prueba records
   cloudRecords=cloudRecords.filter(r=>{const nom=(r.participante?.nombre||'').toLowerCase();return !nom.startsWith('prueba');});
-  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
   mods.forEach(m=>{
     const cloudMod=cloudRecords.filter(r=>r.modulo===m);
     if(!cloudMod.length) return;
@@ -2022,7 +2022,7 @@ async function loadAdminDash(){
 function buildEvalSelector(){
   const names={M1:'M1',M2:'M2',M3:'M3',M4:'M4',M5:'M5',M6:'M6',M7:'M7',M8:'M8'};
   document.getElementById('eval-selector').innerHTML=['M1','M2','M3','M4','M5','M6','M7','M8'].map(e=>{
-    const n=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').length;
+    const n=e==='M4'?['M4S1','M4S2','M4S3','M4S4'].reduce((a,s)=>a+JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]').length,0):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').length;
     return`<button class="eval-pill${e==='M1'?' active':''}" onclick="selectEval('${e}',this)">Módulo ${e.slice(1)} (${n})</button>`;
   }).join('');
 }
@@ -2031,7 +2031,7 @@ function selectEval(mod,btn){
   currentEval=mod;
   document.querySelectorAll('.eval-pill').forEach(p=>p.classList.remove('active'));
   if(btn)btn.classList.add('active');else document.querySelector('.eval-pill')?.classList.add('active');
-  currentEvalData=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
+  currentEvalData=mod==='M4'?['M4S1','M4S2','M4S3','M4S4'].flatMap(s=>JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]')):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
   // Mostrar / ocultar tabs específicos de M2
   document.querySelectorAll('#adm-tabs-bar .m2-only').forEach(t=>{ t.style.display = (mod==='M2'?'inline-block':'none'); });
   // Si estamos en un tab M2-only y cambiamos a otro módulo, volver a distribucion
@@ -2112,7 +2112,7 @@ function updCharts2(data){
 }
 
 function buildModsTab(){
-  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
   const modTitles={M1:'Fundamentos CX',M2:'Fidelización',M3:'PNL aplicado',M4:'Módulo 4',M5:'Módulo 5',M6:'Módulo 6',M7:'Módulo 7',M8:'Módulo 8'};
   const modAvgs=mods.map(m=>{
     const d=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${m}`)||'[]');
@@ -2334,7 +2334,7 @@ function buildAccordion(data){
   const container=document.getElementById('adm-accordion');
   document.getElementById('acc-section-title').textContent=`👥 Participantes (${data.length})`;
   if(!data.length){container.innerHTML='<div style="text-align:center;color:var(--gray);padding:22px;font-size:12px;">Sin participantes para este módulo.</div>';return;}
-  const mods=['M1','M2','M3','M4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
   container.innerHTML=data.slice().sort((a,b)=>b.puntaje-a.puntaje).map((r,idx)=>{
     const nivel=r.puntaje>=80?'Experto':r.puntaje>=60?'En Formación':'Principiante';
     const pillClass=r.puntaje>=80?'pill-e':r.puntaje>=60?'pill-f':'pill-p';
