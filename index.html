@@ -3114,4 +3114,124 @@ function bGrupo(){
     mkG('Principiantes <60 pts',pr,'#ff4444','🔴');
 }
 function bQs(){
-  var wR=D.filter(function(r){return r.r
+  var wR=D.filter(function(r){return r.respuestas&&Object.keys(r.respuestas).length>0;});
+  if(!wR.length){document.getElementById('qs-container').innerHTML='<p style="text-align:center;color:#8892a4;padding:30px;">Sin respuestas detalladas disponibles.</p>';return;}
+  var L=['A','B','C','D'];
+  var html='';
+  QS.forEach(function(q,i){
+    var cnt=[0,0,0,0];
+    wR.forEach(function(r){var a=r.respuestas[i];if(a!==undefined&&cnt[a]!==undefined)cnt[a]++;});
+    var tot=wR.length;
+    var cP=tot?Math.round(cnt[q.correct]/tot*100):0;
+    var bars='';
+    q.opts.forEach(function(opt,j){
+      var pct=tot?Math.round(cnt[j]/tot*100):0;
+      var ok=(j===q.correct);
+      var shortOpt=opt.length>55?opt.substring(0,55)+'…':opt;
+      bars+='<div class="adm-q-row">'+
+        '<div class="adm-q-letter" style="background:'+(ok?'var(--green)':'rgba(255,255,255,.1)')+';color:'+(ok?'#000':'var(--gray)')+';">'+L[j]+'</div>'+
+        '<div style="flex:1;">'+
+          '<div style="font-size:10px;color:'+(ok?'var(--green)':'var(--gray)')+';margin-bottom:3px;">'+shortOpt+'</div>'+
+          '<div class="adm-q-track"><div class="'+(ok?'adm-q-fill-c':'adm-q-fill-w')+'" style="width:'+pct+'%;"></div></div>'+
+        '</div>'+
+        '<div class="adm-q-pct" style="color:'+(ok?'var(--green)':'var(--gray)')+';">'+pct+'%</div>'+
+        '</div>';
+    });
+    html+='<div class="adm-q-card">'+
+      '<div class="adm-q-num">PREGUNTA '+(i+1)+' DE '+QS.length+' · '+cP+'% correctamente · '+tot+' respuestas</div>'+
+      '<div class="adm-q-text">'+q.q+'</div>'+bars+'</div>';
+  });
+  document.getElementById('qs-container').innerHTML=html;
+}
+`;
+
+  // ── ASSEMBLE FINAL HTML ───────────────────────────────────────────────────
+  const html=
+    '<!DOCTYPE html><html lang="es"><head>'+
+    '<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+    '<title>ICONE Eval — '+currentEval+' · Diplomado CX 2026</title>'+
+    '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"><\/script>'+
+    '<style>'+css+'</style>'+
+    '</head><body>'+
+    bodyHtml+
+    '<script>'+dataVars+staticJs+'<\/script>'+
+    '</body></html>';
+
+  // ── PASO 1: abrir ventana SINCRÓNICO (evita popup blocker) ────────────────
+  const DASHBOARD_URL='https://jorgeicone.github.io/icone-eval/dashboard.html';
+  const win=window.open('','_blank');
+  if(!win){showToast('⚠ Activa ventanas emergentes en tu navegador');return;}
+
+  // Pantalla de carga inmediata
+  win.document.open();
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>*{margin:0;padding:0;box-sizing:border-box}body{background:#0b1c30;color:#fff;font-family:"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:18px}.spin{width:48px;height:48px;border:4px solid rgba(0,179,225,.2);border-top-color:#00b3e1;border-radius:50%;animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}</style></head><body><div class="spin"></div><h2 style="font-size:16px;font-weight:700;">Publicando dashboard...</h2><p style="font-size:11px;color:#8892a4;">Esto toma unos segundos</p></body></html>');
+  win.document.close();
+
+  // ── PASO 2: subir dashboard.html a GitHub y navegar ───────────────────────
+  (async function(){
+    try{
+      const token=await getToken();
+
+      // Encode HTML → base64 con soporte Unicode
+      const bytes=new TextEncoder().encode(html);
+      let binary='';
+      bytes.forEach(function(b){binary+=String.fromCharCode(b);});
+      const b64=btoa(binary);
+
+      // SHA del archivo existente (requerido para actualizar)
+      let sha='';
+      try{
+        const chk=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',
+          {headers:{'Authorization':'token '+token}});
+        if(chk.ok){const d=await chk.json();sha=d.sha||'';}
+      }catch(e){}
+
+      // Push a GitHub
+      const payload={message:'Dashboard '+currentEval+' '+new Date().toISOString().slice(0,16),content:b64};
+      if(sha)payload.sha=sha;
+      const res=await fetch('https://api.github.com/repos/'+GH_REPO+'/contents/dashboard.html',{
+        method:'PUT',
+        headers:{'Authorization':'token '+token,'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      if(!res.ok)throw new Error('GitHub API '+res.status);
+
+      // Navegar la ventana ya abierta a la URL real de GitHub Pages
+      win.location.href=DASHBOARD_URL;
+
+      // Copiar enlace al portapapeles
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(DASHBOARD_URL)
+          .then(function(){showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');})
+          .catch(function(){showToast('✅ Dashboard publicado en nueva pestaña');});
+      } else {
+        var ta=document.createElement('textarea');ta.value=DASHBOARD_URL;
+        ta.style.cssText='position:fixed;top:0;left:0;opacity:0;';
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');showToast('✅ Enlace del dashboard copiado — compártelo sin contraseña');}
+        catch(e2){showToast('✅ Dashboard publicado en nueva pestaña');}
+        document.body.removeChild(ta);
+      }
+
+    }catch(err2){
+      console.error('shareLink error:',err2);
+      if(win&&!win.closed){
+        win.document.open();
+        win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{background:#0b1c30;color:#fff;font-family:sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:12px;}</style></head><body><h2 style="color:#ff4444">❌ Error al publicar</h2><p style="color:#8892a4;font-size:12px;">'+err2.message+'</p></body></html>');
+        win.document.close();
+      }
+      showToast('❌ Error: '+err2.message);
+    }
+  })();
+}catch(err){console.error('shareLink error:',err);showToast('Error al generar dashboard: '+err.message);}}
+
+
+function limpiarDatos(){if(!confirm(`¿Borrar TODOS los datos de ${currentEval}? No se puede deshacer.`))return;localStorage.removeItem(`${KEY_PREFIX}all_${currentEval}`);refreshAdmin();showToast(`🗑 Datos de ${currentEval} eliminados`);}
+
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2500);}
+
+/* ── PARTICLES ── */
+(function(){const c=document.getElementById('particles');const cols=['#00b3e1','#5a2fcf','#ff8c00'];for(let i=0;i<15;i++){const p=document.createElement('div');p.className='particle';const s=Math.random()*5+3;p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*3)]};animation-duration:${Math.random()*20+15}s;animation-delay:${Math.random()*15}s;`;c.appendChild(p);}})();
+</script>
+</body>
+</html>
