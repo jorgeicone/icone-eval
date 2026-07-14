@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ICONE Eval v3 — Diplomado CX · Poli × Plaza Imperial</title>
 <style>
-:root{--bg:#0b1c30;--bg2:#112240;--cyan:#00b3e1;--purple:#5a2fcf;--orange:#ff8c00;--poli:#133759;--green:#00e676;--red:#ff4444;--yellow:#ffd700;--white:#ffffff;--gray:#8892a4;--card:rgba(255,255,255,0.05);--border:rgba(0,179,225,0.18);}
+:root{--bg:#0b1c30;--bg2:#112240;--cyan:#00b3e1;--purple:#5a2fcf;--orange:#ff8c00;--poli:#133759;--green:#00e676;--red:#ff4444;--yellow:#ffd700;--pink:#ff4d9d;--white:#ffffff;--gray:#8892a4;--card:rgba(255,255,255,0.05);--border:rgba(0,179,225,0.18);}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;overflow-x:hidden;}
 
@@ -282,6 +282,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .mod-select-card.m4s3:hover{box-shadow:0 12px 30px rgba(90,47,207,.22)}
 .mod-select-card.m4s4{border-color:rgba(0,230,118,.5);box-shadow:0 0 24px rgba(0,230,118,.12)}
 .mod-select-card.m4s4:hover{box-shadow:0 12px 30px rgba(0,230,118,.22)}
+.mod-select-card.m5{border-color:rgba(90,47,207,.5);box-shadow:0 0 24px rgba(90,47,207,.15)}
+.mod-select-card.m5:hover{box-shadow:0 12px 30px rgba(90,47,207,.25)}
+.mod-select-card.m5 .mod-num{color:var(--purple)}
+.mod-select-card.m6{border-color:rgba(255,77,157,.5);box-shadow:0 0 24px rgba(255,77,157,.15)}
+.mod-select-card.m6:hover{box-shadow:0 12px 30px rgba(255,77,157,.25)}
+.mod-select-card.m6 .mod-num{color:var(--pink)}
+.mod-select-card.m6s1{border-color:rgba(255,77,157,.5);box-shadow:0 0 24px rgba(255,77,157,.12)}
+.mod-select-card.m6s1:hover{box-shadow:0 12px 30px rgba(255,77,157,.22)}
+.mod-select-card.soon{opacity:.55;cursor:not-allowed}
+.mod-select-card.soon:hover{transform:none;box-shadow:none}
+.mod-badge.soon{background:rgba(136,146,164,.15);color:var(--gray);border:1px solid rgba(136,146,164,.35)}
 .mod-select-card.mc{border-color:rgba(255,215,0,.5);box-shadow:0 0 24px rgba(255,215,0,.12)}
 .mod-select-card.mc:hover{box-shadow:0 12px 30px rgba(255,215,0,.22)}
 .mc-criterio{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:14px}
@@ -480,6 +491,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="mod-badge disp">DISPONIBLE</div>
         <div class="mod-meta">4 sesiones + Master Closer · 100 pts</div>
       </div>
+      <div class="mod-select-card m5 soon" onclick="elegirModulo('M5')">
+        <div class="mod-num">MÓDULO 5</div>
+        <div class="mod-icon">🧠</div>
+        <div class="mod-name">PNL aplicada</div>
+        <div class="mod-desc">Programación Neurolingüística aplicada al servicio y las ventas.</div>
+        <div class="mod-badge soon">PRÓXIMAMENTE</div>
+        <div class="mod-meta">en construcción</div>
+      </div>
+      <div class="mod-select-card m6" onclick="elegirModulo('M6')">
+        <div class="mod-num">MÓDULO 6</div>
+        <div class="mod-icon">🤖</div>
+        <div class="mod-name">IA aplicada a la CX</div>
+        <div class="mod-desc">Qué es la IA, tipos, usos en tu local, mitos y cuidados.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">4 sesiones · 10 preguntas c/u</div>
+      </div>
     </div>
   </div>
 </div>
@@ -534,6 +561,53 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
         <div class="mod-desc">Evaluación práctica en vivo. 5 criterios de desempeño.</div>
         <div class="mod-badge" style="background:rgba(255,215,0,.15);color:var(--yellow);border:1px solid rgba(255,215,0,.4)">30 PUNTOS</div>
         <div class="mod-meta">rúbrica docente · evaluación práctica</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ S-M6-SESIONES (Selector de sesiones Módulo 6) ══════════ -->
+<div id="s-m6-sesiones" class="section">
+  <div class="top-bar">
+    <div class="logo">ICONE<span>.</span>Eval</div>
+    <button class="btn btn-secondary btn-sm" onclick="navigateTo('s-modulo-select')">← Módulos</button>
+  </div>
+  <div style="max-width:940px;margin:0 auto;padding:32px 20px 48px">
+    <div class="welcome-tag">🤖 MÓDULO 6 — IA APLICADA A LA EXPERIENCIA DEL CLIENTE</div>
+    <h2 class="welcome-title" style="font-size:26px;margin-bottom:6px">Selecciona tu sesión</h2>
+    <p class="welcome-subtitle" style="margin-bottom:28px">4 sesiones con quiz de 10 preguntas cada una. Responde el quiz al terminar cada clase.</p>
+    <div class="mod-select-grid">
+      <div class="mod-select-card m6s1" onclick="elegirSesionM6('M6S1')" style="cursor:pointer">
+        <div class="mod-num" style="color:var(--pink)">SESIÓN 1</div>
+        <div class="mod-icon">🤖</div>
+        <div class="mod-name">¿Qué es la IA?</div>
+        <div class="mod-desc">Sin miedo: la inteligencia artificial explicada para tu día a día.</div>
+        <div class="mod-badge disp">DISPONIBLE</div>
+        <div class="mod-meta">10 preguntas · 10 min</div>
+      </div>
+      <div class="mod-select-card m6s2 soon" onclick="elegirSesionM6('M6S2')">
+        <div class="mod-num" style="color:var(--gray)">SESIÓN 2</div>
+        <div class="mod-icon">💬</div>
+        <div class="mod-name">IA en ventas y servicio</div>
+        <div class="mod-desc">Cómo usar la IA para atender y vender mejor.</div>
+        <div class="mod-badge soon">PRÓXIMAMENTE</div>
+        <div class="mod-meta">en construcción</div>
+      </div>
+      <div class="mod-select-card m6s3 soon" onclick="elegirSesionM6('M6S3')">
+        <div class="mod-num" style="color:var(--gray)">SESIÓN 3</div>
+        <div class="mod-icon">✨</div>
+        <div class="mod-name">Sesión 3</div>
+        <div class="mod-desc">Contenido por definir.</div>
+        <div class="mod-badge soon">PRÓXIMAMENTE</div>
+        <div class="mod-meta">en construcción</div>
+      </div>
+      <div class="mod-select-card m6s4 soon" onclick="elegirSesionM6('M6S4')">
+        <div class="mod-num" style="color:var(--gray)">SESIÓN 4</div>
+        <div class="mod-icon">🛠️</div>
+        <div class="mod-name">Herramientas reales</div>
+        <div class="mod-desc">Manos a la obra con herramientas de IA.</div>
+        <div class="mod-badge soon">PRÓXIMAMENTE</div>
+        <div class="mod-meta">en construcción</div>
       </div>
     </div>
   </div>
@@ -990,7 +1064,7 @@ const KEY_PASS_CH= 'iconeEvalPassChanged';
 
 /* ── MIGRATION: merge iEval_ + iconeEval_ data ── */
 (function migrateOldData(){
-  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6S1','M6','M7','M8'];
   mods.forEach(m=>{
     const oldAllKey = `iEval_all_${m}`;
     const newAllKey = `iconeEval_all_${m}`;
@@ -1103,6 +1177,18 @@ M3:{titulo:'Módulo 3 — Comunicación Estratégica',tiempo:1200,preguntas:[
 {q:'El uso estratégico de las pausas permite:',opts:['Generar ansiedad en el cliente.','Evitar la participación intermitente.','Procesar la información y generar impacto.','Aumentar la velocidad del discurso.'],correct:2,feedbackOk:'¡Perfecto! Las pausas dan espacio para procesar la información y generan impacto.',feedbackFail:'Las pausas estratégicas permiten procesar la información y generar impacto, no aumentar la velocidad ni generar ansiedad.'},
 {q:'¿Cuál es el canal más apropiado para enviar acuerdos, propuestas y seguimientos?',opts:['WhatsApp.','Redes sociales.','Correo electrónico.','Mensajería instantánea.'],correct:2,feedbackOk:'¡Exacto! El correo electrónico es el canal formal para acuerdos, propuestas y seguimientos.',feedbackFail:'Para acuerdos, propuestas y seguimientos el canal más apropiado es el correo electrónico, por su formalidad y trazabilidad.'},
 {q:'La tríada de la comunicación estratégica está integrada por:',opts:['Lenguaje, acción y creatividad.','Claridad, concisión y coherencia.','Rapidez, volumen y tono.','Escucha, negociación y ventas.'],correct:1,feedbackOk:'¡Correcto! La tríada es claridad, concisión y coherencia.',feedbackFail:'La tríada de la comunicación estratégica es claridad, concisión y coherencia.'}
+]},
+M6S1:{titulo:'Sesión 1 — ¿Qué es la IA?',tiempo:600,preguntas:[
+{q:'Andrea, asesora de un local de Plaza Imperial, dice: "yo nunca he usado inteligencia artificial". ¿Cuál de estas cosas que hace a diario YA es IA?',opts:['Que Waze le calcule la mejor ruta al centro comercial','Contar el efectivo de la caja','Escribir un precio en una etiqueta','Prender las luces del local'],correct:0,feedbackOk:'¡Exacto! Waze usa IA para predecir el tráfico y calcular la mejor ruta. Ya la usas sin darte cuenta.',feedbackFail:'Waze es IA: predice tráfico y calcula rutas en tiempo real. Igual que el corrector del celular, Netflix o el antifraude de tu banco.'},
+{q:'En una frase, ¿qué es la inteligencia artificial?',opts:['Un robot que reemplaza personas','Tecnología que aprende de muchos ejemplos para ayudarnos a decidir, responder o crear más rápido','Un programa que solo entienden los ingenieros','Una máquina que siente y piensa como un humano'],correct:1,feedbackOk:'¡Correcto! Esa es la idea central: aprende de ejemplos y te ayuda a ir más rápido.',feedbackFail:'La IA es tecnología que aprende de muchos ejemplos para ayudarnos a decidir, responder o crear más rápido. No es un robot ni una máquina que siente.'},
+{q:'Un restaurante de la plazoleta de comidas tiene cientos de reseñas y comentarios de clientes. El administrador no tiene tiempo de leerlos todos. Según la sesión, ¿cómo lo apoya la IA?',opts:['Borrando las reseñas negativas','Respondiendo por él sin que se entere','Resumiéndolas y diciéndole qué debe mejorar','La IA no sirve para eso'],correct:2,feedbackOk:'¡Perfecto! La IA resume reseñas y comentarios y te dice qué mejorar.',feedbackFail:'La IA resume y ordena: lee todas las reseñas por ti y te dice qué debes mejorar. No las borra ni actúa a tus espaldas.'},
+{q:'¿Cuál de estas afirmaciones sobre la IA es VERDADERA?',opts:['Nunca se equivoca','Solo la pueden usar los expertos','Piensa y siente como una persona','Se puede equivocar, por eso siempre debes revisar lo que te entrega'],correct:3,feedbackOk:'¡Correcto! La IA no es magia perfecta. Tú revisas y tú diriges.',feedbackFail:'La IA sí se equivoca. Siempre revisa lo que te entrega antes de usarlo. Y no: no es solo para expertos ni piensa como un humano.'},
+{q:'Un local necesita que le escriban la descripción de 20 productos nuevos. ¿Qué tipo de IA le sirve?',opts:['Reconocimiento facial','IA generativa, como ChatGPT','Un antifraude bancario','Un asistente de voz para llamadas'],correct:1,feedbackOk:'¡Exacto! La IA generativa crea textos, imágenes e ideas nuevas.',feedbackFail:'La IA generativa (ChatGPT, Copilot) es la que crea textos, imágenes e ideas nuevas. El reconocimiento identifica rostros o voz, no redacta.'},
+{q:'Cuando Rappi le sugiere a un cliente el restaurante que probablemente le va a gustar, ¿qué tipo de IA está trabajando?',opts:['IA generativa','Reconocimiento de imágenes','Un recomendador','Un asistente de voz'],correct:2,feedbackOk:'¡Correcto! Los recomendadores sugieren productos o contenido según tus gustos.',feedbackFail:'Es un recomendador: sugiere según los gustos y el comportamiento previo del cliente. Igual que Netflix o YouTube.'},
+{q:'Una tienda de ropa de Plaza Imperial recibe decenas de mensajes por WhatsApp preguntando tallas, precios y horarios. La asesora no alcanza a responder y pierde ventas. ¿Cuál es el mejor uso de la IA aquí?',opts:['Reemplazar a la asesora por un robot','Dejar de responder los mensajes de WhatsApp','Bajar los precios para vender más rápido','Que un asistente responda al instante lo frecuente y la asesora dedique su tiempo a cerrar ventas'],correct:3,feedbackOk:'¡Perfecto! La IA se lleva lo repetitivo; tú te quedas con lo que solo tú haces: cerrar y atender con calidez.',feedbackFail:'La IA responde lo frecuente al instante y libera a la asesora para cerrar ventas. No la reemplaza: le devuelve el tiempo.'},
+{q:'"La IA me va a quitar el trabajo". ¿Cuál es la realidad?',opts:['Te quita lo repetitivo y potencia lo que solo tú haces: atender con calidez','Es cierto: en poco tiempo reemplaza a los asesores','Solo afecta a los cajeros','No tiene ningún efecto en el trabajo'],correct:0,feedbackOk:'¡Correcto! La IA no te reemplaza: te potencia.',feedbackFail:'La IA te quita lo repetitivo y potencia lo que solo tú haces: atender con calidez. No te reemplaza.'},
+{q:'Un asesor quiere que la IA le redacte una respuesta para un cliente inconforme. ¿Qué NO debe hacer?',opts:['Escribirle en español lo que necesita','Revisar el texto antes de enviarlo','Pegar la cédula y el teléfono del cliente sin su permiso','Pedirle un tono amable'],correct:2,feedbackOk:'¡Exacto! Cuida los datos personales del cliente: no los compartas sin permiso.',feedbackFail:'Nunca compartas datos personales del cliente sin su permiso. Escribirle en español, pedir un tono amable y revisar el texto sí son buenas prácticas.'},
+{q:'¿Cuál es la forma correcta de entender tu relación con la IA en el local?',opts:['Ella decide y yo obedezco','Es una herramienta que yo dirijo y superviso','Es solo para el área de sistemas','Es un lujo que no aplica a mi trabajo'],correct:1,feedbackOk:'¡Perfecto! Tú diriges, tú supervisas. La IA es el apoyo.',feedbackFail:'La IA es una herramienta que TÚ diriges y supervisas. No decide por ti, y aplica a tu trabajo todos los días.'}
 ]},
 M4S1:{titulo:'Sesión 1 — Tipos de Cliente',tiempo:600,preguntas:[
 {q:'¿Cómo se llama el tipo de cliente que siempre tiene prisa y quiere decidir rápido?',opts:['El Indeciso','El Apurado','El Racional','El Emocional'],correct:1,feedbackOk:'Exacto. El Apurado valora la velocidad y la eficiencia.',feedbackFail:'El Apurado es quien siempre tiene prisa. Los otros perfiles tienen motivadores distintos.'},
@@ -1317,7 +1403,9 @@ function continuarAModulos(ev){
 
 /* Elegir módulo desde la pantalla de selección */
 function elegirModulo(mod){
-  if(mod!=='M1' && mod!=='M2' && mod!=='M3' && mod!=='M4') return;
+  if(mod==='M5'){ showToast('El Módulo 5 (PNL aplicada) estará disponible próximamente.'); return; }
+  if(mod!=='M1' && mod!=='M2' && mod!=='M3' && mod!=='M4' && mod!=='M6') return;
+  if(mod === 'M6'){ state.modulo = mod; navigateTo('s-m6-sesiones'); return; }
   state.modulo = mod;
   const cfgMod = {
     M1: {icon:'📚', label:'MÓDULO 1', titulo:'Fundamentos de la Experiencia del Cliente', subtitulo:'15 preguntas · 20 minutos · Una sola oportunidad'},
@@ -1345,6 +1433,29 @@ function elegirSesionM4(ses){
     M4S2:{icon:'🔍',iconBg:'rgba(255,140,0,.12)',iconBd:'rgba(255,140,0,.3)',label:'SESIÓN 2 — M4',labelCol:'var(--orange)',titulo:'Venta Consultiva',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'},
     M4S3:{icon:'🛡️',iconBg:'rgba(90,47,207,.12)',iconBd:'rgba(90,47,207,.3)',label:'SESIÓN 3 — M4',labelCol:'var(--purple)',titulo:'Manejo de Objeciones',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'},
     M4S4:{icon:'🏆',iconBg:'rgba(0,230,118,.12)',iconBd:'rgba(0,230,118,.3)',label:'SESIÓN 4 — M4',labelCol:'var(--green)',titulo:'Cierre y Negociación',subtitulo:'10 preguntas · 10 minutos · 17.5 pts'}
+  };
+  var cfg=cfgMap[ses]; if(!cfg) return;
+  var ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfg.icon;ic.style.background=cfg.iconBg;ic.style.borderColor=cfg.iconBd;}
+  var ml=document.getElementById('reg-mod-label'); if(ml){ml.textContent=cfg.label;ml.style.color=cfg.labelCol;}
+  var tt=document.getElementById('reg-title'); if(tt) tt.textContent=cfg.titulo;
+  var st=document.getElementById('reg-subtitle'); if(st) st.textContent=cfg.subtitulo;
+  var yr=document.getElementById('ya-respondido-text'); if(yr) yr.textContent='Tu evaluación de esta sesión ya fue registrada en este dispositivo.';
+  var rml=document.getElementById('result-modlabel'); if(rml) rml.textContent='POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · '+cfg.label;
+  var rms=document.getElementById('result-modsubtitle'); if(rms) rms.textContent=cfg.titulo;
+  if(!state.participante){
+    var cached=localStorage.getItem('iconeEval_participante');
+    if(cached){try{state.participante=JSON.parse(cached);}catch(e){}}
+  }
+  if(!state.participante||!state.participante.email){showSection('s-home');return;}
+  iniciarEvaluacionDirecto();
+}
+
+function elegirSesionM6(ses){
+  var allowed=['M6S1'];
+  if(allowed.indexOf(ses)<0){ showToast('Esta sesión estará disponible próximamente.'); return; }
+  state.modulo=ses;
+  var cfgMap={
+    M6S1:{icon:'🤖',iconBg:'rgba(255,77,157,.12)',iconBd:'rgba(255,77,157,.3)',label:'SESIÓN 1 — M6',labelCol:'var(--pink)',titulo:'¿Qué es la IA?',subtitulo:'10 preguntas · 10 minutos'}
   };
   var cfg=cfgMap[ses]; if(!cfg) return;
   var ic=document.getElementById('reg-icon'); if(ic){ic.textContent=cfg.icon;ic.style.background=cfg.iconBg;ic.style.borderColor=cfg.iconBd;}
@@ -1521,7 +1632,7 @@ async function loadFromCloud(){
 function mergeCloudToLocal(cloudRecords){
   // Filter out test/prueba records
   cloudRecords=cloudRecords.filter(r=>{const nom=(r.participante?.nombre||'').toLowerCase();return !nom.startsWith('prueba');});
-  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6S1','M6','M7','M8'];
   mods.forEach(m=>{
     const cloudMod=cloudRecords.filter(r=>r.modulo===m);
     if(!cloudMod.length) return;
@@ -1807,8 +1918,8 @@ async function finalizarEvaluacion(timeout=false){
   const badge=document.getElementById('result-badge');badge.className=`status-badge ${sClass}`;badge.textContent=status;
 
   // Actualizar header de resultados según módulo
-  const modLabelMap={M1:'MÓDULO 1',M2:'MÓDULO 2',M3:'MÓDULO 3'};
-  const modSubMap={M1:'Fundamentos de la Experiencia del Cliente',M2:'Fidelización y Relacionamiento',M3:'Comunicación Estratégica'};
+  const modLabelMap={M1:'MÓDULO 1',M2:'MÓDULO 2',M3:'MÓDULO 3',M4S1:'SESIÓN 1 — M4',M4S2:'SESIÓN 2 — M4',M4S3:'SESIÓN 3 — M4',M4S4:'SESIÓN 4 — M4',M6S1:'SESIÓN 1 — M6'};
+  const modSubMap={M1:'Fundamentos de la Experiencia del Cliente',M2:'Fidelización y Relacionamiento',M3:'Comunicación Estratégica',M4S1:'Tipos de Cliente',M4S2:'Venta Consultiva',M4S3:'Manejo de Objeciones',M4S4:'Cierre y Negociación',M6S1:'¿Qué es la IA?'};
   const modLabel = modLabelMap[state.modulo] || 'MÓDULO 1';
   const modSub = modSubMap[state.modulo] || 'Fundamentos de la Experiencia del Cliente';
   const rml=document.getElementById('result-modlabel'); if(rml) rml.textContent=`POLITÉCNICO GRANCOLOMBIANO · EVALUACIÓN COMPLETADA · ${modLabel}`;
@@ -2042,7 +2153,8 @@ async function loadAdminDash(){
 function buildEvalSelector(){
   const names={M1:'M1',M2:'M2',M3:'M3',M4:'M4',M5:'M5',M6:'M6',M7:'M7',M8:'M8'};
   document.getElementById('eval-selector').innerHTML=['M1','M2','M3','M4','M5','M6','M7','M8'].map(e=>{
-    const n=e==='M4'?['M4S1','M4S2','M4S3','M4S4'].reduce((a,s)=>a+JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]').length,0):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').length;
+    const SUB={M4:['M4S1','M4S2','M4S3','M4S4'],M6:['M6S1','M6S2','M6S3','M6S4']};
+    const n=SUB[e]?SUB[e].reduce((a,s)=>a+JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]').length,0):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${e}`)||'[]').length;
     return`<button class="eval-pill${e==='M1'?' active':''}" onclick="selectEval('${e}',this)">Módulo ${e.slice(1)} (${n})</button>`;
   }).join('');
 }
@@ -2051,7 +2163,8 @@ function selectEval(mod,btn){
   currentEval=mod;
   document.querySelectorAll('.eval-pill').forEach(p=>p.classList.remove('active'));
   if(btn)btn.classList.add('active');else document.querySelector('.eval-pill')?.classList.add('active');
-  currentEvalData=mod==='M4'?['M4S1','M4S2','M4S3','M4S4'].flatMap(s=>JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]')):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
+  const SUBEV={M4:['M4S1','M4S2','M4S3','M4S4'],M6:['M6S1','M6S2','M6S3','M6S4']};
+  currentEvalData=SUBEV[mod]?SUBEV[mod].flatMap(s=>JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${s}`)||'[]')):JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${mod}`)||'[]');
   // Mostrar / ocultar tabs específicos de M2
   document.querySelectorAll('#adm-tabs-bar .m2-only').forEach(t=>{ t.style.display = (mod==='M2'?'inline-block':'none'); });
   // Si estamos en un tab M2-only y cambiamos a otro módulo, volver a distribucion
@@ -2132,7 +2245,7 @@ function updCharts2(data){
 }
 
 function buildModsTab(){
-  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6S1','M6','M7','M8'];
   const modTitles={M1:'Fundamentos CX',M2:'Fidelización',M3:'Comunicación Estratégica',M4:'Módulo 4',M5:'Módulo 5',M6:'Módulo 6',M7:'Módulo 7',M8:'Módulo 8'};
   const modAvgs=mods.map(m=>{
     const d=JSON.parse(localStorage.getItem(`${KEY_PREFIX}all_${m}`)||'[]');
@@ -2354,7 +2467,7 @@ function buildAccordion(data){
   const container=document.getElementById('adm-accordion');
   document.getElementById('acc-section-title').textContent=`👥 Participantes (${data.length})`;
   if(!data.length){container.innerHTML='<div style="text-align:center;color:var(--gray);padding:22px;font-size:12px;">Sin participantes para este módulo.</div>';return;}
-  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6','M7','M8'];
+  const mods=['M1','M2','M3','M4S1','M4S2','M4S3','M4S4','M5','M6S1','M6','M7','M8'];
   container.innerHTML=data.slice().sort((a,b)=>b.puntaje-a.puntaje).map((r,idx)=>{
     const nivel=r.puntaje>=80?'Experto':r.puntaje>=60?'En Formación':'Principiante';
     const pillClass=r.puntaje>=80?'pill-e':r.puntaje>=60?'pill-f':'pill-p';
